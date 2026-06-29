@@ -1,277 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Functions Explorer | SBS Mathematics</title>
-<link rel="stylesheet" href="../assets/css/main.css">
-<style>
-.fn-layout{display:grid;grid-template-columns:280px 1fr;gap:16px;}
-canvas{display:block;border:1px solid var(--gray-200);border-radius:8px;background:white;}
-.fn-block{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:8px;padding:1rem;margin-bottom:12px;}
-.fn-block h4{font-size:13px;font-weight:600;color:var(--gray-700);margin-bottom:8px;}
-.big-result{font-size:1.6rem;font-weight:700;color:var(--sbs-blue);font-family:var(--font-mono);}
-.fn-expr{font-family:var(--font-mono);font-size:14px;background:var(--sbs-blue-pale);border:1px solid #BFDBFE;border-radius:6px;padding:8px 12px;color:var(--sbs-blue);margin:6px 0;}
-@media(max-width:700px){.fn-layout{grid-template-columns:1fr;}}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Functions Explorer | SBS Mathematics</title>
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <style>
+    .functions-shell{max-width:1180px;margin:0 auto;padding:2rem}.fx-hero{background:linear-gradient(135deg,#1B4F8A,#0F172A);color:white;border-radius:24px;padding:2rem;display:grid;grid-template-columns:1.3fr .7fr;gap:1.5rem;align-items:center;margin-bottom:1.5rem;box-shadow:0 18px 50px rgba(15,23,42,.18)}.fx-hero h1{font-size:clamp(2rem,4vw,3.4rem);line-height:1.05;margin:.4rem 0}.fx-hero p{opacity:.85;max-width:680px}.fx-chip{display:inline-flex;gap:.45rem;align-items:center;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);padding:.45rem .75rem;border-radius:999px;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}.hero-card{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:18px;padding:1rem}.hero-card strong{display:block;font-size:2rem}.fx-grid{display:grid;grid-template-columns:360px 1fr;gap:1rem}.panel{background:white;border:1px solid var(--gray-200);border-radius:18px;padding:1rem;box-shadow:var(--shadow-sm)}.panel h2{font-size:1rem;color:var(--gray-900);margin-bottom:.8rem}.field{margin-bottom:.75rem}.field label{display:block;font-size:.78rem;font-weight:700;color:var(--gray-600);margin-bottom:.3rem}.field input,.field select{width:100%;padding:.65rem .75rem;font-family:var(--font-mono);border-radius:10px}.button-row{display:flex;gap:.5rem;flex-wrap:wrap;margin:.75rem 0}.btn{border-radius:10px}.mini-btn{font-size:.75rem;padding:.45rem .6rem;border-radius:999px;border:1px solid var(--gray-200);background:var(--gray-50);cursor:pointer}.mini-btn:hover{background:var(--sbs-blue-pale);border-color:#bfdbfe}.graph-wrap{position:relative;overflow:hidden}.canvas-tools{display:flex;justify-content:space-between;gap:.75rem;align-items:center;margin-bottom:.75rem;flex-wrap:wrap}.legend{display:flex;gap:.45rem;flex-wrap:wrap}.legend span{font-size:.75rem;background:var(--gray-100);border-radius:999px;padding:.25rem .55rem}.graph-canvas{width:100%;height:520px;border:1px solid var(--gray-200);border-radius:16px;background:#fff}.readout{position:absolute;right:1.7rem;top:4.3rem;background:rgba(255,255,255,.92);border:1px solid var(--gray-200);border-radius:12px;padding:.65rem;font-family:var(--font-mono);font-size:.75rem;box-shadow:var(--shadow-sm)}.result-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem;margin-top:1rem}.result-card{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:14px;padding:.85rem}.result-card h3{font-size:.82rem;color:var(--sbs-blue);margin-bottom:.35rem}.mathline{font-family:var(--font-mono);font-size:.88rem;color:var(--gray-900);word-break:break-word}.question-card{margin-top:1rem;background:#fffbeb;border:1px solid #fde68a;border-radius:16px;padding:1rem}.question-card h3{font-size:.95rem;margin-bottom:.35rem;color:#92400e}.answer{display:none;margin-top:.7rem;padding:.7rem;border-radius:12px;background:white;border:1px solid #fde68a}.tabs{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.75rem}.tab{padding:.45rem .7rem;border:1px solid var(--gray-200);background:white;border-radius:999px;font-size:.78rem;cursor:pointer}.tab.active{background:var(--sbs-blue);color:white;border-color:var(--sbs-blue)}.note{font-size:.78rem;color:var(--gray-600);line-height:1.45}.transform-grid{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}.slider-value{font-family:var(--font-mono);color:var(--sbs-blue);font-weight:700}.error{display:none;margin-top:.6rem;background:#fef2f2;border:1px solid #fecaca;color:#991b1b;border-radius:12px;padding:.7rem;font-size:.85rem}@media(max-width:900px){.fx-hero,.fx-grid{grid-template-columns:1fr}.graph-canvas{height:420px}.result-grid{grid-template-columns:1fr}.functions-shell{padding:1rem}.readout{position:static;margin-top:.7rem}.transform-grid{grid-template-columns:1fr}}
+  </style>
 </head>
 <body>
-<nav class="nav">
-  <a href="../index.html" class="nav-logo">
-    <img src="../assets/logo.png" alt="SBS">
-    <div><div class="nav-title">SBS Mathematics</div><div class="nav-subtitle">Cambridge IGCSE 0580</div></div>
-  </a>
-  <ul class="nav-links">
-    <li><a href="../index.html">Home</a></li>
-    <li><a href="../labs.html" class="active">Labs</a></li>
-  </ul>
-</nav>
+  <nav class="nav">
+    <a class="nav-logo" href="../index.html"><img src="../assets/logo.png" alt="SBS Mathematics logo"><div><div class="nav-title">SBS Mathematics</div><div class="nav-subtitle">Cambridge IGCSE 0580</div></div></a>
+    <ul class="nav-links"><li><a href="../index.html">Home</a></li><li><a href="../chapters.html">Chapters</a></li><li><a class="active" href="../labs.html">Labs</a></li><li><a href="../about.html">About</a></li></ul>
+  </nav>
 
-<div class="lab-page">
-  <div class="lab-header">
-    <div class="lab-header-icon">📉</div>
-    <div>
-      <div class="lab-header-title">Functions Explorer</div>
-      <div class="lab-header-sub">Cambridge 0580 · Algebra — Composition, inverse, domain & range</div>
-    </div>
-    <div style="margin-left:auto;"><span class="cambridge-badge">IGCSE Extended</span></div>
-  </div>
+  <main class="functions-shell">
+    <section class="fx-hero">
+      <div><span class="fx-chip">IGCSE Extended · Topic 6</span><h1>Functions Explorer</h1><p>Investigate notation, composite functions, inverse functions, transformations, domain, range, and graph behaviour using interactive values.</p></div>
+      <div class="hero-card"><strong>f(g(x))</strong><span>Build confidence before past-paper questions.</span></div>
+    </section>
 
-  <div class="lab-container">
-    <div class="controls">
-      <div class="control-group">
-        <span class="control-label">f(x) =</span>
-        <input type="text" id="fx" value="2*x + 1" style="width:150px;font-family:var(--font-mono)">
-      </div>
-      <div class="control-group">
-        <span class="control-label">g(x) =</span>
-        <input type="text" id="gx" value="x^2 - 3" style="width:150px;font-family:var(--font-mono)">
-      </div>
-      <button class="btn btn-primary" onclick="update()">Update ▶</button>
-      <div class="control-group">
-        <span class="control-label">Load example</span>
-        <select id="preset" onchange="loadPreset()">
-          <option value="">— Examples —</option>
-          <option value="linear|quad">f=2x+1, g=x²−3</option>
-          <option value="recip|lin">f=1/x, g=3x−2</option>
-          <option value="sqrt|sq">f=√x, g=x²</option>
-          <option value="exp|log">f=2^x, g=log(x)</option>
-          <option value="sin|cos">f=sin(x), g=cos(x)</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="fn-layout">
-      <div>
-        <div class="fn-block">
-          <h4>Evaluate at x =</h4>
-          <input type="number" id="eval-x" value="2" step="0.5" oninput="evaluate()" style="width:80px">
-          <div style="margin-top:8px;font-size:13px;line-height:2" id="eval-results"></div>
+    <section class="fx-grid">
+      <aside class="panel">
+        <h2>1. Define the functions</h2>
+        <div class="field"><label for="fx">f(x) =</label><input id="fx" value="2x+1" autocomplete="off"></div>
+        <div class="field"><label for="gx">g(x) =</label><input id="gx" value="x^2-3" autocomplete="off"></div>
+        <div class="field"><label for="xval">Evaluate at x = <span class="slider-value" id="xshow">2</span></label><input id="xval" type="range" min="-10" max="10" step="0.5" value="2"></div>
+        <div class="button-row"><button class="btn btn-primary" id="updateBtn">Update graph</button><button class="btn btn-secondary" id="resetBtn">Reset</button></div>
+        <div class="error" id="err"></div>
+        <h2 style="margin-top:1.1rem">Examples</h2>
+        <div class="button-row">
+          <button class="mini-btn" data-f="2x+1" data-g="x^2-3">Linear & quadratic</button>
+          <button class="mini-btn" data-f="1/x" data-g="3x-2">Reciprocal</button>
+          <button class="mini-btn" data-f="sqrt(x)" data-g="x^2">Square root</button>
+          <button class="mini-btn" data-f="2^x" data-g="log(x)">Exponential & log</button>
+          <button class="mini-btn" data-f="sin(x)" data-g="cos(x)">Trig</button>
         </div>
-
-        <div class="fn-block">
-          <h4>Composite functions</h4>
-          <div id="compose-results" style="font-size:13px;line-height:1.8;"></div>
+        <h2 style="margin-top:1.1rem">Transform f(x)</h2>
+        <div class="transform-grid">
+          <div class="field"><label>a vertical stretch</label><input id="a" type="range" min="-3" max="3" step="0.5" value="1"><span class="slider-value" id="ashow">1</span></div>
+          <div class="field"><label>h horizontal shift</label><input id="h" type="range" min="-5" max="5" step="0.5" value="0"><span class="slider-value" id="hshow">0</span></div>
+          <div class="field"><label>k vertical shift</label><input id="k" type="range" min="-5" max="5" step="0.5" value="0"><span class="slider-value" id="kshow">0</span></div>
+          <div class="field"><label>Window</label><select id="window"><option value="10">−10 to 10</option><option value="5">−5 to 5</option><option value="20">−20 to 20</option></select></div>
         </div>
+        <p class="note">Use normal notation: <b>2x+1</b>, <b>x^2</b>, <b>sqrt(x)</b>, <b>sin(x)</b>, <b>log(x)</b>. This classroom tool estimates visible domain and range from the graph window.</p>
+      </aside>
 
-        <div class="fn-block">
-          <h4>Inverse functions</h4>
-          <div id="inverse-info" style="font-size:13px;line-height:1.8;"></div>
+      <section class="panel graph-wrap">
+        <div class="canvas-tools"><div class="tabs"><button class="tab active" data-mode="all">All</button><button class="tab" data-mode="f">f only</button><button class="tab" data-mode="compose">Composite</button><button class="tab" data-mode="transform">Transform</button></div><div class="legend"><span>f(x)</span><span>g(x)</span><span>f(g(x))</span><span>af(x−h)+k</span></div></div>
+        <canvas id="graph" class="graph-canvas" width="900" height="520"></canvas>
+        <div class="readout" id="readout">Move on graph</div>
+        <div class="result-grid">
+          <div class="result-card"><h3>Evaluation</h3><div class="mathline" id="evalOut"></div></div>
+          <div class="result-card"><h3>Composite functions</h3><div class="mathline" id="compOut"></div></div>
+          <div class="result-card"><h3>Transformation</h3><div class="mathline" id="transOut"></div></div>
+          <div class="result-card"><h3>Visible domain & range</h3><div class="mathline" id="domainOut"></div></div>
         </div>
+        <div class="question-card"><h3>Past-paper style check</h3><p id="questionText">Find f(g(2)).</p><button class="btn btn-secondary" id="showAnswer">Show answer</button><div class="answer" id="answerBox"></div></div>
+      </section>
+    </section>
+  </main>
 
-        <div class="fn-block">
-          <h4>Domain & Range (visible)</h4>
-          <div id="domain-info" style="font-size:13px;line-height:1.8;"></div>
-        </div>
-
-        <div class="fn-block">
-          <h4>Transformations of f(x)</h4>
-          <div style="font-size:12px;color:var(--gray-600);line-height:1.8">
-            <div id="transform-controls"></div>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <canvas id="fn-canvas" width="560" height="480"></canvas>
-        <div style="display:flex;gap:16px;margin-top:8px;font-size:12px;align-items:center;">
-          <span style="display:flex;align-items:center;gap:4px;"><span style="width:20px;height:3px;background:#1B4F8A;display:inline-block;border-radius:2px"></span> f(x)</span>
-          <span style="display:flex;align-items:center;gap:4px;"><span style="width:20px;height:3px;background:#8B1A1A;display:inline-block;border-radius:2px"></span> g(x)</span>
-          <span style="display:flex;align-items:center;gap:4px;"><span style="width:20px;height:3px;background:#059669;display:inline-block;border-radius:2px;border-top:2px dashed #059669;height:0"></span> f(g(x))</span>
-          <span style="display:flex;align-items:center;gap:4px;"><span style="width:20px;height:0;border-top:2px dashed #D97706;display:inline-block"></span> g(f(x))</span>
-          <span style="display:flex;align-items:center;gap:4px;"><span style="width:20px;height:0;border-top:2px dashed #7C3AED;display:inline-block"></span> f⁻¹(x)</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<footer class="site-footer">
-  <strong>SBS Mathematics</strong> · Functions Explorer · Cambridge IGCSE 0580
-</footer>
+  <footer class="site-footer"><strong>SBS Mathematics</strong> · Functions Explorer · Cambridge IGCSE 0580</footer>
 
 <script>
-const PRESETS={
-  'linear|quad':{f:'2*x + 1',g:'x^2 - 3'},
-  'recip|lin':{f:'1/x',g:'3*x - 2'},
-  'sqrt|sq':{f:'Math.sqrt(x)',g:'x^2'},
-  'exp|log':{f:'2**x',g:'Math.log2(x)'},
-  'sin|cos':{f:'Math.sin(x)',g:'Math.cos(x)'}
-};
-
-function safeEval(expr,x){
-  try{return Function('x','Math','return '+expr.replace(/\^/g,'**'))(x,Math);}catch(e){return NaN;}
-}
-
-function loadPreset(){
-  const v=document.getElementById('preset').value;
-  if(!v)return;
-  const p=PRESETS[v];
-  document.getElementById('fx').value=p.f;
-  document.getElementById('gx').value=p.g;
-  update();
-}
-
-function getFG(){
-  return {
-    f:document.getElementById('fx').value,
-    g:document.getElementById('gx').value
-  };
-}
-
-function r3(n){return isFinite(n)?Math.round(n*1000)/1000:'undef.';}
-
-function evaluate(){
-  const x=parseFloat(document.getElementById('eval-x').value);
-  const {f,g}=getFG();
-  const fv=safeEval(f,x),gv=safeEval(g,x);
-  const fgv=safeEval(f,gv),gfv=safeEval(g,fv);
-  document.getElementById('eval-results').innerHTML=`
-    f(${x}) = <strong style="color:#1B4F8A">${r3(fv)}</strong><br>
-    g(${x}) = <strong style="color:#8B1A1A">${r3(gv)}</strong><br>
-    fg(${x}) = f(g(${x})) = f(${r3(gv)}) = <strong style="color:#059669">${r3(fgv)}</strong><br>
-    gf(${x}) = g(f(${x})) = g(${r3(fv)}) = <strong style="color:#D97706">${r3(gfv)}</strong>
-  `;
-}
-
-function update(){
-  const {f,g}=getFG();
-  // Compose
-  document.getElementById('compose-results').innerHTML=`
-    <div class="fn-expr">fg(x) = f(g(x)) — apply g first, then f</div>
-    <div class="fn-expr">gf(x) = g(f(x)) — apply f first, then g</div>
-    <div style="font-size:12px;color:var(--gray-500)">Note: fg(x) ≠ gf(x) in general!</div>
-  `;
-  // Inverse hint
-  document.getElementById('inverse-info').innerHTML=`
-    <div class="fn-expr">f⁻¹(x) — shown as dashed purple</div>
-    <div style="font-size:12px;color:var(--gray-600)">f⁻¹ is the reflection of f in y = x<br>f(f⁻¹(x)) = x and f⁻¹(f(x)) = x</div>
-  `;
-  // Domain/range
-  const yVals=[];
-  for(let x=-10;x<=10;x+=0.1){const y=safeEval(f,x);if(isFinite(y)&&Math.abs(y)<1000)yVals.push(y);}
-  document.getElementById('domain-info').innerHTML=yVals.length?
-    `f(x) range in [−10,10]: <strong>[${Math.round(Math.min(...yVals)*10)/10}, ${Math.round(Math.max(...yVals)*10)/10}]</strong>`:
-    `<span style="color:var(--gray-400)">Could not compute range</span>`;
-  // Transform controls
-  document.getElementById('transform-controls').innerHTML=`
-    <div style="margin-bottom:4px">f(x) <span style="color:#1B4F8A">—</span> original</div>
-    <div style="margin-bottom:4px">f(x)+k: vertical shift (add to output)</div>
-    <div style="margin-bottom:4px">f(x+k): horizontal shift (add to input)</div>
-    <div style="margin-bottom:4px">kf(x): vertical stretch</div>
-    <div>f(kx): horizontal stretch</div>
-  `;
-  evaluate();
-  drawGraph();
-}
-
-function drawGraph(){
-  const c=document.getElementById('fn-canvas');
-  const ctx=c.getContext('2d');
-  const W=c.width,H=c.height,pad=50;
-  ctx.clearRect(0,0,W,H);ctx.fillStyle='white';ctx.fillRect(0,0,W,H);
-  const xmin=-8,xmax=8,pw=W-2*pad;
-  let yVals=[];
-  const {f,g}=getFG();
-  for(let px=0;px<pw;px++){
-    const x=xmin+(px/pw)*(xmax-xmin);
-    [f,g].forEach(fn=>{const y=safeEval(fn,x);if(isFinite(y))yVals.push(y);});
-  }
-  let ymin=-10,ymax=10;
-  if(yVals.length){
-    const raw=[...yVals];const p5=raw.sort((a,b)=>a-b);
-    ymin=Math.max(-50,p5[Math.floor(p5.length*0.05)]);
-    ymax=Math.min(50,p5[Math.floor(p5.length*0.95)]);
-    const pad2=(ymax-ymin)*0.1;ymin-=pad2;ymax+=pad2;
-    if(ymax-ymin<2){ymin-=2;ymax+=2;}
-  }
-  const ph=H-2*pad;
-  const toX=x=>pad+(x-xmin)/(xmax-xmin)*(W-2*pad);
-  const toY=y=>pad+ph*(1-(y-ymin)/(ymax-ymin));
-
-  // Grid
-  const niceStep2=(range,n)=>{const r=range/n;const e=Math.floor(Math.log10(r));const m=r/10**e;return (m<1.5?1:m<3?2:m<7?5:10)*10**e;};
-  const xs=niceStep2(xmax-xmin,10),ys=niceStep2(ymax-ymin,8);
-  ctx.strokeStyle='#F1F5F9';ctx.lineWidth=1;
-  for(let x=Math.ceil(xmin/xs)*xs;x<=xmax;x+=xs){
-    ctx.beginPath();ctx.moveTo(toX(x),0);ctx.lineTo(toX(x),H);ctx.stroke();
-    if(Math.abs(x)>0.01){ctx.fillStyle='#94A3B8';ctx.font='10px Inter';ctx.textAlign='center';ctx.fillText(Math.round(x*10)/10,toX(x),H-pad+14);}
-  }
-  for(let y=Math.ceil(ymin/ys)*ys;y<=ymax;y+=ys){
-    ctx.beginPath();ctx.moveTo(0,toY(y));ctx.lineTo(W,toY(y));ctx.stroke();
-    if(Math.abs(y)>0.01){ctx.fillStyle='#94A3B8';ctx.font='10px Inter';ctx.textAlign='right';ctx.fillText(Math.round(y*10)/10,pad-4,toY(y)+4);}
-  }
-  // Axes
-  ctx.strokeStyle='#CBD5E1';ctx.lineWidth=1.5;
-  if(xmin<0&&xmax>0){ctx.beginPath();ctx.moveTo(toX(0),0);ctx.lineTo(toX(0),H);ctx.stroke();}
-  if(ymin<0&&ymax>0){ctx.beginPath();ctx.moveTo(0,toY(0));ctx.lineTo(W,toY(0));ctx.stroke();}
-  // y=x line for inverse
-  ctx.strokeStyle='#E2E8F0';ctx.lineWidth=1;ctx.setLineDash([3,3]);
-  ctx.beginPath();ctx.moveTo(toX(xmin),toY(xmin));ctx.lineTo(toX(xmax),toY(xmax));ctx.stroke();ctx.setLineDash([]);
-
-  function plotFn(fn,color,dash,invert){
-    ctx.beginPath();ctx.strokeStyle=color;ctx.lineWidth=2;
-    if(dash)ctx.setLineDash(dash);else ctx.setLineDash([]);
-    let started=false,lastY=null;
-    for(let px=0;px<pw;px++){
-      const xv=xmin+(px/pw)*(xmax-xmin);
-      let yv=invert?safeEval(fn,xv):safeEval(fn,xv);
-      if(invert){
-        // approximate inverse: find x such that f(x)=xv
-        let best=NaN,bestDiff=999;
-        for(let t=xmin;t<=xmax;t+=0.05){
-          const d=Math.abs(safeEval(fn,t)-xv);
-          if(d<bestDiff){bestDiff=d;best=t;}
-        }
-        yv=best;
-      }
-      if(!isFinite(yv)||yv<ymin*2||yv>ymax*2){started=false;lastY=null;continue;}
-      if(!started||(lastY!==null&&Math.abs(yv-lastY)>Math.abs(ymax-ymin)*0.5)){ctx.moveTo(pad+px,toY(yv));started=true;}
-      else ctx.lineTo(pad+px,toY(yv));
-      lastY=yv;
-    }
-    ctx.stroke();ctx.setLineDash([]);
-  }
-
-  const {f:fExpr,g:gExpr}=getFG();
-  plotFn(fExpr,'#1B4F8A');
-  plotFn(gExpr,'#8B1A1A');
-  plotFn((x)=>{const gv=safeEval(gExpr,x);return safeEval(fExpr,gv);},'#059669',[6,3]);
-  plotFn((x)=>{const fv=safeEval(fExpr,x);return safeEval(gExpr,fv);},'#D97706',[4,4]);
-  plotFn(fExpr,'#7C3AED',[8,3],true);
-
-  // Eval point marker
-  const xp=parseFloat(document.getElementById('eval-x').value);
-  if(isFinite(xp)&&xp>=xmin&&xp<=xmax){
-    const yp=safeEval(fExpr,xp);
-    if(isFinite(yp)){
-      ctx.beginPath();ctx.arc(toX(xp),toY(yp),6,0,2*Math.PI);
-      ctx.fillStyle='#1B4F8A';ctx.fill();ctx.strokeStyle='white';ctx.lineWidth=2;ctx.stroke();
-    }
-  }
-}
-
-update();
+const $=id=>document.getElementById(id); let mode='all';
+function normalise(s){return s.replace(/π/g,'Math.PI').replace(/\be\b/g,'Math.E').replace(/(\d)(x)/g,'$1*$2').replace(/(x)(\d)/g,'$1*$2').replace(/\^/g,'**').replace(/sqrt/g,'Math.sqrt').replace(/sin/g,'Math.sin').replace(/cos/g,'Math.cos').replace(/tan/g,'Math.tan').replace(/log/g,'Math.log10').replace(/ln/g,'Math.log').replace(/abs/g,'Math.abs');}
+function makeFn(expr){const body=normalise(expr); return x=>{const y=Function('x','return '+body)(x); return Number.isFinite(y)?y:NaN;};}
+function nice(n){return Number.isFinite(n)?(Math.abs(n)<1e-10?0:+n.toFixed(3)):'undefined'}
+function setup(){['xval','a','h','k','window'].forEach(id=>$(id).addEventListener('input',draw)); $('updateBtn').onclick=draw; $('resetBtn').onclick=()=>{fx.value='2x+1';gx.value='x^2-3';xval.value=2;a.value=1;h.value=0;k.value=0;window.value=10;draw();}; document.querySelectorAll('.mini-btn').forEach(b=>b.onclick=()=>{fx.value=b.dataset.f;gx.value=b.dataset.g;draw();}); document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');mode=t.dataset.mode;draw();}); $('showAnswer').onclick=()=>{$('answerBox').style.display='block'}; $('graph').addEventListener('mousemove',mouseReadout); draw();}
+function draw(){try{$('err').style.display='none'; const F=makeFn(fx.value),G=makeFn(gx.value); const c=$('graph'),ctx=c.getContext('2d'),W=c.width,H=c.height,win=+$('window').value; const sx=x=>(x+win)/(2*win)*W, sy=y=>H-(y+win)/(2*win)*H; ctx.clearRect(0,0,W,H); ctx.lineWidth=1; ctx.strokeStyle='#e2e8f0'; for(let i=-win;i<=win;i++){ctx.beginPath();ctx.moveTo(sx(i),0);ctx.lineTo(sx(i),H);ctx.stroke();ctx.beginPath();ctx.moveTo(0,sy(i));ctx.lineTo(W,sy(i));ctx.stroke();} ctx.strokeStyle='#0f172a';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,sy(0));ctx.lineTo(W,sy(0));ctx.moveTo(sx(0),0);ctx.lineTo(sx(0),H);ctx.stroke(); const tf=x=>(+$('a').value)*F(x-(+$('h').value))+(+$('k').value); if(mode==='all'||mode==='f')plot(F,'#1B4F8A'); if(mode==='all')plot(G,'#8B1A1A'); if(mode==='all'||mode==='compose')plot(x=>F(G(x)),'#B8860B'); if(mode==='all'||mode==='transform')plot(tf,'#2563EB'); function plot(fn,color){ctx.strokeStyle=color;ctx.lineWidth=3;ctx.beginPath();let started=false;for(let px=0;px<=W;px++){let x=-win+2*win*px/W,y=fn(x);if(!Number.isFinite(y)||Math.abs(y)>win*3){started=false;continue}let py=sy(y); if(!started){ctx.moveTo(px,py);started=true}else ctx.lineTo(px,py)}ctx.stroke();}
+const xv=+$('xval').value,aV=+$('a').value,hV=+$('h').value,kV=+$('k').value; $('xshow').textContent=xv;$('ashow').textContent=aV;$('hshow').textContent=hV;$('kshow').textContent=kV; $('evalOut').innerHTML=`f(${xv}) = ${nice(F(xv))}<br>g(${xv}) = ${nice(G(xv))}`; $('compOut').innerHTML=`f(g(${xv})) = ${nice(F(G(xv)))}<br>g(f(${xv})) = ${nice(G(F(xv)))}`; $('transOut').textContent=`y = ${aV}f(x − ${hV}) + ${kV}; y(${xv}) = ${nice(tf(xv))}`; let vals=[];for(let x=-win;x<=win;x+=0.1){let y=F(x);if(Number.isFinite(y)&&Math.abs(y)<=win*2)vals.push(y)} $('domainOut').innerHTML=`x: [${-win}, ${win}] visible<br>f(x): [${nice(Math.min(...vals))}, ${nice(Math.max(...vals))}] approx.`; $('questionText').textContent=`Find f(g(${xv})). Then compare it with g(f(${xv})).`; $('answerBox').innerHTML=`g(${xv})=${nice(G(xv))}, so f(g(${xv}))=${nice(F(G(xv)))}.<br>f(${xv})=${nice(F(xv))}, so g(f(${xv}))=${nice(G(F(xv)))}.`; $('answerBox').style.display='none';}catch(e){$('err').textContent='Check your function notation. Example: 2x+1, x^2, sqrt(x), sin(x).';$('err').style.display='block';}}
+function mouseReadout(e){const rect=$('graph').getBoundingClientRect(),win=+$('window').value; const x=(e.clientX-rect.left)/rect.width*2*win-win; const F=makeFn(fx.value),G=makeFn(gx.value); $('readout').innerHTML=`x=${nice(x)}<br>f(x)=${nice(F(x))}<br>g(x)=${nice(G(x))}`}
+setup();
 </script>
 </body>
 </html>
