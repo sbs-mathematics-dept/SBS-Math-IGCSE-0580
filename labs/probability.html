@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Probability Lab | SBS Mathematics</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<style>
+.tab-bar { display: flex; gap: 4px; border-bottom: 1px solid var(--gray-200); margin-bottom: 1.5rem; }
+.tab { padding: 8px 16px; font-size: 13px; font-weight: 500; cursor: pointer; border-radius: 6px 6px 0 0; color: var(--gray-600); background: none; border: none; border-bottom: 2px solid transparent; transition: all 0.15s; }
+.tab.active { color: var(--sbs-blue); border-bottom-color: var(--sbs-blue); background: var(--sbs-blue-pale); }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+.tree-svg { width: 100%; border: 1px solid var(--gray-200); border-radius: 8px; background: var(--gray-50); }
+.prob-result { font-size: 2rem; font-weight: 700; color: var(--sbs-blue); font-family: var(--font-mono); }
+.sim-bar { height: 32px; background: var(--gray-200); border-radius: 4px; overflow: hidden; margin: 8px 0; }
+.sim-bar-fill { height: 100%; background: var(--sbs-blue); border-radius: 4px; transition: width 0.3s; display: flex; align-items: center; padding-left: 8px; color: white; font-size: 12px; font-weight: 600; }
+.venn-svg { width: 100%; max-width: 400px; margin: 0 auto; display: block; }
+.formula-box { background: var(--sbs-blue-pale); border: 1px solid #BFDBFE; border-radius: 8px; padding: 12px 16px; font-family: var(--font-mono); font-size: 14px; color: var(--sbs-blue); margin: 12px 0; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="../index.html" class="nav-logo">
+    <img src="../assets/logo.png" alt="SBS">
+    <div><div class="nav-title">SBS Mathematics</div><div class="nav-subtitle">Cambridge IGCSE 0580</div></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="../labs.html" class="active">Labs</a></li>
+  </ul>
+</nav>
+
+<div class="lab-page">
+  <div class="lab-header">
+    <div class="lab-header-icon">🎲</div>
+    <div>
+      <div class="lab-header-title">Probability Lab</div>
+      <div class="lab-header-sub">Cambridge 0580 · Paper 2 & 4 · Topic 8 — Probability</div>
+    </div>
+    <div style="margin-left:auto;"><span class="cambridge-badge">IGCSE Extended</span></div>
+  </div>
+
+  <div class="lab-container">
+    <div class="tab-bar">
+      <button class="tab active" onclick="switchTab('simulate')">🎲 Simulation</button>
+      <button class="tab" onclick="switchTab('tree')">🌳 Tree Diagram</button>
+      <button class="tab" onclick="switchTab('venn')">⭕ Venn Diagrams</button>
+    </div>
+
+    <!-- SIMULATE TAB -->
+    <div id="tab-simulate" class="tab-panel active">
+      <div class="controls">
+        <div class="control-group">
+          <span class="control-label">Experiment</span>
+          <select id="exp-type" onchange="resetSim()">
+            <option value="coin">Fair coin (H/T)</option>
+            <option value="dice">Fair dice (1–6)</option>
+            <option value="biased">Biased coin (P=0.3)</option>
+            <option value="two-dice">Sum of two dice</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <span class="control-label">Trials per click</span>
+          <select id="trial-count">
+            <option value="1">1</option>
+            <option value="10">10</option>
+            <option value="100" selected>100</option>
+            <option value="1000">1000</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" onclick="runTrials()">Run ▶</button>
+        <button class="btn btn-secondary" onclick="resetSim()">Reset</button>
+        <div class="control-group">
+          <span class="control-label">Total trials</span>
+          <span class="control-value" id="total-trials">0</span>
+        </div>
+      </div>
+
+      <div class="theorem-box">
+        <strong>Law of Large Numbers:</strong> As the number of trials increases, the experimental probability gets closer to the theoretical probability.
+      </div>
+
+      <div id="sim-results"></div>
+      <canvas id="sim-canvas" width="700" height="240" style="border:1px solid var(--gray-200); border-radius:8px; margin-top:1rem;"></canvas>
+    </div>
+
+    <!-- TREE DIAGRAM TAB -->
+    <div id="tab-tree" class="tab-panel">
+      <div class="controls">
+        <div class="control-group">
+          <span class="control-label">Scenario</span>
+          <select id="tree-scenario" onchange="drawTree()">
+            <option value="coins">Tossing 2 coins</option>
+            <option value="bag">Drawing 2 balls (with replacement)</option>
+            <option value="noreplace">Drawing 2 balls (without replacement)</option>
+            <option value="weather">Rain / umbrella scenario</option>
+          </select>
+        </div>
+      </div>
+      <svg id="tree-svg" class="tree-svg" height="320" viewBox="0 0 680 320"></svg>
+      <div id="tree-info" class="result-panel"></div>
+    </div>
+
+    <!-- VENN DIAGRAM TAB -->
+    <div id="tab-venn" class="tab-panel">
+      <div class="controls">
+        <div class="control-group">
+          <span class="control-label">P(A)</span>
+          <input type="range" id="pa" min="0" max="100" value="50" oninput="updateVenn()">
+          <span class="control-value" id="pa-val">0.50</span>
+        </div>
+        <div class="control-group">
+          <span class="control-label">P(B)</span>
+          <input type="range" id="pb" min="0" max="100" value="40" oninput="updateVenn()">
+          <span class="control-value" id="pb-val">0.40</span>
+        </div>
+        <div class="control-group">
+          <span class="control-label">P(A∩B)</span>
+          <input type="range" id="pab" min="0" max="40" value="15" oninput="updateVenn()">
+          <span class="control-value" id="pab-val">0.15</span>
+        </div>
+      </div>
+
+      <svg class="venn-svg" height="220" viewBox="0 0 400 220">
+        <circle id="vA" cx="155" cy="110" r="90" fill="#1B4F8A" fill-opacity="0.2" stroke="#1B4F8A" stroke-width="2"/>
+        <circle id="vB" cx="245" cy="110" r="90" fill="#8B1A1A" fill-opacity="0.2" stroke="#8B1A1A" stroke-width="2"/>
+        <text x="110" y="105" text-anchor="middle" font-size="15" font-weight="700" fill="#1B4F8A">A</text>
+        <text x="290" y="105" text-anchor="middle" font-size="15" font-weight="700" fill="#8B1A1A">B</text>
+        <text id="vA-only" x="110" y="125" text-anchor="middle" font-size="13" fill="#1B4F8A"></text>
+        <text id="vAB" x="200" y="125" text-anchor="middle" font-size="13" fill="#475569"></text>
+        <text id="vB-only" x="290" y="125" text-anchor="middle" font-size="13" fill="#8B1A1A"></text>
+        <text id="vNeither" x="200" y="205" text-anchor="middle" font-size="12" fill="#94A3B8"></text>
+      </svg>
+
+      <div id="venn-formulas" style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:1rem;"></div>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <strong>SBS Mathematics</strong> · Probability Lab · Cambridge IGCSE 0580
+</footer>
+
+<script>
+let totals = {};
+let history = [];
+
+const scenarios = {
+  coins: {
+    label: "Tossing 2 coins",
+    branches1: [{label:"H", p:0.5},{label:"T", p:0.5}],
+    branches2: [{label:"H",p:0.5},{label:"T",p:0.5}],
+    outcomes: ["HH","HT","TH","TT"],
+    probs: [0.25,0.25,0.25,0.25]
+  },
+  bag: {
+    label: "Bag: 3 Red, 2 Blue (with replacement)",
+    branches1:[{label:"R (3/5)",p:0.6},{label:"B (2/5)",p:0.4}],
+    branches2:[{label:"R",p:0.6},{label:"B",p:0.4}],
+    outcomes:["RR","RB","BR","BB"],
+    probs:[0.36,0.24,0.24,0.16]
+  },
+  noreplace: {
+    label: "Bag: 3 Red, 2 Blue (without replacement)",
+    branches1:[{label:"R (3/5)",p:0.6},{label:"B (2/5)",p:0.4}],
+    branches2r:[{label:"R (2/4)",p:0.5},{label:"B (2/4)",p:0.5}],
+    branches2b:[{label:"R (3/4)",p:0.75},{label:"B (1/4)",p:0.25}],
+    outcomes:["RR","RB","BR","BB"],
+    probs:[0.3,0.3,0.3,0.1],
+    noReplace:true
+  },
+  weather: {
+    label: "Rain / Umbrella",
+    branches1:[{label:"Rain (0.3)",p:0.3},{label:"No rain (0.7)",p:0.7}],
+    branches2:[{label:"Umbrella",p:0.9},{label:"No umbrella",p:0.1}],
+    outcomes:["Rain+Umbrella","Rain+No","NoRain+Umbrella","NoRain+No"],
+    probs:[0.27,0.03,0.63,0.07]
+  }
+};
+
+function switchTab(name) {
+  document.querySelectorAll('.tab, .tab-panel').forEach(e => e.classList.remove('active'));
+  document.querySelector(`[onclick="switchTab('${name}')"]`).classList.add('active');
+  document.getElementById(`tab-${name}`).classList.add('active');
+  if(name==='tree') drawTree();
+  if(name==='venn') updateVenn();
+}
+
+function getExperiment() {
+  const t = document.getElementById('exp-type').value;
+  if(t==='coin') return {outcomes:['H','T'], probs:[0.5,0.5], theoretical:{'H':0.5,'T':0.5}};
+  if(t==='biased') return {outcomes:['H','T'], probs:[0.3,0.7], theoretical:{'H':0.3,'T':0.7}};
+  if(t==='dice') return {outcomes:['1','2','3','4','5','6'], probs:[1/6,1/6,1/6,1/6,1/6,1/6], theoretical:{'1':1/6,'2':1/6,'3':1/6,'4':1/6,'5':1/6,'6':1/6}};
+  if(t==='two-dice') {
+    let outcomes=[]; let probs=[]; let theoretical={};
+    for(let s=2;s<=12;s++){
+      let count=0;
+      for(let d=1;d<=6;d++) if(d>=1&&d<=6&&s-d>=1&&s-d<=6) count++;
+      outcomes.push(s+''); probs.push(count/36); theoretical[s+'']=count/36;
+    }
+    return {outcomes,probs,theoretical};
+  }
+}
+
+function resetSim() {
+  totals={}; history=[];
+  document.getElementById('total-trials').textContent='0';
+  document.getElementById('sim-results').innerHTML='';
+  const c=document.getElementById('sim-canvas');
+  const ctx=c.getContext('2d');
+  ctx.clearRect(0,0,c.width,c.height);
+}
+
+function runTrials() {
+  const exp=getExperiment();
+  const n=parseInt(document.getElementById('trial-count').value);
+  for(let i=0;i<n;i++){
+    const r=Math.random();
+    let cum=0;
+    for(let j=0;j<exp.outcomes.length;j++){
+      cum+=exp.probs[j];
+      if(r<cum){ totals[exp.outcomes[j]]=(totals[exp.outcomes[j]]||0)+1; break; }
+    }
+  }
+  const total=Object.values(totals).reduce((a,b)=>a+b,0);
+  history.push({total,...Object.fromEntries(Object.entries(totals).map(([k,v])=>[k,v/total]))});
+  document.getElementById('total-trials').textContent=total;
+  renderSimResults(exp, total);
+  drawHistoryChart(exp, history);
+}
+
+function renderSimResults(exp, total) {
+  let html='';
+  exp.outcomes.forEach(o=>{
+    const count=totals[o]||0;
+    const expP=total>0?count/total:0;
+    const thP=exp.theoretical[o];
+    const pct=Math.round(expP*1000)/10;
+    const thPct=Math.round(thP*1000)/10;
+    html+=`<div style="margin:6px 0">
+      <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:3px">
+        <span><strong>${o}</strong> — ${count} times</span>
+        <span style="color:var(--gray-400)">Exp: <strong style="color:var(--sbs-blue)">${pct}%</strong> | Theory: ${thPct}%</span>
+      </div>
+      <div class="sim-bar"><div class="sim-bar-fill" style="width:${pct}%">${pct>5?pct+'%':''}</div></div>
+    </div>`;
+  });
+  document.getElementById('sim-results').innerHTML=html;
+}
+
+function drawHistoryChart(exp, hist) {
+  const c=document.getElementById('sim-canvas');
+  const ctx=c.getContext('2d');
+  ctx.clearRect(0,0,c.width,c.height);
+  if(hist.length<2) return;
+  const colors=['#1B4F8A','#8B1A1A','#059669','#D97706','#7C3AED','#0891B2'];
+  const pw=c.width-80; const ph=c.height-40;
+  ctx.strokeStyle='#E2E8F0'; ctx.lineWidth=1;
+  [0.25,0.5,0.75,1.0].forEach(y=>{
+    ctx.beginPath(); ctx.moveTo(60,20+ph*(1-y)); ctx.lineTo(60+pw,20+ph*(1-y)); ctx.stroke();
+    ctx.fillStyle='#94A3B8'; ctx.font='11px Inter'; ctx.textAlign='right';
+    ctx.fillText((y*100).toFixed(0)+'%',54,24+ph*(1-y));
+  });
+  exp.outcomes.forEach((o,i)=>{
+    ctx.beginPath(); ctx.strokeStyle=colors[i%colors.length]; ctx.lineWidth=2;
+    hist.forEach((h,j)=>{
+      const x=60+(j/(hist.length-1||1))*pw;
+      const y=20+ph*(1-(h[o]||0));
+      j===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    });
+    ctx.stroke();
+    ctx.fillStyle='#1E293B'; ctx.font='11px Inter'; ctx.textAlign='left';
+    ctx.fillText(o,65+i*50,c.height-8);
+    ctx.fillStyle=colors[i%colors.length];
+    ctx.fillRect(60+i*50,c.height-16,10,10);
+  });
+  ctx.fillStyle='#475569'; ctx.font='12px Inter'; ctx.textAlign='center';
+  ctx.fillText('Experimental probability converging to theoretical value',c.width/2,c.height-4);
+}
+
+function drawTree() {
+  const key=document.getElementById('tree-scenario').value;
+  const sc=scenarios[key];
+  const svg=document.getElementById('tree-svg');
+  svg.innerHTML='';
+  const W=680; const H=320;
+  const cx=60; const b1y=[80,240]; const b2y=[40,140,180,280];
+  const colors=['#1B4F8A','#8B1A1A','#059669','#D97706'];
+  function line(x1,y1,x2,y2,c){
+    const el=document.createElementNS('http://www.w3.org/2000/svg','line');
+    el.setAttribute('x1',x1);el.setAttribute('y1',y1);el.setAttribute('x2',x2);el.setAttribute('y2',y2);
+    el.setAttribute('stroke',c||'#94A3B8');el.setAttribute('stroke-width','1.5');
+    svg.appendChild(el);
+  }
+  function circle(x,y,r,fill,stroke){
+    const el=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    el.setAttribute('cx',x);el.setAttribute('cy',y);el.setAttribute('r',r);
+    el.setAttribute('fill',fill||'white');el.setAttribute('stroke',stroke||'#94A3B8');el.setAttribute('stroke-width','1.5');
+    svg.appendChild(el);
+  }
+  function text(x,y,t,size,fill,anchor){
+    const el=document.createElementNS('http://www.w3.org/2000/svg','text');
+    el.setAttribute('x',x);el.setAttribute('y',y);el.setAttribute('font-size',size||13);
+    el.setAttribute('fill',fill||'#1E293B');el.setAttribute('text-anchor',anchor||'middle');
+    el.setAttribute('font-family','Inter,sans-serif');el.setAttribute('font-weight','500');
+    el.textContent=t; svg.appendChild(el);
+  }
+  circle(cx,160,8,'#1B4F8A','#1B4F8A');
+  text(cx,148,'Start',11,'#475569');
+  let outcomes=[];
+  sc.branches1.forEach((b1,i)=>{
+    const y1=b1y[i];
+    line(cx+8,160,200,y1,'#CBD5E1');
+    circle(200,y1,8,colors[i],colors[i]);
+    text(200,y1-14,b1.label,12,colors[i]);
+    text(130,y1+(i===0?-8:12),'p='+b1.p.toFixed(2),10,'#64748B');
+    let b2list=sc.noReplace?(i===0?sc.branches2r:sc.branches2b):sc.branches2;
+    b2list.forEach((b2,j)=>{
+      const y2=b2y[i*2+j];
+      line(208,y1,370,y2,'#CBD5E1');
+      circle(370,y2,8,colors[j],colors[j]);
+      text(370,y2-14,b2.label,12,colors[j]);
+      text(295,y2+(j===0?-8:12),'p='+b2.p.toFixed(2),10,'#64748B');
+      const p=(b1.p*b2.p);
+      const outcome=(sc.outcomes&&sc.outcomes[i*2+j])||'';
+      line(378,y2,500,y2,'#CBD5E1');
+      text(560,y2+5,(outcome?outcome+' ':'')+p.toFixed(3),12,'#475569','start');
+      outcomes.push({outcome,p});
+    });
+  });
+  text(560,20,'Outcome & P',11,'#94A3B8','start');
+  let info=`<strong>Outcomes:</strong><br>`;
+  outcomes.forEach(o=>{ info+=`P(${o.outcome}) = ${o.p.toFixed(4)}&nbsp;&nbsp;`; });
+  info+=`<br><strong>Check:</strong> Sum = ${outcomes.reduce((s,o)=>s+o.p,0).toFixed(4)} (should equal 1.0)`;
+  document.getElementById('tree-info').innerHTML=info;
+}
+
+function updateVenn() {
+  const pa=parseInt(document.getElementById('pa').value)/100;
+  const pb=parseInt(document.getElementById('pb').value)/100;
+  const maxAB=Math.min(pa,pb);
+  document.getElementById('pab').max=Math.round(maxAB*100);
+  const pab=Math.min(parseInt(document.getElementById('pab').value)/100,maxAB);
+  document.getElementById('pa-val').textContent=pa.toFixed(2);
+  document.getElementById('pb-val').textContent=pb.toFixed(2);
+  document.getElementById('pab-val').textContent=pab.toFixed(2);
+  const aOnly=pa-pab; const bOnly=pb-pab; const neither=1-pa-pb+pab;
+  document.getElementById('vA-only').textContent=aOnly.toFixed(2);
+  document.getElementById('vAB').textContent=pab.toFixed(2);
+  document.getElementById('vB-only').textContent=bOnly.toFixed(2);
+  document.getElementById('vNeither').textContent='Neither: '+(neither>0?neither.toFixed(2):'0.00');
+  const pAuB=(pa+pb-pab);
+  document.getElementById('venn-formulas').innerHTML=`
+    <div class="formula-box">P(A∪B) = P(A)+P(B)−P(A∩B)<br>= ${pa.toFixed(2)}+${pb.toFixed(2)}−${pab.toFixed(2)} = <strong>${pAuB.toFixed(2)}</strong></div>
+    <div class="formula-box">P(A|B) = P(A∩B)/P(B)<br>= ${pab.toFixed(2)}/${pb.toFixed(2)} = <strong>${pb>0?(pab/pb).toFixed(3):'—'}</strong></div>
+    <div class="formula-box">A and B independent if:<br>P(A∩B) = P(A)×P(B) = <strong>${(pa*pb).toFixed(3)}</strong></div>
+    <div class="formula-box">Currently: P(A∩B) = ${pab.toFixed(3)}<br>${Math.abs(pab-pa*pb)<0.001?'✅ Independent':'❌ Not independent'}</div>
+  `;
+}
+
+drawTree();
+updateVenn();
+</script>
+</body>
+</html>

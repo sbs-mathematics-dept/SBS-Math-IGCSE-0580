@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Circle Theorems | SBS Mathematics</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<style>
+.theorem-tabs { display:flex; flex-wrap:wrap; gap:4px; margin-bottom:1rem; }
+.t-tab { padding:6px 12px; font-size:12px; font-weight:500; border:1px solid var(--gray-200); border-radius:6px; cursor:pointer; background:white; color:var(--gray-600); transition:all 0.15s; }
+.t-tab.active { background:var(--sbs-blue); color:white; border-color:var(--sbs-blue); }
+canvas { display:block; border:1px solid var(--gray-200); border-radius:8px; background:white; cursor:crosshair; margin:0 auto; }
+.angle-display { font-size:2rem; font-weight:700; color:var(--sbs-blue); font-family:var(--font-mono); }
+.proof-box { background:var(--sbs-blue-pale); border-left:3px solid var(--sbs-blue); padding:12px 16px; border-radius:0 8px 8px 0; font-size:14px; margin:12px 0; }
+.inst { font-size:13px; color:var(--gray-600); background:var(--gray-50); border:1px solid var(--gray-200); border-radius:6px; padding:10px 14px; margin-bottom:12px; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="../index.html" class="nav-logo">
+    <img src="../assets/logo.png" alt="SBS">
+    <div><div class="nav-title">SBS Mathematics</div><div class="nav-subtitle">Cambridge IGCSE 0580</div></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="../labs.html" class="active">Labs</a></li>
+  </ul>
+</nav>
+
+<div class="lab-page">
+  <div class="lab-header">
+    <div class="lab-header-icon">📏</div>
+    <div>
+      <div class="lab-header-title">Circle Theorems Explorer</div>
+      <div class="lab-header-sub">Cambridge 0580 · Geometry — Drag points to see theorems in action</div>
+    </div>
+    <div style="margin-left:auto;"><span class="cambridge-badge">IGCSE Extended</span></div>
+  </div>
+
+  <div class="lab-container">
+    <div class="theorem-tabs">
+      <button class="t-tab active" onclick="setThm(0)">Inscribed angle</button>
+      <button class="t-tab" onclick="setThm(1)">Angle at centre</button>
+      <button class="t-tab" onclick="setThm(2)">Angles in semicircle</button>
+      <button class="t-tab" onclick="setThm(3)">Cyclic quadrilateral</button>
+      <button class="t-tab" onclick="setThm(4)">Tangent-radius</button>
+      <button class="t-tab" onclick="setThm(5)">Tangent from point</button>
+      <button class="t-tab" onclick="setThm(6)">Alternate segment</button>
+    </div>
+
+    <div class="inst" id="inst">Drag the blue points around the circle to see how the theorem holds.</div>
+
+    <canvas id="canvas" width="660" height="420"></canvas>
+
+    <div id="theorem-display" style="margin-top:1rem;"></div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <strong>SBS Mathematics</strong> · Circle Theorems · Cambridge IGCSE 0580
+</footer>
+
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const W=canvas.width, H=canvas.height;
+const cx=W/2-60, cy=H/2, R=170;
+
+let currentThm=0;
+let dragging=null;
+let points={};
+
+const theorems=[
+  {name:'Inscribed angle',
+   init:()=>{
+     points={A:angle(210),B:angle(330),P:angle(80)};
+   },
+   inst:'Drag P around the circle. The angle APB stays constant (half the arc AB).'
+  },
+  {name:'Angle at centre',
+   init:()=>{
+     points={A:angle(200),B:angle(340),P:angle(90),O:{x:cx,y:cy,fixed:true}};
+   },
+   inst:'Drag A, B and P. The central angle AOB = 2 × inscribed angle APB.'
+  },
+  {name:'Angle in semicircle',
+   init:()=>{
+     points={A:{x:cx-R,y:cy,fixed:true},B:{x:cx+R,y:cy,fixed:true},P:angle(70)};
+   },
+   inst:'Drag P to any point on the circle above AB. The angle APB is always 90°.'
+  },
+  {name:'Cyclic quadrilateral',
+   init:()=>{
+     points={A:angle(40),B:angle(130),C:angle(220),D:angle(310)};
+   },
+   inst:'Drag any vertex. Opposite angles of a cyclic quadrilateral add up to 180°.'
+  },
+  {name:'Tangent-radius',
+   init:()=>{
+     points={T:angle(30)};
+   },
+   inst:'The tangent at T is perpendicular to the radius OT. Angle = 90° always.'
+  },
+  {name:'Tangent from point',
+   init:()=>{
+     points={T1:angle(50),T2:angle(-50),P:{x:cx+R+80,y:cy,fixed:false}};
+   },
+   inst:'Drag the external point P. The two tangent lengths from P are always equal.'
+  },
+  {name:'Alternate segment',
+   init:()=>{
+     points={A:angle(200),B:angle(340),P:angle(80)};
+   },
+   inst:'Drag P. The angle between tangent and chord AB = inscribed angle in alternate segment.'
+  }
+];
+
+function angle(deg){ const r=deg*Math.PI/180; return {x:cx+R*Math.cos(r),y:cy+R*Math.sin(r)}; }
+
+function setThm(i){
+  currentThm=i;
+  document.querySelectorAll('.t-tab').forEach((t,j)=>t.classList.toggle('active',j===i));
+  theorems[i].init();
+  document.getElementById('inst').textContent=theorems[i].inst;
+  draw();
+}
+
+function snap(pt) {
+  const dx=pt.x-cx, dy=pt.y-cy;
+  const r=Math.sqrt(dx*dx+dy*dy);
+  if(r<5) return;
+  return {x:cx+R*dx/r, y:cy+R*dy/r};
+}
+
+function angleBetween(A,B,C){
+  const ax=A.x-B.x,ay=A.y-B.y;
+  const cx2=C.x-B.x,cy2=C.y-B.y;
+  const dot=ax*cx2+ay*cy2;
+  const m=Math.sqrt((ax*ax+ay*ay)*(cx2*cx2+cy2*cy2));
+  return m<0.001?0:Math.acos(Math.max(-1,Math.min(1,dot/m)))*180/Math.PI;
+}
+
+function dist(A,B){return Math.sqrt((A.x-B.x)**2+(A.y-B.y)**2);}
+
+function drawAngle(B,A,C,color,label){
+  const r=20;
+  const a1=Math.atan2(A.y-B.y,A.x-B.x);
+  const a2=Math.atan2(C.y-B.y,C.x-B.x);
+  ctx.beginPath(); ctx.arc(B.x,B.y,r,a1,a2,false);
+  ctx.strokeStyle=color; ctx.lineWidth=1.5; ctx.stroke();
+  const amid=(a1+a2)/2;
+  ctx.fillStyle=color; ctx.font='bold 13px Inter'; ctx.textAlign='center';
+  ctx.fillText(label,B.x+28*Math.cos(amid),B.y+28*Math.sin(amid));
+}
+
+function line(A,B,color,dash){
+  ctx.beginPath(); ctx.moveTo(A.x,A.y); ctx.lineTo(B.x,B.y);
+  ctx.strokeStyle=color||'#CBD5E1'; ctx.lineWidth=1.5;
+  if(dash) ctx.setLineDash(dash); else ctx.setLineDash([]);
+  ctx.stroke(); ctx.setLineDash([]);
+}
+
+function dot(P,color,label,lx,ly){
+  ctx.beginPath(); ctx.arc(P.x,P.y,6,0,2*Math.PI);
+  ctx.fillStyle=color; ctx.fill(); ctx.strokeStyle='white'; ctx.lineWidth=2; ctx.stroke();
+  if(label){ ctx.fillStyle=color; ctx.font='bold 13px Inter'; ctx.textAlign='center';
+    ctx.fillText(label,P.x+(lx||0),P.y+(ly||-12)); }
+}
+
+function circle(){
+  ctx.beginPath(); ctx.arc(cx,cy,R,0,2*Math.PI);
+  ctx.strokeStyle='#CBD5E1'; ctx.lineWidth=2; ctx.stroke();
+}
+
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='white'; ctx.fillRect(0,0,W,H);
+
+  // Center
+  ctx.beginPath(); ctx.arc(cx,cy,3,0,2*Math.PI); ctx.fillStyle='#94A3B8'; ctx.fill();
+  ctx.fillStyle='#94A3B8'; ctx.font='12px Inter'; ctx.textAlign='left'; ctx.fillText('O',cx+6,cy-6);
+
+  circle();
+  const p=points; let display='';
+
+  if(currentThm===0){
+    // Inscribed angle theorem
+    line(p.A,p.P,'#94A3B8'); line(p.B,p.P,'#94A3B8');
+    const inscribed=angleBetween(p.A,p.P,p.B);
+    drawAngle(p.P,p.A,p.B,'#1B4F8A',Math.round(inscribed)+'°');
+    dot(p.A,'#1B4F8A','A',0,-14); dot(p.B,'#1B4F8A','B',0,-14); dot(p.P,'#8B1A1A','P',0,-14);
+    display=`<div class="proof-box"><strong>Inscribed Angle Theorem</strong><br>
+      Angle APB = <span style="color:#1B4F8A;font-size:1.3rem;font-weight:700">${Math.round(inscribed)}°</span><br>
+      This equals half the arc AB. Moving P anywhere on the major arc gives the same angle.</div>`;
+  }
+  else if(currentThm===1){
+    const O={x:cx,y:cy};
+    line(O,p.A,'#8B1A1A'); line(O,p.B,'#8B1A1A');
+    line(p.A,p.P,'#94A3B8'); line(p.B,p.P,'#94A3B8');
+    const central=angleBetween(p.A,O,p.B);
+    const inscribed=angleBetween(p.A,p.P,p.B);
+    drawAngle(O,p.A,p.B,'#8B1A1A',Math.round(central)+'°');
+    drawAngle(p.P,p.A,p.B,'#1B4F8A',Math.round(inscribed)+'°');
+    dot(p.A,'#1B4F8A','A',0,-14); dot(p.B,'#1B4F8A','B',0,-14); dot(p.P,'#1B4F8A','P',0,-14);
+    display=`<div class="proof-box"><strong>Angle at Centre Theorem</strong><br>
+      Central ∠AOB = <strong>${Math.round(central)}°</strong> &nbsp;|&nbsp; Inscribed ∠APB = <strong>${Math.round(inscribed)}°</strong><br>
+      Ratio = <strong>${(central/inscribed).toFixed(2)}×</strong> (should be 2.00)</div>`;
+  }
+  else if(currentThm===2){
+    line(p.A,p.B,'#8B1A1A');
+    line(p.A,p.P,'#94A3B8'); line(p.B,p.P,'#94A3B8');
+    const ang=angleBetween(p.A,p.P,p.B);
+    drawAngle(p.P,p.A,p.B,'#1B4F8A',Math.round(ang)+'°');
+    dot(p.A,'#8B1A1A','A',0,16); dot(p.B,'#8B1A1A','B',0,16); dot(p.P,'#1B4F8A','P',0,-14);
+    display=`<div class="proof-box"><strong>Angle in Semicircle Theorem</strong><br>
+      ∠APB = <span style="color:#1B4F8A;font-size:1.3rem;font-weight:700">${Math.round(ang)}°</span><br>
+      AB is a diameter. The angle in a semicircle is always 90°.</div>`;
+  }
+  else if(currentThm===3){
+    line(p.A,p.B,'#94A3B8'); line(p.B,p.C,'#94A3B8'); line(p.C,p.D,'#94A3B8'); line(p.D,p.A,'#94A3B8');
+    const angA=angleBetween(p.D,p.A,p.B);
+    const angC=angleBetween(p.B,p.C,p.D);
+    const angB=angleBetween(p.A,p.B,p.C);
+    const angD=angleBetween(p.C,p.D,p.A);
+    dot(p.A,'#1B4F8A','A',0,-14); dot(p.B,'#1B4F8A','B',0,-14);
+    dot(p.C,'#8B1A1A','C',0,-14); dot(p.D,'#8B1A1A','D',0,-14);
+    display=`<div class="proof-box"><strong>Cyclic Quadrilateral Theorem</strong><br>
+      ∠A = <strong>${Math.round(angA)}°</strong>, ∠C = <strong>${Math.round(angC)}°</strong>, Sum = <strong>${Math.round(angA+angC)}°</strong><br>
+      ∠B = <strong>${Math.round(angB)}°</strong>, ∠D = <strong>${Math.round(angD)}°</strong>, Sum = <strong>${Math.round(angB+angD)}°</strong><br>
+      Both pairs of opposite angles should sum to 180°.</div>`;
+  }
+  else if(currentThm===4){
+    const T=p.T; const O={x:cx,y:cy};
+    const dx=T.x-O.x, dy=T.y-O.y;
+    const tang={x:T.x-dy*0.5,y:T.y+dx*0.5};
+    const tang2={x:T.x+dy*0.5,y:T.y-dx*0.5};
+    line(O,T,'#8B1A1A');
+    line(tang,tang2,'#1B4F8A');
+    ctx.strokeStyle='#059669'; ctx.lineWidth=1.5; ctx.setLineDash([4,3]);
+    ctx.beginPath(); ctx.rect(T.x-8,T.y-8,16,16); ctx.stroke(); ctx.setLineDash([]);
+    dot(T,'#1B4F8A','T',0,-14);
+    display=`<div class="proof-box"><strong>Tangent-Radius Theorem</strong><br>
+      The tangent (blue) is perpendicular to the radius OT.<br>
+      Angle between tangent and radius = <strong>90°</strong> always.</div>`;
+  }
+  else if(currentThm===5){
+    const P2=p.P; const T1=p.T1; const T2=p.T2;
+    line(P2,T1,'#1B4F8A'); line(P2,T2,'#8B1A1A');
+    const d1=dist(P2,T1); const d2=dist(P2,T2);
+    dot(T1,'#1B4F8A','T₁',0,-14); dot(T2,'#8B1A1A','T₂',0,18); dot(P2,'#059669','P',10,0);
+    display=`<div class="proof-box"><strong>Tangent from External Point</strong><br>
+      PT₁ = <strong>${d1.toFixed(1)}</strong> &nbsp;|&nbsp; PT₂ = <strong>${d2.toFixed(1)}</strong><br>
+      Tangent lengths from an external point are equal (should be same).</div>`;
+  }
+  else if(currentThm===6){
+    const T=angle(340); const tangDir={x:-(T.y-cy)/R, y:(T.x-cx)/R};
+    const tang1={x:T.x-tangDir.x*80, y:T.y-tangDir.y*80};
+    const tang2={x:T.x+tangDir.x*80, y:T.y+tangDir.y*80};
+    line(tang1,tang2,'#059669');
+    line(p.A,p.B,'#8B1A1A'); line(p.A,p.P,'#94A3B8'); line(p.B,p.P,'#94A3B8');
+    line(p.B,T,'#8B1A1A');
+    const chordAngle=angleBetween(tang2,T,p.B);
+    const inscribed=angleBetween(p.A,p.P,p.B);
+    dot(p.A,'#1B4F8A','A',0,-14); dot(p.B,'#1B4F8A','B',0,-14); dot(p.P,'#8B1A1A','P',0,-14); dot(T,'#059669','T',8,-10);
+    display=`<div class="proof-box"><strong>Alternate Segment Theorem</strong><br>
+      Tangent-chord angle at T = <strong>${Math.round(chordAngle)}°</strong><br>
+      Inscribed angle APB = <strong>${Math.round(inscribed)}°</strong><br>
+      These should be equal (alternate segment theorem).</div>`;
+  }
+
+  document.getElementById('theorem-display').innerHTML=display;
+}
+
+// Dragging
+canvas.addEventListener('mousedown',e=>{
+  const r=canvas.getBoundingClientRect();
+  const mx=e.clientX-r.left, my=e.clientY-r.top;
+  for(const [k,p] of Object.entries(points)){
+    if(p.fixed) continue;
+    if(Math.hypot(mx-p.x,my-p.y)<16){dragging=k;break;}
+  }
+});
+
+canvas.addEventListener('mousemove',e=>{
+  if(!dragging) return;
+  const r=canvas.getBoundingClientRect();
+  const mx=e.clientX-r.left, my=e.clientY-r.top;
+  const snapped=snap({x:mx,y:my});
+  if(snapped) points[dragging]={...snapped};
+  draw();
+});
+
+canvas.addEventListener('mouseup',()=>{dragging=null;});
+
+canvas.addEventListener('touchstart',e=>{
+  e.preventDefault();
+  const r=canvas.getBoundingClientRect();
+  const mx=e.touches[0].clientX-r.left, my=e.touches[0].clientY-r.top;
+  for(const [k,p] of Object.entries(points)){
+    if(p.fixed) continue;
+    if(Math.hypot(mx-p.x,my-p.y)<24){dragging=k;break;}
+  }
+},{passive:false});
+
+canvas.addEventListener('touchmove',e=>{
+  e.preventDefault();
+  if(!dragging) return;
+  const r=canvas.getBoundingClientRect();
+  const mx=e.touches[0].clientX-r.left, my=e.touches[0].clientY-r.top;
+  const snapped=snap({x:mx,y:my});
+  if(snapped) points[dragging]={...snapped};
+  draw();
+},{passive:false});
+
+canvas.addEventListener('touchend',()=>{dragging=null;});
+
+setThm(0);
+</script>
+</body>
+</html>

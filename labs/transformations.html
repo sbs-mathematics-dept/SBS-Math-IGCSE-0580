@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transformation Lab | SBS Mathematics</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<style>
+.transform-layout { display: grid; grid-template-columns: 260px 1fr; gap: 16px; }
+canvas { display:block; border:1px solid var(--gray-200); border-radius:8px; background:white; }
+.t-section { border-bottom:1px solid var(--gray-200); padding:12px 0; }
+.t-section:last-child { border:none; }
+.t-label { font-size:11px;font-weight:600;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px; }
+.matrix-box { font-family:var(--font-mono);font-size:13px;background:var(--sbs-blue-pale);border:1px solid #BFDBFE;border-radius:6px;padding:8px 12px;color:var(--sbs-blue); }
+@media(max-width:700px){.transform-layout{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="../index.html" class="nav-logo">
+    <img src="../assets/logo.png" alt="SBS">
+    <div><div class="nav-title">SBS Mathematics</div><div class="nav-subtitle">Cambridge IGCSE 0580</div></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="../labs.html" class="active">Labs</a></li>
+  </ul>
+</nav>
+
+<div class="lab-page">
+  <div class="lab-header">
+    <div class="lab-header-icon">📐</div>
+    <div>
+      <div class="lab-header-title">Transformation Lab</div>
+      <div class="lab-header-sub">Cambridge 0580 · Transformations — Rotate, reflect, translate, and enlarge shapes</div>
+    </div>
+    <div style="margin-left:auto;"><span class="cambridge-badge">IGCSE Extended</span></div>
+  </div>
+
+  <div class="lab-container">
+    <div class="controls">
+      <div class="control-group">
+        <span class="control-label">Object shape</span>
+        <select id="shape-select" onchange="reset()">
+          <option value="triangle">Triangle</option>
+          <option value="square">Square</option>
+          <option value="arrow">Arrow</option>
+          <option value="l-shape">L-shape</option>
+        </select>
+      </div>
+      <button class="btn btn-secondary" onclick="reset()">Reset object</button>
+      <button class="btn btn-secondary" onclick="clearAll()">Clear image</button>
+    </div>
+
+    <div class="transform-layout">
+      <div>
+        <!-- TRANSLATION -->
+        <div class="t-section">
+          <div class="t-label">Translation</div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <span style="font-size:13px">by vector</span>
+            <input type="number" id="tx" value="3" style="width:52px"> 
+            <input type="number" id="ty" value="2" style="width:52px">
+          </div>
+          <button class="btn btn-primary" style="margin-top:8px;width:100%" onclick="applyTranslation()">Translate →</button>
+          <div class="matrix-box" style="margin-top:8px;font-size:12px;">Vector: (<span id="tx-disp">3</span>, <span id="ty-disp">2</span>)</div>
+        </div>
+
+        <!-- REFLECTION -->
+        <div class="t-section">
+          <div class="t-label">Reflection</div>
+          <select id="ref-line" style="width:100%;margin-bottom:8px">
+            <option value="x">x-axis (y = 0)</option>
+            <option value="y">y-axis (x = 0)</option>
+            <option value="yx">y = x</option>
+            <option value="y-x">y = -x</option>
+            <option value="x2">y = 2</option>
+            <option value="y3">x = 3</option>
+          </select>
+          <button class="btn btn-primary" style="width:100%" onclick="applyReflection()">Reflect →</button>
+        </div>
+
+        <!-- ROTATION -->
+        <div class="t-section">
+          <div class="t-label">Rotation</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px;">
+            <div><div style="font-size:11px;color:var(--gray-400);">Centre x</div><input type="number" id="rcx" value="0" style="width:100%"></div>
+            <div><div style="font-size:11px;color:var(--gray-400);">Centre y</div><input type="number" id="rcy" value="0" style="width:100%"></div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+            <span style="font-size:13px;">Angle:</span>
+            <select id="rot-angle">
+              <option value="90">90° CW</option>
+              <option value="-90">90° CCW</option>
+              <option value="180">180°</option>
+              <option value="45">45° CW</option>
+              <option value="-45">45° CCW</option>
+              <option value="270">270° CW</option>
+            </select>
+          </div>
+          <button class="btn btn-primary" style="width:100%" onclick="applyRotation()">Rotate →</button>
+        </div>
+
+        <!-- ENLARGEMENT -->
+        <div class="t-section">
+          <div class="t-label">Enlargement</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px;">
+            <div><div style="font-size:11px;color:var(--gray-400);">Centre x</div><input type="number" id="ecx" value="0" style="width:100%"></div>
+            <div><div style="font-size:11px;color:var(--gray-400);">Centre y</div><input type="number" id="ecy" value="0" style="width:100%"></div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+            <span style="font-size:13px;">Scale:</span>
+            <select id="e-scale">
+              <option value="2">k = 2</option>
+              <option value="3">k = 3</option>
+              <option value="0.5">k = 0.5</option>
+              <option value="-1">k = -1</option>
+              <option value="-2">k = -2</option>
+            </select>
+          </div>
+          <button class="btn btn-primary" style="width:100%" onclick="applyEnlargement()">Enlarge →</button>
+        </div>
+
+        <div id="coord-display" class="result-panel" style="font-size:12px;margin-top:8px;"></div>
+      </div>
+
+      <canvas id="canvas" width="560" height="520"></canvas>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <strong>SBS Mathematics</strong> · Transformation Lab · Cambridge IGCSE 0580
+</footer>
+
+<script>
+const SHAPES = {
+  triangle: [[1,1],[4,1],[1,4]],
+  square: [[1,1],[3,1],[3,3],[1,3]],
+  arrow: [[1,2],[3,2],[3,1],[5,3],[3,5],[3,4],[1,4]],
+  'l-shape': [[1,1],[2,1],[2,3],[4,3],[4,4],[1,4]]
+};
+
+let object = null;
+let image = null;
+const SCALE = 40;
+
+function getCanvas() { return document.getElementById('canvas'); }
+
+function toCanvas(pts, c) {
+  const W=c.width, H=c.height;
+  return pts.map(([x,y])=>[W/2+x*SCALE, H/2-y*SCALE]);
+}
+
+function drawGrid(ctx, W, H) {
+  ctx.fillStyle='white'; ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle='#F1F5F9'; ctx.lineWidth=1;
+  for(let gx=-Math.ceil(W/2/SCALE);gx<=Math.ceil(W/2/SCALE);gx++){
+    const cx=W/2+gx*SCALE;
+    ctx.beginPath(); ctx.moveTo(cx,0); ctx.lineTo(cx,H); ctx.stroke();
+    if(gx!==0){ctx.fillStyle='#94A3B8';ctx.font='10px Inter';ctx.textAlign='center';ctx.fillText(gx,cx,H/2+14);}
+  }
+  for(let gy=-Math.ceil(H/2/SCALE);gy<=Math.ceil(H/2/SCALE);gy++){
+    const cy=H/2-gy*SCALE;
+    ctx.beginPath(); ctx.moveTo(0,cy); ctx.lineTo(W,cy); ctx.stroke();
+    if(gy!==0){ctx.fillStyle='#94A3B8';ctx.font='10px Inter';ctx.textAlign='right';ctx.fillText(gy,W/2-4,cy+4);}
+  }
+  ctx.strokeStyle='#CBD5E1'; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.moveTo(W/2,0); ctx.lineTo(W/2,H); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(0,H/2); ctx.lineTo(W,H/2); ctx.stroke();
+  ctx.fillStyle='#94A3B8'; ctx.font='11px Inter'; ctx.textAlign='center'; ctx.fillText('O',W/2-10,H/2+14);
+}
+
+function drawPoly(ctx, pts, fill, stroke, label, c) {
+  const cp=toCanvas(pts,c);
+  ctx.beginPath(); cp.forEach(([x,y],i)=>i===0?ctx.moveTo(x,y):ctx.lineTo(x,y));
+  ctx.closePath(); ctx.fillStyle=fill; ctx.fill(); ctx.strokeStyle=stroke; ctx.lineWidth=2; ctx.stroke();
+  cp.forEach(([x,y],i)=>{
+    ctx.beginPath(); ctx.arc(x,y,3,0,2*Math.PI); ctx.fillStyle=stroke; ctx.fill();
+    ctx.fillStyle=stroke; ctx.font='11px Inter'; ctx.textAlign='left';
+    ctx.fillText('('+pts[i][0]+','+pts[i][1]+')',x+5,y-5);
+  });
+  const cx2=cp.reduce((s,[x])=>s+x,0)/cp.length;
+  const cy2=cp.reduce((s,[,y])=>s+y,0)/cp.length;
+  ctx.fillStyle=stroke; ctx.font='bold 13px Inter'; ctx.textAlign='center'; ctx.fillText(label,cx2,cy2);
+}
+
+function render() {
+  const c=getCanvas(); const ctx=c.getContext('2d'); const W=c.width,H=c.height;
+  drawGrid(ctx,W,H);
+  if(object) drawPoly(ctx,object,'rgba(27,79,138,0.15)','#1B4F8A','Object',c);
+  if(image) drawPoly(ctx,image,'rgba(139,26,26,0.15)','#8B1A1A','Image',c);
+  updateCoords();
+}
+
+function updateCoords() {
+  let html='';
+  if(object) html+=`<strong style="color:#1B4F8A">Object:</strong> ${object.map(p=>'('+p[0]+','+p[1]+')').join(' ')}<br>`;
+  if(image) html+=`<strong style="color:#8B1A1A">Image:</strong> ${image.map(p=>'('+p[0]+','+p[1]+')').join(' ')}`;
+  document.getElementById('coord-display').innerHTML=html||'Apply a transformation to see coordinates.';
+}
+
+function reset() {
+  const key=document.getElementById('shape-select').value;
+  object=SHAPES[key].map(p=>[...p]);
+  image=null; render();
+}
+
+function clearAll() { image=null; render(); }
+
+function round2(n){return Math.round(n*100)/100;}
+
+function applyTranslation() {
+  if(!object) return;
+  const tx=parseFloat(document.getElementById('tx').value)||0;
+  const ty=parseFloat(document.getElementById('ty').value)||0;
+  document.getElementById('tx-disp').textContent=tx;
+  document.getElementById('ty-disp').textContent=ty;
+  image=object.map(([x,y])=>[round2(x+tx),round2(y+ty)]);
+  render();
+}
+
+function applyReflection() {
+  if(!object) return;
+  const line=document.getElementById('ref-line').value;
+  image=object.map(([x,y])=>{
+    if(line==='x') return [x,-y];
+    if(line==='y') return [-x,y];
+    if(line==='yx') return [y,x];
+    if(line==='y-x') return [-y,-x];
+    if(line==='x2') return [x,4-y];
+    if(line==='y3') return [6-x,y];
+    return [x,y];
+  });
+  render();
+}
+
+function applyRotation() {
+  if(!object) return;
+  const cx=parseFloat(document.getElementById('rcx').value)||0;
+  const cy=parseFloat(document.getElementById('rcy').value)||0;
+  const deg=parseFloat(document.getElementById('rot-angle').value)||90;
+  const rad=-deg*Math.PI/180;
+  image=object.map(([x,y])=>{
+    const dx=x-cx,dy=y-cy;
+    return [round2(cx+dx*Math.cos(rad)-dy*Math.sin(rad)), round2(cy+dx*Math.sin(rad)+dy*Math.cos(rad))];
+  });
+  render();
+}
+
+function applyEnlargement() {
+  if(!object) return;
+  const cx=parseFloat(document.getElementById('ecx').value)||0;
+  const cy=parseFloat(document.getElementById('ecy').value)||0;
+  const k=parseFloat(document.getElementById('e-scale').value)||2;
+  image=object.map(([x,y])=>[round2(cx+k*(x-cx)),round2(cy+k*(y-cy))]);
+  render();
+}
+
+reset();
+</script>
+</body>
+</html>

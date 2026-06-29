@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Graph Explorer | SBS Mathematics</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<style>
+.graph-layout { display: grid; grid-template-columns: 280px 1fr; gap: 16px; }
+.graph-panel { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 8px; padding: 1rem; }
+canvas#graph { border: 1px solid var(--gray-200); border-radius: 8px; background: white; display: block; }
+.fn-list { list-style: none; }
+.fn-item { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--gray-100); font-size: 13px; }
+.fn-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+.fn-eq { flex: 1; font-family: var(--font-mono); color: var(--gray-800); }
+.fn-del { background: none; border: none; cursor: pointer; color: var(--gray-400); font-size: 16px; }
+.fn-del:hover { color: var(--sbs-crimson); }
+.key-stat { font-size: 12px; color: var(--gray-600); padding: 3px 0; }
+.key-stat strong { color: var(--gray-800); }
+@media (max-width:700px) { .graph-layout { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="../index.html" class="nav-logo">
+    <img src="../assets/logo.png" alt="SBS">
+    <div><div class="nav-title">SBS Mathematics</div><div class="nav-subtitle">Cambridge IGCSE 0580</div></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="../labs.html" class="active">Labs</a></li>
+  </ul>
+</nav>
+
+<div class="lab-page">
+  <div class="lab-header">
+    <div class="lab-header-icon">📊</div>
+    <div>
+      <div class="lab-header-title">Graph Explorer</div>
+      <div class="lab-header-sub">Cambridge 0580 · Algebra & Graphs — Plot and explore any function</div>
+    </div>
+    <div style="margin-left:auto;"><span class="cambridge-badge">IGCSE Extended</span></div>
+  </div>
+
+  <div class="lab-container">
+    <div class="controls">
+      <input type="text" id="fn-input" placeholder="e.g. x^2 - 3x + 2" style="width:200px; font-family:var(--font-mono)">
+      <select id="fn-preset">
+        <option value="">— Quick examples —</option>
+        <optgroup label="Linear">
+          <option value="2*x+1">y = 2x + 1</option>
+          <option value="-0.5*x+3">y = -0.5x + 3</option>
+        </optgroup>
+        <optgroup label="Quadratic">
+          <option value="x^2 - 4">y = x² - 4</option>
+          <option value="x^2 - 3*x + 2">y = x² - 3x + 2</option>
+          <option value="-x^2 + 4*x">y = -x² + 4x</option>
+        </optgroup>
+        <optgroup label="Cubic">
+          <option value="x^3 - 3*x">y = x³ - 3x</option>
+        </optgroup>
+        <optgroup label="Reciprocal">
+          <option value="1/x">y = 1/x</option>
+          <option value="2/x + 1">y = 2/x + 1</option>
+        </optgroup>
+        <optgroup label="Exponential">
+          <option value="2^x">y = 2ˣ</option>
+          <option value="Math.E^x">y = eˣ</option>
+          <option value="2^(-x)">y = 2⁻ˣ</option>
+        </optgroup>
+        <optgroup label="Trigonometric">
+          <option value="Math.sin(x)">y = sin(x)</option>
+          <option value="Math.cos(x)">y = cos(x)</option>
+          <option value="Math.tan(x)">y = tan(x)</option>
+        </optgroup>
+        <optgroup label="Logarithmic">
+          <option value="Math.log(x)">y = ln(x)</option>
+          <option value="Math.log10(x)">y = log₁₀(x)</option>
+        </optgroup>
+      </select>
+      <button class="btn btn-primary" onclick="addFunction()">Plot +</button>
+      <button class="btn btn-secondary" onclick="clearAll()">Clear all</button>
+      <div class="control-group">
+        <span class="control-label">x range</span>
+        <input type="number" id="xmin" value="-10" style="width:60px"> to <input type="number" id="xmax" value="10" style="width:60px">
+        <button class="btn btn-secondary" onclick="redrawAll()">Apply</button>
+      </div>
+    </div>
+
+    <div class="theorem-box">
+      <strong>Tip:</strong> Use <code>x^2</code> for x², <code>Math.sin(x)</code> for sin, <code>Math.sqrt(x)</code> for √x, <code>Math.abs(x)</code> for |x|. You can plot multiple functions at once!
+    </div>
+
+    <div class="graph-layout">
+      <div>
+        <div class="graph-panel">
+          <div style="font-size:12px;font-weight:600;color:var(--gray-400);text-transform:uppercase;margin-bottom:8px">Active functions</div>
+          <ul class="fn-list" id="fn-list"></ul>
+        </div>
+        <div class="graph-panel" style="margin-top:12px">
+          <div style="font-size:12px;font-weight:600;color:var(--gray-400);text-transform:uppercase;margin-bottom:8px">Key features</div>
+          <div id="key-stats">Plot a function to see key features.</div>
+        </div>
+        <div class="graph-panel" style="margin-top:12px">
+          <div style="font-size:12px;font-weight:600;color:var(--gray-400);text-transform:uppercase;margin-bottom:8px">x-value probe</div>
+          x = <input type="number" id="probe-x" value="0" step="0.5" oninput="probeX()" style="width:70px">
+          <div id="probe-results" style="margin-top:8px; font-size:13px;"></div>
+        </div>
+      </div>
+      <canvas id="graph" width="580" height="480"></canvas>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <strong>SBS Mathematics</strong> · Graph Explorer · Cambridge IGCSE 0580
+</footer>
+
+<script>
+const COLORS = ['#1B4F8A','#8B1A1A','#059669','#D97706','#7C3AED','#0891B2','#DB2777'];
+let functions = [];
+
+document.getElementById('fn-preset').addEventListener('change', function(){
+  if(this.value){ document.getElementById('fn-input').value=this.value; this.value=''; }
+});
+
+function safeEval(expr, x) {
+  try {
+    let e=expr.replace(/\^/g,'**');
+    return Function('x','Math','return '+e)(x, Math);
+  } catch(e){ return NaN; }
+}
+
+function addFunction() {
+  const expr = document.getElementById('fn-input').value.trim();
+  if(!expr) return;
+  const color = COLORS[functions.length % COLORS.length];
+  functions.push({expr, color, id: Date.now()});
+  document.getElementById('fn-input').value = '';
+  renderFnList();
+  redrawAll();
+}
+
+function removeFunction(id) {
+  functions = functions.filter(f => f.id !== id);
+  renderFnList();
+  redrawAll();
+}
+
+function clearAll() { functions=[]; renderFnList(); redrawAll(); document.getElementById('key-stats').innerHTML='Plot a function to see key features.'; }
+
+function renderFnList() {
+  const ul = document.getElementById('fn-list');
+  ul.innerHTML = functions.map(f => `
+    <li class="fn-item">
+      <div class="fn-dot" style="background:${f.color}"></div>
+      <span class="fn-eq">y = ${f.expr}</span>
+      <button class="fn-del" onclick="removeFunction(${f.id})">×</button>
+    </li>`).join('');
+}
+
+function redrawAll() {
+  const c = document.getElementById('graph');
+  const ctx = c.getContext('2d');
+  const W=c.width, H=c.height;
+  const xmin=parseFloat(document.getElementById('xmin').value)||(-10);
+  const xmax=parseFloat(document.getElementById('xmax').value)||10;
+  const yPad=1.2;
+
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='white'; ctx.fillRect(0,0,W,H);
+
+  let yVals=[];
+  functions.forEach(f=>{
+    for(let px=0;px<W;px++){
+      const x=xmin+(px/W)*(xmax-xmin);
+      const y=safeEval(f.expr,x);
+      if(isFinite(y)) yVals.push(y);
+    }
+  });
+
+  let ymin=-10, ymax=10;
+  if(yVals.length>0){
+    ymin=Math.min(...yVals)*yPad;
+    ymax=Math.max(...yVals)*yPad;
+    if(Math.abs(ymax-ymin)<0.1){ymin-=5;ymax+=5;}
+  }
+
+  const toX=(x)=>((x-xmin)/(xmax-xmin))*W;
+  const toY=(y)=>H-((y-ymin)/(ymax-ymin))*H;
+
+  // Grid
+  ctx.strokeStyle='#F1F5F9'; ctx.lineWidth=1;
+  const xStep=niceStep(xmax-xmin,10); const yStep=niceStep(ymax-ymin,8);
+  for(let x=Math.ceil(xmin/xStep)*xStep; x<=xmax; x+=xStep){
+    ctx.beginPath(); ctx.moveTo(toX(x),0); ctx.lineTo(toX(x),H); ctx.stroke();
+    if(Math.abs(x)>0.01){ ctx.fillStyle='#94A3B8'; ctx.font='10px Inter'; ctx.textAlign='center'; ctx.fillText(x.toFixed(x%1?1:0),toX(x),H-4); }
+  }
+  for(let y=Math.ceil(ymin/yStep)*yStep; y<=ymax; y+=yStep){
+    ctx.beginPath(); ctx.moveTo(0,toY(y)); ctx.lineTo(W,toY(y)); ctx.stroke();
+    if(Math.abs(y)>0.01){ ctx.fillStyle='#94A3B8'; ctx.font='10px Inter'; ctx.textAlign='right'; ctx.fillText(y.toFixed(y%1?1:0),38,toY(y)+4); }
+  }
+
+  // Axes
+  ctx.strokeStyle='#475569'; ctx.lineWidth=1.5;
+  if(ymin<0&&ymax>0){ ctx.beginPath(); ctx.moveTo(0,toY(0)); ctx.lineTo(W,toY(0)); ctx.stroke(); }
+  if(xmin<0&&xmax>0){ ctx.beginPath(); ctx.moveTo(toX(0),0); ctx.lineTo(toX(0),H); ctx.stroke(); }
+
+  // Origin label
+  if(xmin<0&&xmax>0&&ymin<0&&ymax>0){
+    ctx.fillStyle='#94A3B8'; ctx.font='10px Inter'; ctx.textAlign='right'; ctx.fillText('O',toX(0)-2,toY(0)-4);
+  }
+
+  // Functions
+  let stats='';
+  functions.forEach(f=>{
+    ctx.strokeStyle=f.color; ctx.lineWidth=2; ctx.beginPath();
+    let started=false; let lastY=null;
+    for(let px=0;px<W;px++){
+      const x=xmin+(px/W)*(xmax-xmin);
+      const y=safeEval(f.expr,x);
+      if(!isFinite(y)||y<ymin*2||y>ymax*2){ started=false; lastY=null; continue; }
+      if(!started||(lastY!==null&&Math.abs(y-lastY)>Math.abs(ymax-ymin)*0.8)){ ctx.moveTo(px,toY(y)); started=true; }
+      else ctx.lineTo(px,toY(y));
+      lastY=y;
+    }
+    ctx.stroke();
+
+    // Find zeros
+    const zeros=[];
+    for(let x=xmin;x<xmax;x+=0.01){
+      const y1=safeEval(f.expr,x); const y2=safeEval(f.expr,x+0.01);
+      if(isFinite(y1)&&isFinite(y2)&&Math.sign(y1)!==Math.sign(y2)&&Math.abs(y1-y2)<5){
+        const z=x-y1*(0.01/(y2-y1));
+        zeros.push(Math.round(z*100)/100);
+        ctx.beginPath(); ctx.arc(toX(z),toY(0),4,0,2*Math.PI);
+        ctx.fillStyle=f.color; ctx.fill();
+      }
+    }
+    const yAt0=safeEval(f.expr,0);
+    if(isFinite(yAt0)){
+      ctx.beginPath(); ctx.arc(toX(0),toY(yAt0),4,0,2*Math.PI); ctx.fillStyle=f.color; ctx.fill();
+    }
+    stats+=`<div style="font-size:12px;font-weight:600;color:${f.color};margin-top:8px">y = ${f.expr}</div>`;
+    stats+=`<div class="key-stat">y-intercept: <strong>${isFinite(yAt0)?yAt0.toFixed(3):'—'}</strong></div>`;
+    if(zeros.length) stats+=`<div class="key-stat">x-intercepts (zeros): <strong>${zeros.join(', ')}</strong></div>`;
+    else stats+=`<div class="key-stat">x-intercepts: <strong>none in range</strong></div>`;
+  });
+
+  document.getElementById('key-stats').innerHTML=stats||'Plot a function to see key features.';
+  probeX();
+}
+
+function probeX() {
+  const x=parseFloat(document.getElementById('probe-x').value);
+  const res=functions.map(f=>{
+    const y=safeEval(f.expr,x);
+    return `<div style="font-size:13px;color:${f.color}"><strong>y = ${f.expr}:</strong> y(${x}) = ${isFinite(y)?y.toFixed(4):'undefined'}</div>`;
+  }).join('');
+  document.getElementById('probe-results').innerHTML=res||'—';
+}
+
+function niceStep(range, steps) {
+  const raw=range/steps;
+  const exp=Math.floor(Math.log10(raw));
+  const m=raw/Math.pow(10,exp);
+  const nice=m<1.5?1:m<3?2:m<7?5:10;
+  return nice*Math.pow(10,exp);
+}
+
+redrawAll();
+</script>
+</body>
+</html>

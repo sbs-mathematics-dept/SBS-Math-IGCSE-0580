@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Functions Explorer | SBS Mathematics</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<style>
+.fn-layout{display:grid;grid-template-columns:280px 1fr;gap:16px;}
+canvas{display:block;border:1px solid var(--gray-200);border-radius:8px;background:white;}
+.fn-block{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:8px;padding:1rem;margin-bottom:12px;}
+.fn-block h4{font-size:13px;font-weight:600;color:var(--gray-700);margin-bottom:8px;}
+.big-result{font-size:1.6rem;font-weight:700;color:var(--sbs-blue);font-family:var(--font-mono);}
+.fn-expr{font-family:var(--font-mono);font-size:14px;background:var(--sbs-blue-pale);border:1px solid #BFDBFE;border-radius:6px;padding:8px 12px;color:var(--sbs-blue);margin:6px 0;}
+@media(max-width:700px){.fn-layout{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="../index.html" class="nav-logo">
+    <img src="../assets/logo.png" alt="SBS">
+    <div><div class="nav-title">SBS Mathematics</div><div class="nav-subtitle">Cambridge IGCSE 0580</div></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="../labs.html" class="active">Labs</a></li>
+  </ul>
+</nav>
+
+<div class="lab-page">
+  <div class="lab-header">
+    <div class="lab-header-icon">📉</div>
+    <div>
+      <div class="lab-header-title">Functions Explorer</div>
+      <div class="lab-header-sub">Cambridge 0580 · Algebra — Composition, inverse, domain & range</div>
+    </div>
+    <div style="margin-left:auto;"><span class="cambridge-badge">IGCSE Extended</span></div>
+  </div>
+
+  <div class="lab-container">
+    <div class="controls">
+      <div class="control-group">
+        <span class="control-label">f(x) =</span>
+        <input type="text" id="fx" value="2*x + 1" style="width:150px;font-family:var(--font-mono)">
+      </div>
+      <div class="control-group">
+        <span class="control-label">g(x) =</span>
+        <input type="text" id="gx" value="x^2 - 3" style="width:150px;font-family:var(--font-mono)">
+      </div>
+      <button class="btn btn-primary" onclick="update()">Update ▶</button>
+      <div class="control-group">
+        <span class="control-label">Load example</span>
+        <select id="preset" onchange="loadPreset()">
+          <option value="">— Examples —</option>
+          <option value="linear|quad">f=2x+1, g=x²−3</option>
+          <option value="recip|lin">f=1/x, g=3x−2</option>
+          <option value="sqrt|sq">f=√x, g=x²</option>
+          <option value="exp|log">f=2^x, g=log(x)</option>
+          <option value="sin|cos">f=sin(x), g=cos(x)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="fn-layout">
+      <div>
+        <div class="fn-block">
+          <h4>Evaluate at x =</h4>
+          <input type="number" id="eval-x" value="2" step="0.5" oninput="evaluate()" style="width:80px">
+          <div style="margin-top:8px;font-size:13px;line-height:2" id="eval-results"></div>
+        </div>
+
+        <div class="fn-block">
+          <h4>Composite functions</h4>
+          <div id="compose-results" style="font-size:13px;line-height:1.8;"></div>
+        </div>
+
+        <div class="fn-block">
+          <h4>Inverse functions</h4>
+          <div id="inverse-info" style="font-size:13px;line-height:1.8;"></div>
+        </div>
+
+        <div class="fn-block">
+          <h4>Domain & Range (visible)</h4>
+          <div id="domain-info" style="font-size:13px;line-height:1.8;"></div>
+        </div>
+
+        <div class="fn-block">
+          <h4>Transformations of f(x)</h4>
+          <div style="font-size:12px;color:var(--gray-600);line-height:1.8">
+            <div id="transform-controls"></div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <canvas id="fn-canvas" width="560" height="480"></canvas>
+        <div style="display:flex;gap:16px;margin-top:8px;font-size:12px;align-items:center;">
+          <span style="display:flex;align-items:center;gap:4px;"><span style="width:20px;height:3px;background:#1B4F8A;display:inline-block;border-radius:2px"></span> f(x)</span>
+          <span style="display:flex;align-items:center;gap:4px;"><span style="width:20px;height:3px;background:#8B1A1A;display:inline-block;border-radius:2px"></span> g(x)</span>
+          <span style="display:flex;align-items:center;gap:4px;"><span style="width:20px;height:3px;background:#059669;display:inline-block;border-radius:2px;border-top:2px dashed #059669;height:0"></span> f(g(x))</span>
+          <span style="display:flex;align-items:center;gap:4px;"><span style="width:20px;height:0;border-top:2px dashed #D97706;display:inline-block"></span> g(f(x))</span>
+          <span style="display:flex;align-items:center;gap:4px;"><span style="width:20px;height:0;border-top:2px dashed #7C3AED;display:inline-block"></span> f⁻¹(x)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <strong>SBS Mathematics</strong> · Functions Explorer · Cambridge IGCSE 0580
+</footer>
+
+<script>
+const PRESETS={
+  'linear|quad':{f:'2*x + 1',g:'x^2 - 3'},
+  'recip|lin':{f:'1/x',g:'3*x - 2'},
+  'sqrt|sq':{f:'Math.sqrt(x)',g:'x^2'},
+  'exp|log':{f:'2**x',g:'Math.log2(x)'},
+  'sin|cos':{f:'Math.sin(x)',g:'Math.cos(x)'}
+};
+
+function safeEval(expr,x){
+  try{return Function('x','Math','return '+expr.replace(/\^/g,'**'))(x,Math);}catch(e){return NaN;}
+}
+
+function loadPreset(){
+  const v=document.getElementById('preset').value;
+  if(!v)return;
+  const p=PRESETS[v];
+  document.getElementById('fx').value=p.f;
+  document.getElementById('gx').value=p.g;
+  update();
+}
+
+function getFG(){
+  return {
+    f:document.getElementById('fx').value,
+    g:document.getElementById('gx').value
+  };
+}
+
+function r3(n){return isFinite(n)?Math.round(n*1000)/1000:'undef.';}
+
+function evaluate(){
+  const x=parseFloat(document.getElementById('eval-x').value);
+  const {f,g}=getFG();
+  const fv=safeEval(f,x),gv=safeEval(g,x);
+  const fgv=safeEval(f,gv),gfv=safeEval(g,fv);
+  document.getElementById('eval-results').innerHTML=`
+    f(${x}) = <strong style="color:#1B4F8A">${r3(fv)}</strong><br>
+    g(${x}) = <strong style="color:#8B1A1A">${r3(gv)}</strong><br>
+    fg(${x}) = f(g(${x})) = f(${r3(gv)}) = <strong style="color:#059669">${r3(fgv)}</strong><br>
+    gf(${x}) = g(f(${x})) = g(${r3(fv)}) = <strong style="color:#D97706">${r3(gfv)}</strong>
+  `;
+}
+
+function update(){
+  const {f,g}=getFG();
+  // Compose
+  document.getElementById('compose-results').innerHTML=`
+    <div class="fn-expr">fg(x) = f(g(x)) — apply g first, then f</div>
+    <div class="fn-expr">gf(x) = g(f(x)) — apply f first, then g</div>
+    <div style="font-size:12px;color:var(--gray-500)">Note: fg(x) ≠ gf(x) in general!</div>
+  `;
+  // Inverse hint
+  document.getElementById('inverse-info').innerHTML=`
+    <div class="fn-expr">f⁻¹(x) — shown as dashed purple</div>
+    <div style="font-size:12px;color:var(--gray-600)">f⁻¹ is the reflection of f in y = x<br>f(f⁻¹(x)) = x and f⁻¹(f(x)) = x</div>
+  `;
+  // Domain/range
+  const yVals=[];
+  for(let x=-10;x<=10;x+=0.1){const y=safeEval(f,x);if(isFinite(y)&&Math.abs(y)<1000)yVals.push(y);}
+  document.getElementById('domain-info').innerHTML=yVals.length?
+    `f(x) range in [−10,10]: <strong>[${Math.round(Math.min(...yVals)*10)/10}, ${Math.round(Math.max(...yVals)*10)/10}]</strong>`:
+    `<span style="color:var(--gray-400)">Could not compute range</span>`;
+  // Transform controls
+  document.getElementById('transform-controls').innerHTML=`
+    <div style="margin-bottom:4px">f(x) <span style="color:#1B4F8A">—</span> original</div>
+    <div style="margin-bottom:4px">f(x)+k: vertical shift (add to output)</div>
+    <div style="margin-bottom:4px">f(x+k): horizontal shift (add to input)</div>
+    <div style="margin-bottom:4px">kf(x): vertical stretch</div>
+    <div>f(kx): horizontal stretch</div>
+  `;
+  evaluate();
+  drawGraph();
+}
+
+function drawGraph(){
+  const c=document.getElementById('fn-canvas');
+  const ctx=c.getContext('2d');
+  const W=c.width,H=c.height,pad=50;
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='white';ctx.fillRect(0,0,W,H);
+  const xmin=-8,xmax=8,pw=W-2*pad;
+  let yVals=[];
+  const {f,g}=getFG();
+  for(let px=0;px<pw;px++){
+    const x=xmin+(px/pw)*(xmax-xmin);
+    [f,g].forEach(fn=>{const y=safeEval(fn,x);if(isFinite(y))yVals.push(y);});
+  }
+  let ymin=-10,ymax=10;
+  if(yVals.length){
+    const raw=[...yVals];const p5=raw.sort((a,b)=>a-b);
+    ymin=Math.max(-50,p5[Math.floor(p5.length*0.05)]);
+    ymax=Math.min(50,p5[Math.floor(p5.length*0.95)]);
+    const pad2=(ymax-ymin)*0.1;ymin-=pad2;ymax+=pad2;
+    if(ymax-ymin<2){ymin-=2;ymax+=2;}
+  }
+  const ph=H-2*pad;
+  const toX=x=>pad+(x-xmin)/(xmax-xmin)*(W-2*pad);
+  const toY=y=>pad+ph*(1-(y-ymin)/(ymax-ymin));
+
+  // Grid
+  const niceStep2=(range,n)=>{const r=range/n;const e=Math.floor(Math.log10(r));const m=r/10**e;return (m<1.5?1:m<3?2:m<7?5:10)*10**e;};
+  const xs=niceStep2(xmax-xmin,10),ys=niceStep2(ymax-ymin,8);
+  ctx.strokeStyle='#F1F5F9';ctx.lineWidth=1;
+  for(let x=Math.ceil(xmin/xs)*xs;x<=xmax;x+=xs){
+    ctx.beginPath();ctx.moveTo(toX(x),0);ctx.lineTo(toX(x),H);ctx.stroke();
+    if(Math.abs(x)>0.01){ctx.fillStyle='#94A3B8';ctx.font='10px Inter';ctx.textAlign='center';ctx.fillText(Math.round(x*10)/10,toX(x),H-pad+14);}
+  }
+  for(let y=Math.ceil(ymin/ys)*ys;y<=ymax;y+=ys){
+    ctx.beginPath();ctx.moveTo(0,toY(y));ctx.lineTo(W,toY(y));ctx.stroke();
+    if(Math.abs(y)>0.01){ctx.fillStyle='#94A3B8';ctx.font='10px Inter';ctx.textAlign='right';ctx.fillText(Math.round(y*10)/10,pad-4,toY(y)+4);}
+  }
+  // Axes
+  ctx.strokeStyle='#CBD5E1';ctx.lineWidth=1.5;
+  if(xmin<0&&xmax>0){ctx.beginPath();ctx.moveTo(toX(0),0);ctx.lineTo(toX(0),H);ctx.stroke();}
+  if(ymin<0&&ymax>0){ctx.beginPath();ctx.moveTo(0,toY(0));ctx.lineTo(W,toY(0));ctx.stroke();}
+  // y=x line for inverse
+  ctx.strokeStyle='#E2E8F0';ctx.lineWidth=1;ctx.setLineDash([3,3]);
+  ctx.beginPath();ctx.moveTo(toX(xmin),toY(xmin));ctx.lineTo(toX(xmax),toY(xmax));ctx.stroke();ctx.setLineDash([]);
+
+  function plotFn(fn,color,dash,invert){
+    ctx.beginPath();ctx.strokeStyle=color;ctx.lineWidth=2;
+    if(dash)ctx.setLineDash(dash);else ctx.setLineDash([]);
+    let started=false,lastY=null;
+    for(let px=0;px<pw;px++){
+      const xv=xmin+(px/pw)*(xmax-xmin);
+      let yv=invert?safeEval(fn,xv):safeEval(fn,xv);
+      if(invert){
+        // approximate inverse: find x such that f(x)=xv
+        let best=NaN,bestDiff=999;
+        for(let t=xmin;t<=xmax;t+=0.05){
+          const d=Math.abs(safeEval(fn,t)-xv);
+          if(d<bestDiff){bestDiff=d;best=t;}
+        }
+        yv=best;
+      }
+      if(!isFinite(yv)||yv<ymin*2||yv>ymax*2){started=false;lastY=null;continue;}
+      if(!started||(lastY!==null&&Math.abs(yv-lastY)>Math.abs(ymax-ymin)*0.5)){ctx.moveTo(pad+px,toY(yv));started=true;}
+      else ctx.lineTo(pad+px,toY(yv));
+      lastY=yv;
+    }
+    ctx.stroke();ctx.setLineDash([]);
+  }
+
+  const {f:fExpr,g:gExpr}=getFG();
+  plotFn(fExpr,'#1B4F8A');
+  plotFn(gExpr,'#8B1A1A');
+  plotFn((x)=>{const gv=safeEval(gExpr,x);return safeEval(fExpr,gv);},'#059669',[6,3]);
+  plotFn((x)=>{const fv=safeEval(fExpr,x);return safeEval(gExpr,fv);},'#D97706',[4,4]);
+  plotFn(fExpr,'#7C3AED',[8,3],true);
+
+  // Eval point marker
+  const xp=parseFloat(document.getElementById('eval-x').value);
+  if(isFinite(xp)&&xp>=xmin&&xp<=xmax){
+    const yp=safeEval(fExpr,xp);
+    if(isFinite(yp)){
+      ctx.beginPath();ctx.arc(toX(xp),toY(yp),6,0,2*Math.PI);
+      ctx.fillStyle='#1B4F8A';ctx.fill();ctx.strokeStyle='white';ctx.lineWidth=2;ctx.stroke();
+    }
+  }
+}
+
+update();
+</script>
+</body>
+</html>

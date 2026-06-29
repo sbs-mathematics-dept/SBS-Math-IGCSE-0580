@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Statistics Lab | SBS Mathematics</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<style>
+.tab-bar{display:flex;gap:4px;border-bottom:1px solid var(--gray-200);margin-bottom:1.5rem;}
+.tab{padding:8px 16px;font-size:13px;font-weight:500;cursor:pointer;border-radius:6px 6px 0 0;color:var(--gray-600);background:none;border:none;border-bottom:2px solid transparent;transition:all 0.15s;}
+.tab.active{color:var(--sbs-blue);border-bottom-color:var(--sbs-blue);background:var(--sbs-blue-pale);}
+.tab-panel{display:none;} .tab-panel.active{display:block;}
+canvas{display:block;border:1px solid var(--gray-200);border-radius:8px;background:white;}
+.data-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:1rem;}
+.stat-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin:1rem 0;}
+.stat-card{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:8px;padding:10px;text-align:center;}
+.stat-card-val{font-size:1.4rem;font-weight:700;color:var(--sbs-blue);font-family:var(--font-mono);}
+.stat-card-label{font-size:11px;color:var(--gray-400);margin-top:2px;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;}
+textarea{width:100%;font-family:var(--font-mono);font-size:13px;border:1px solid var(--gray-200);border-radius:6px;padding:8px;resize:vertical;color:var(--gray-800);}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="../index.html" class="nav-logo">
+    <img src="../assets/logo.png" alt="SBS">
+    <div><div class="nav-title">SBS Mathematics</div><div class="nav-subtitle">Cambridge IGCSE 0580</div></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="../labs.html" class="active">Labs</a></li>
+  </ul>
+</nav>
+
+<div class="lab-page">
+  <div class="lab-header">
+    <div class="lab-header-icon">📈</div>
+    <div>
+      <div class="lab-header-title">Statistics Lab</div>
+      <div class="lab-header-sub">Cambridge 0580 · Ch 12 & 20 — Averages, spread, histograms, cumulative frequency</div>
+    </div>
+    <div style="margin-left:auto;"><span class="cambridge-badge">IGCSE Extended</span></div>
+  </div>
+
+  <div class="lab-container">
+    <div class="tab-bar">
+      <button class="tab active" onclick="switchTab('averages')">📊 Averages & Spread</button>
+      <button class="tab" onclick="switchTab('histogram')">📶 Histogram</button>
+      <button class="tab" onclick="switchTab('cumfreq')">📈 Cumulative Frequency</button>
+      <button class="tab" onclick="switchTab('boxplot')">📦 Box Plot</button>
+    </div>
+
+    <!-- AVERAGES TAB -->
+    <div id="tab-averages" class="tab-panel active">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div>
+          <div class="control-label" style="margin-bottom:6px">Enter your data (comma or space separated)</div>
+          <textarea id="raw-data" rows="4" placeholder="e.g. 12, 15, 18, 14, 20, 13, 17, 16, 15, 19">23, 18, 25, 30, 15, 22, 28, 19, 24, 20, 17, 26, 21, 23, 16, 29, 25, 18, 22, 24</textarea>
+          <div style="display:flex;gap:8px;margin-top:8px;">
+            <button class="btn btn-primary" onclick="calcStats()">Calculate ▶</button>
+            <button class="btn btn-secondary" onclick="loadSample('scores')">Sample: Exam scores</button>
+            <button class="btn btn-secondary" onclick="loadSample('heights')">Sample: Heights</button>
+          </div>
+        </div>
+        <div id="stat-results">
+          <div class="stat-cards" id="stat-cards"></div>
+        </div>
+      </div>
+      <div class="theorem-box" style="margin-top:1rem">
+        <strong>Key formulae:</strong> Mean = Σx/n &nbsp;|&nbsp; Median = middle value when ordered &nbsp;|&nbsp; Mode = most frequent &nbsp;|&nbsp; Range = max − min &nbsp;|&nbsp; IQR = Q3 − Q1
+      </div>
+      <canvas id="dotplot-canvas" width="700" height="120" style="margin-top:1rem;"></canvas>
+      <div id="ordered-data" class="result-panel" style="margin-top:8px;font-size:12px;"></div>
+    </div>
+
+    <!-- HISTOGRAM TAB -->
+    <div id="tab-histogram" class="tab-panel">
+      <div class="controls">
+        <button class="btn btn-secondary" onclick="loadHistSample('marks')">Sample: Exam marks</button>
+        <button class="btn btn-secondary" onclick="loadHistSample('time')">Sample: Journey times</button>
+        <button class="btn btn-secondary" onclick="loadHistSample('ages')">Sample: Ages</button>
+      </div>
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:16px;margin-top:1rem;align-items:start;">
+        <div>
+          <div class="control-label" style="margin-bottom:6px">Grouped frequency table</div>
+          <table id="hist-table" style="border-collapse:collapse;font-size:13px;"></table>
+          <div id="hist-info" class="result-panel" style="margin-top:8px;font-size:12px;min-width:200px;"></div>
+        </div>
+        <canvas id="hist-canvas" width="480" height="360" style="background:white;border:1px solid var(--gray-200);border-radius:8px;"></canvas>
+      </div>
+      <div class="theorem-box" style="margin-top:1rem">
+        <strong>Remember:</strong> In a histogram, Frequency Density = Frequency ÷ Class Width. The AREA of each bar represents the frequency, not the height.
+      </div>
+    </div>
+
+    <!-- CUMULATIVE FREQUENCY TAB -->
+    <div id="tab-cumfreq" class="tab-panel">
+      <div class="controls">
+        <button class="btn btn-secondary" onclick="loadCFSample('marks')">Sample: Test marks</button>
+        <button class="btn btn-secondary" onclick="loadCFSample('wages')">Sample: Wages</button>
+        <button class="btn btn-btn-secondary btn-secondary" onclick="loadCFSample('times')">Sample: Times</button>
+      </div>
+      <div style="display:grid;grid-template-columns:220px 1fr;gap:16px;margin-top:1rem;align-items:start;">
+        <div>
+          <div class="control-label" style="margin-bottom:6px">Cumulative frequency table</div>
+          <table id="cf-table" style="border-collapse:collapse;font-size:13px;min-width:200px;"></table>
+          <div id="cf-stats" class="result-panel" style="margin-top:8px;font-size:12px;"></div>
+        </div>
+        <canvas id="cf-canvas" width="460" height="380" style="background:white;border:1px solid var(--gray-200);border-radius:8px;"></canvas>
+      </div>
+      <div class="theorem-box" style="margin-top:1rem">
+        <strong>Reading the CF curve:</strong> Median = value at n/2 &nbsp;|&nbsp; LQ = value at n/4 &nbsp;|&nbsp; UQ = value at 3n/4 &nbsp;|&nbsp; IQR = UQ − LQ
+      </div>
+    </div>
+
+    <!-- BOX PLOT TAB -->
+    <div id="tab-boxplot" class="tab-panel">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div>
+          <div class="control-label" style="margin-bottom:6px">Dataset 1 (blue)</div>
+          <textarea id="box-data1" rows="3">12, 15, 18, 20, 22, 24, 25, 28, 30, 32, 35, 38, 40</textarea>
+          <div class="control-label" style="margin-top:8px;margin-bottom:6px">Dataset 2 (red) — optional comparison</div>
+          <textarea id="box-data2" rows="3">8, 14, 16, 18, 20, 21, 23, 25, 27, 30, 33</textarea>
+          <button class="btn btn-primary" style="margin-top:8px;width:100%" onclick="drawBoxPlot()">Draw box plots ▶</button>
+          <div id="box-stats" class="result-panel" style="margin-top:8px;font-size:12px;"></div>
+        </div>
+        <canvas id="box-canvas" width="440" height="260" style="background:white;border:1px solid var(--gray-200);border-radius:8px;"></canvas>
+      </div>
+      <div class="theorem-box" style="margin-top:1rem">
+        <strong>Five-number summary:</strong> Min, Lower Quartile (Q1), Median (Q2), Upper Quartile (Q3), Max &nbsp;|&nbsp; Whiskers extend to Min and Max (or 1.5×IQR for outliers)
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <strong>SBS Mathematics</strong> · Statistics Lab · Cambridge IGCSE 0580
+</footer>
+
+<script>
+// ─── UTILS ───────────────────────────────────────────────────────────────────
+function parseData(str){return str.split(/[,\s]+/).map(Number).filter(n=>!isNaN(n)&&n!==undefined);}
+function sorted(arr){return [...arr].sort((a,b)=>a-b);}
+function mean(arr){return arr.reduce((s,x)=>s+x,0)/arr.length;}
+function median(arr){const s=sorted(arr),n=s.length;return n%2?s[(n-1)/2]:(s[n/2-1]+s[n/2])/2;}
+function mode(arr){const f={};arr.forEach(x=>f[x]=(f[x]||0)+1);const mx=Math.max(...Object.values(f));return Object.keys(f).filter(k=>f[k]===mx).join(', ');}
+function q1(arr){const s=sorted(arr),n=s.length;return median(s.slice(0,Math.floor(n/2)));}
+function q3(arr){const s=sorted(arr),n=s.length;return median(s.slice(Math.ceil(n/2)));}
+function r2(n){return Math.round(n*100)/100;}
+
+// ─── TAB SWITCH ──────────────────────────────────────────────────────────────
+function switchTab(name){
+  document.querySelectorAll('.tab,.tab-panel').forEach(e=>e.classList.remove('active'));
+  document.querySelector(`[onclick="switchTab('${name}')"]`).classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+  if(name==='histogram') drawHistogram();
+  if(name==='cumfreq') drawCF();
+  if(name==='boxplot') drawBoxPlot();
+  if(name==='averages') calcStats();
+}
+
+// ─── AVERAGES ────────────────────────────────────────────────────────────────
+const SAMPLES={
+  scores:[45,52,58,61,65,67,70,71,74,76,78,80,82,85,88,91,93,95],
+  heights:[152,155,158,160,162,163,165,166,167,168,170,171,172,175,178,182]
+};
+
+function loadSample(k){document.getElementById('raw-data').value=SAMPLES[k].join(', ');calcStats();}
+
+function calcStats(){
+  const data=parseData(document.getElementById('raw-data').value);
+  if(data.length<2) return;
+  const s=sorted(data);
+  const mn=r2(mean(data)),med=r2(median(data)),md=mode(data);
+  const rng=r2(s[s.length-1]-s[0]),q1v=r2(q1(data)),q3v=r2(q3(data)),iqr=r2(q3v-q1v);
+  const variance=r2(data.reduce((s,x)=>s+(x-mean(data))**2,0)/data.length);
+  document.getElementById('stat-cards').innerHTML=`
+    <div class="stat-card"><div class="stat-card-val">${mn}</div><div class="stat-card-label">Mean</div></div>
+    <div class="stat-card"><div class="stat-card-val">${med}</div><div class="stat-card-label">Median</div></div>
+    <div class="stat-card"><div class="stat-card-val">${md}</div><div class="stat-card-label">Mode</div></div>
+    <div class="stat-card"><div class="stat-card-val">${rng}</div><div class="stat-card-label">Range</div></div>
+    <div class="stat-card"><div class="stat-card-val">${q1v}</div><div class="stat-card-label">Q1 (LQ)</div></div>
+    <div class="stat-card"><div class="stat-card-val">${q3v}</div><div class="stat-card-label">Q3 (UQ)</div></div>
+    <div class="stat-card"><div class="stat-card-val">${iqr}</div><div class="stat-card-label">IQR</div></div>
+    <div class="stat-card"><div class="stat-card-val">${data.length}</div><div class="stat-card-label">n</div></div>
+  `;
+  document.getElementById('ordered-data').innerHTML=`<strong>Ordered:</strong> ${s.join(', ')}`;
+  drawDotPlot(s,mn,med,q1v,q3v);
+}
+
+function drawDotPlot(s,mn,med,q1v,q3v){
+  const c=document.getElementById('dotplot-canvas');
+  const ctx=c.getContext('2d');
+  const W=c.width,H=c.height;
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='white';ctx.fillRect(0,0,W,H);
+  const pad=40,pw=W-2*pad;
+  const min=s[0],max=s[s.length-1],rng=max-min||1;
+  const toX=v=>pad+(v-min)/rng*pw;
+  // Axis
+  ctx.strokeStyle='#CBD5E1';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(pad,80);ctx.lineTo(W-pad,80);ctx.stroke();
+  // Dots
+  const stack={};
+  s.forEach(v=>{
+    const bucket=Math.round(v*2)/2;
+    stack[bucket]=(stack[bucket]||0)+1;
+    const x=toX(v),y=80-(stack[bucket]-1)*14-7;
+    ctx.beginPath();ctx.arc(x,y,5,0,2*Math.PI);ctx.fillStyle='#1B4F8A';ctx.fill();
+  });
+  // Mean line
+  const drawLine=(v,color,label)=>{
+    const x=toX(v);
+    ctx.strokeStyle=color;ctx.lineWidth=2;ctx.setLineDash([4,3]);
+    ctx.beginPath();ctx.moveTo(x,10);ctx.lineTo(x,95);ctx.stroke();ctx.setLineDash([]);
+    ctx.fillStyle=color;ctx.font='bold 11px Inter';ctx.textAlign='center';ctx.fillText(label+' '+v,x,H-2);
+  };
+  drawLine(mn,'#8B1A1A','Mean');
+  drawLine(med,'#059669','Median');
+  // Scale
+  ctx.fillStyle='#94A3B8';ctx.font='10px Inter';ctx.textAlign='center';
+  [min,...Array.from({length:5},(_,i)=>Math.round(min+rng*(i+1)/5)),max].forEach(v=>{
+    ctx.fillText(v,toX(v),H-14);
+  });
+}
+
+calcStats();
+
+// ─── HISTOGRAM ───────────────────────────────────────────────────────────────
+let histData={
+  marks:{groups:[[0,20],[20,40],[40,60],[60,80],[80,100]],freqs:[5,12,18,10,5],label:'Exam mark'},
+  time:{groups:[[0,5],[5,10],[10,20],[20,30],[30,60]],freqs:[3,8,14,10,5],label:'Journey time (min)'},
+  ages:{groups:[[0,10],[10,20],[20,30],[30,50],[50,80]],freqs:[8,15,20,12,5],label:'Age (years)'}
+};
+let currentHist='marks';
+
+function loadHistSample(k){currentHist=k;renderHistTable();drawHistogram();}
+function renderHistTable(){
+  const d=histData[currentHist];
+  let html=`<tr style="font-size:11px;color:var(--gray-400);"><th style="padding:4px 8px;text-align:left">Class</th><th style="padding:4px 8px">Width</th><th style="padding:4px 8px">Freq</th><th style="padding:4px 8px">FD</th></tr>`;
+  d.groups.forEach(([a,b],i)=>{
+    const w=b-a,fd=r2(d.freqs[i]/w);
+    html+=`<tr style="font-size:13px;border-top:1px solid var(--gray-100);">
+      <td style="padding:4px 8px">${a}–${b}</td>
+      <td style="padding:4px 8px;text-align:center">${w}</td>
+      <td style="padding:4px 8px;text-align:center">${d.freqs[i]}</td>
+      <td style="padding:4px 8px;text-align:center;color:var(--sbs-blue);font-weight:600">${fd}</td>
+    </tr>`;
+  });
+  document.getElementById('hist-table').innerHTML=html;
+  const total=d.freqs.reduce((s,x)=>s+x,0);
+  document.getElementById('hist-info').innerHTML=`Total frequency: <strong>${total}</strong><br>FD = Freq ÷ Class Width<br>Area of bar = Frequency`;
+}
+
+function drawHistogram(){
+  renderHistTable();
+  const d=histData[currentHist];
+  const c=document.getElementById('hist-canvas');
+  const ctx=c.getContext('2d');
+  const W=c.width,H=c.height,pad=60,top=20;
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='white';ctx.fillRect(0,0,W,H);
+  const fds=d.groups.map(([a,b],i)=>d.freqs[i]/(b-a));
+  const maxFD=Math.max(...fds);
+  const xmin=d.groups[0][0],xmax=d.groups[d.groups.length-1][1];
+  const xRange=xmax-xmin,pw=W-pad-20,ph=H-pad-top;
+  const toX=v=>pad+(v-xmin)/xRange*pw;
+  const toY=v=>top+ph*(1-v/maxFD);
+  // Grid
+  ctx.strokeStyle='#F1F5F9';ctx.lineWidth=1;
+  for(let y=0;y<=maxFD;y+=maxFD/5){
+    ctx.beginPath();ctx.moveTo(pad,toY(y));ctx.lineTo(W-20,toY(y));ctx.stroke();
+    ctx.fillStyle='#94A3B8';ctx.font='10px Inter';ctx.textAlign='right';ctx.fillText(r2(y),pad-4,toY(y)+4);
+  }
+  // Axes
+  ctx.strokeStyle='#CBD5E1';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(pad,top);ctx.lineTo(pad,top+ph);ctx.lineTo(W-20,top+ph);ctx.stroke();
+  // Bars
+  d.groups.forEach(([a,b],i)=>{
+    const fd=fds[i];
+    const x1=toX(a),x2=toX(b),y0=toY(0),y1=toY(fd);
+    ctx.fillStyle='rgba(27,79,138,0.75)';
+    ctx.fillRect(x1,y1,x2-x1,y0-y1);
+    ctx.strokeStyle='#1B4F8A';ctx.lineWidth=1.5;
+    ctx.strokeRect(x1,y1,x2-x1,y0-y1);
+    ctx.fillStyle='white';ctx.font='bold 11px Inter';ctx.textAlign='center';
+    if(y0-y1>16) ctx.fillText(r2(fd),(x1+x2)/2,(y1+y0)/2+4);
+    ctx.fillStyle='#475569';ctx.font='11px Inter';ctx.fillText(a,x1,top+ph+14);
+  });
+  ctx.fillStyle='#475569';ctx.font='11px Inter';ctx.textAlign='center';
+  ctx.fillText(xmax,toX(xmax),top+ph+14);
+  // Labels
+  ctx.save();ctx.translate(14,top+ph/2);ctx.rotate(-Math.PI/2);
+  ctx.fillStyle='#475569';ctx.font='12px Inter';ctx.textAlign='center';ctx.fillText('Frequency density',0,0);ctx.restore();
+  ctx.fillStyle='#475569';ctx.font='12px Inter';ctx.textAlign='center';ctx.fillText(d.label,pad+pw/2,H-4);
+}
+
+loadHistSample('marks');
+
+// ─── CUMULATIVE FREQUENCY ────────────────────────────────────────────────────
+let cfData={
+  marks:{bounds:[20,40,60,80,100],cumfreqs:[8,25,52,70,80],label:'Mark'},
+  wages:{bounds:[200,300,400,500,600,700],cumfreqs:[5,20,45,65,75,80],label:'Weekly wage ($)'},
+  times:{bounds:[10,20,30,40,50,60],cumfreqs:[4,18,38,56,68,72],label:'Time (min)'}
+};
+let currentCF='marks';
+
+function loadCFSample(k){currentCF=k;drawCF();}
+
+function drawCF(){
+  const d=cfData[currentCF];
+  const n=d.cumfreqs[d.cumfreqs.length-1];
+  const q1x=interpCF(d,n/4),medx=interpCF(d,n/2),q3x=interpCF(d,3*n/4);
+  // Table
+  let html=`<tr style="font-size:11px;color:var(--gray-400)"><th style="padding:4px 8px;text-align:left">≤ ${d.label}</th><th style="padding:4px 8px">Cum freq</th></tr>`;
+  d.bounds.forEach((b,i)=>{ html+=`<tr style="font-size:13px;border-top:1px solid var(--gray-100)"><td style="padding:4px 8px">${b}</td><td style="padding:4px 8px;text-align:center;color:var(--sbs-blue);font-weight:600">${d.cumfreqs[i]}</td></tr>`; });
+  document.getElementById('cf-table').innerHTML=html;
+  document.getElementById('cf-stats').innerHTML=`n = ${n}<br>Median ≈ <strong>${r2(medx)}</strong><br>Q1 ≈ <strong>${r2(q1x)}</strong><br>Q3 ≈ <strong>${r2(q3x)}</strong><br>IQR ≈ <strong>${r2(q3x-q1x)}</strong>`;
+  // Canvas
+  const c=document.getElementById('cf-canvas');
+  const ctx=c.getContext('2d');
+  const W=c.width,H=c.height,pad=60,top=20;
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='white';ctx.fillRect(0,0,W,H);
+  const pw=W-pad-20,ph=H-pad-top;
+  const xmin=d.bounds[0]-((d.bounds[1]-d.bounds[0])),xmax=d.bounds[d.bounds.length-1];
+  const toX=v=>pad+(v-xmin)/(xmax-xmin)*pw;
+  const toY=v=>top+ph*(1-v/n);
+  // Grid
+  ctx.strokeStyle='#F1F5F9';ctx.lineWidth=1;
+  [0,0.25,0.5,0.75,1].forEach(f=>{
+    const y=f*n;ctx.beginPath();ctx.moveTo(pad,toY(y));ctx.lineTo(W-20,toY(y));ctx.stroke();
+    ctx.fillStyle='#94A3B8';ctx.font='10px Inter';ctx.textAlign='right';ctx.fillText(Math.round(y),pad-4,toY(y)+4);
+  });
+  // Axes
+  ctx.strokeStyle='#CBD5E1';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(pad,top);ctx.lineTo(pad,top+ph);ctx.lineTo(W-20,top+ph);ctx.stroke();
+  // Scale labels
+  const step=(xmax-xmin)/5;
+  for(let x=xmin;x<=xmax+0.1;x+=step){
+    ctx.fillStyle='#94A3B8';ctx.font='10px Inter';ctx.textAlign='center';
+    ctx.fillText(Math.round(x),toX(x),top+ph+14);
+  }
+  // Curve
+  const pts=[[xmin,0],...d.bounds.map((b,i)=>[b,d.cumfreqs[i]])];
+  ctx.beginPath();pts.forEach(([x,y],i)=>i===0?ctx.moveTo(toX(x),toY(y)):ctx.lineTo(toX(x),toY(y)));
+  ctx.strokeStyle='#1B4F8A';ctx.lineWidth=2.5;ctx.stroke();
+  pts.forEach(([x,y])=>{ctx.beginPath();ctx.arc(toX(x),toY(y),4,0,2*Math.PI);ctx.fillStyle='#1B4F8A';ctx.fill();});
+  // Quartile lines
+  const drawQ=(val,freq,color,lbl)=>{
+    ctx.setLineDash([5,3]);ctx.strokeStyle=color;ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(pad,toY(freq));ctx.lineTo(toX(val),toY(freq));ctx.lineTo(toX(val),toY(0));ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle=color;ctx.font='bold 11px Inter';ctx.textAlign='left';
+    ctx.fillText(lbl+' ≈ '+r2(val),toX(val)+4,toY(freq)-4);
+  };
+  drawQ(q1x,n/4,'#059669','Q1');
+  drawQ(medx,n/2,'#8B1A1A','Median');
+  drawQ(q3x,3*n/4,'#D97706','Q3');
+  // Axis labels
+  ctx.save();ctx.translate(14,top+ph/2);ctx.rotate(-Math.PI/2);
+  ctx.fillStyle='#475569';ctx.font='12px Inter';ctx.textAlign='center';ctx.fillText('Cumulative frequency',0,0);ctx.restore();
+  ctx.fillStyle='#475569';ctx.font='12px Inter';ctx.textAlign='center';ctx.fillText(d.label,pad+pw/2,H-4);
+}
+
+function interpCF(d,target){
+  const pts=[[d.bounds[0]-((d.bounds[1]-d.bounds[0])),0],...d.bounds.map((b,i)=>[b,d.cumfreqs[i]])];
+  for(let i=1;i<pts.length;i++){
+    if(pts[i][1]>=target){
+      const [x1,y1]=pts[i-1],[x2,y2]=pts[i];
+      return x1+(target-y1)/(y2-y1)*(x2-x1);
+    }
+  }
+  return pts[pts.length-1][0];
+}
+
+loadCFSample('marks');
+
+// ─── BOX PLOT ────────────────────────────────────────────────────────────────
+function drawBoxPlot(){
+  const d1=parseData(document.getElementById('box-data1').value);
+  const d2=parseData(document.getElementById('box-data2').value);
+  const c=document.getElementById('box-canvas');
+  const ctx=c.getContext('2d');
+  const W=c.width,H=c.height;
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='white';ctx.fillRect(0,0,W,H);
+  const allVals=[...d1,...(d2.length?d2:[])];
+  const vmin=Math.min(...allVals),vmax=Math.max(...allVals);
+  const pad=60,pw=W-2*pad;
+  const toX=v=>pad+(v-vmin)/(vmax-vmin||1)*pw;
+  // Scale
+  ctx.strokeStyle='#CBD5E1';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(pad,H-30);ctx.lineTo(W-pad,H-30);ctx.stroke();
+  const step=(vmax-vmin)/6;
+  for(let v=vmin;v<=vmax+0.01;v+=step){
+    ctx.fillStyle='#94A3B8';ctx.font='11px Inter';ctx.textAlign='center';
+    ctx.fillText(r2(v),toX(v),H-18);
+  }
+  const drawBox=(data,y,color,label)=>{
+    if(data.length<4) return;
+    const s=sorted(data);
+    const mn=s[0],mx=s[s.length-1],q1v=q1(data),med=median(data),q3v=q3(data);
+    // Whiskers
+    ctx.strokeStyle=color;ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(toX(mn),y);ctx.lineTo(toX(q1v),y);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(toX(q3v),y);ctx.lineTo(toX(mx),y);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(toX(mn),y-8);ctx.lineTo(toX(mn),y+8);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(toX(mx),y-8);ctx.lineTo(toX(mx),y+8);ctx.stroke();
+    // Box
+    ctx.fillStyle=color+'22';
+    ctx.fillRect(toX(q1v),y-20,toX(q3v)-toX(q1v),40);
+    ctx.strokeRect(toX(q1v),y-20,toX(q3v)-toX(q1v),40);
+    // Median
+    ctx.strokeStyle=color;ctx.lineWidth=3;
+    ctx.beginPath();ctx.moveTo(toX(med),y-20);ctx.lineTo(toX(med),y+20);ctx.stroke();
+    // Label
+    ctx.fillStyle=color;ctx.font='bold 12px Inter';ctx.textAlign='left';
+    ctx.fillText(label,pad,y-28);
+    // Stats text
+    ctx.fillStyle='#475569';ctx.font='11px Inter';ctx.textAlign='center';
+    ctx.fillText('Min:'+r2(mn),toX(mn),y-14);
+    ctx.fillText('Q1:'+r2(q1v),toX(q1v),y-24);
+    ctx.fillText('Med:'+r2(med),toX(med),y+32);
+    ctx.fillText('Q3:'+r2(q3v),toX(q3v),y-24);
+    ctx.fillText('Max:'+r2(mx),toX(mx),y-14);
+    return {min:mn,q1:q1v,median:r2(med),q3:q3v,max:mx,iqr:r2(q3v-q1v)};
+  };
+  const s1=drawBox(d1,d2.length?100:H/2,'#1B4F8A','Dataset 1');
+  const s2=d2.length?drawBox(d2,190,'#8B1A1A','Dataset 2'):null;
+  let html=`<strong>Dataset 1:</strong> Min=${s1.min} Q1=${r2(s1.q1)} Med=${s1.median} Q3=${r2(s1.q3)} Max=${s1.max} IQR=${s1.iqr}`;
+  if(s2) html+=`<br><strong>Dataset 2:</strong> Min=${s2.min} Q1=${r2(s2.q1)} Med=${s2.median} Q3=${r2(s2.q3)} Max=${s2.max} IQR=${s2.iqr}`;
+  document.getElementById('box-stats').innerHTML=html;
+}
+
+drawBoxPlot();
+</script>
+</body>
+</html>
