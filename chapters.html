@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapters | SBS Mathematics</title>
+<link rel="stylesheet" href="assets/css/main.css">
+<style>
+.year-section{margin-bottom:3rem;}
+.year-header{display:flex;align-items:center;gap:12px;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:2px solid var(--gray-200);}
+.year-badge{background:var(--sbs-blue);color:white;font-size:12px;font-weight:600;padding:4px 12px;border-radius:20px;}
+.year-title{font-size:1.4rem;font-weight:700;color:var(--gray-900);}
+.chapter-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;}
+.chapter-card{background:white;border:1px solid var(--gray-200);border-radius:12px;padding:1.25rem;transition:all 0.15s;position:relative;overflow:hidden;}
+.chapter-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent,var(--sbs-blue));opacity:0;transition:opacity 0.15s;}
+.chapter-card:hover{border-color:var(--gray-400);box-shadow:0 4px 12px rgba(0,0,0,0.06);}
+.chapter-card:hover::before{opacity:1;}
+.ch-num{font-size:11px;font-weight:700;color:var(--accent,var(--sbs-blue));text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px;}
+.ch-title{font-size:15px;font-weight:600;color:var(--gray-900);margin-bottom:8px;line-height:1.3;}
+.ch-keywords{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px;}
+.ch-keyword{font-size:11px;background:var(--gray-100);color:var(--gray-600);padding:2px 7px;border-radius:4px;}
+.ch-links{display:flex;gap:6px;flex-wrap:wrap;}
+.ch-link{font-size:11px;font-weight:500;padding:4px 10px;border-radius:6px;text-decoration:none;border:1px solid var(--gray-200);color:var(--gray-600);transition:all 0.1s;}
+.ch-link:hover{background:var(--sbs-blue-pale);color:var(--sbs-blue);border-color:#BFDBFE;}
+.ch-link.lab{background:var(--sbs-blue-pale);color:var(--sbs-blue);border-color:#BFDBFE;}
+.ch-link.lab:hover{background:var(--sbs-blue);color:white;}
+.search-bar{background:white;border:1px solid var(--gray-200);border-radius:8px;padding:10px 16px;font-size:14px;width:100%;max-width:400px;margin-bottom:2rem;}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="nav-logo">
+    <img src="assets/logo.png" alt="SBS">
+    <div><div class="nav-title">SBS Mathematics</div><div class="nav-subtitle">Cambridge IGCSE 0580 Extended</div></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="chapters.html" class="active">Chapters</a></li>
+    <li><a href="labs.html">Labs</a></li>
+    <li><a href="about.html">About</a></li>
+  </ul>
+</nav>
+
+<div class="section" style="max-width:1100px;">
+  <div class="section-header">
+    <div class="section-label">Cambridge IGCSE 0580 Extended</div>
+    <div class="section-title">All chapters</div>
+    <div class="section-subtitle">Both years — IGCSE1 (Year 10) and IGCSE2 (Year 11)</div>
+  </div>
+
+  <input type="text" class="search-bar" placeholder="🔍  Search chapters, topics, keywords…" oninput="filterChapters(this.value)">
+
+  <!-- IGCSE 1 -->
+  <div class="year-section">
+    <div class="year-header">
+      <span class="year-badge">IGCSE 1 · Year 10</span>
+      <span class="year-title">Foundation and Core Topics</span>
+    </div>
+    <div class="chapter-grid" id="igcse1-grid">
+
+      <div class="chapter-card" style="--accent:#1B4F8A" data-search="number natural integers prime factors multiples squares cube directed bodmas">
+        <div class="ch-num">Chapter 1</div>
+        <div class="ch-title">Number</div>
+        <div class="ch-keywords">
+          <span class="ch-keyword">Natural numbers</span><span class="ch-keyword">Integers</span><span class="ch-keyword">Prime numbers</span>
+          <span class="ch-keyword">Factors & multiples</span><span class="ch-keyword">Squares & cubes</span><span class="ch-keyword">BODMAS</span><span class="ch-keyword">Directed numbers</span>
+        </div>
+        <div class="ch-links"><a href="#" class="ch-link">Syllabus: 1.1–1.6</a></div>
+      </div>
+
+      <div class="chapter-card" style="--accent:#7C3AED" data-search="rational irrational surds indices exponents standard form">
+        <div class="ch-num">Chapter 2</div>
+        <div class="ch-title">Fractions, Decimals and Indices</div>
+        <div class="ch-keywords">
+          <span class="ch-keyword">Rational & irrational</span><span class="ch-keyword">Surds</span><span class="ch-keyword">Indices/Exponents</span>
+          <span class="ch-keyword">Standard form</span><span class="ch-keyword">Significant figures</span>
+        </div>
+        <div class="ch-links"><a href="#" class="ch-link">Syllabus: 1.7–1.12</a></div>
+      </div>
+
+      <div class="chapter-card" style="--accent:#059669" data-search="angles parallel lines alternate co-interior corresponding perpendicular supplementary vertically opposite">
+        <div class="ch-num">Chapter 3</div>
+        <div class="ch-title">Angles and Parallel Lines</div>
+        <div class="ch-keywords">
+          <span class="ch-keyword">Alternate angles</span><span class="ch-keyword">Co-interior</span><span class="ch-keyword">Corresponding</span>
+          <span class="ch-keyword">Parallel & perpendicular</span><span class="ch-keyword">Supplementary</span><span class="ch-keyword">Vertically opposite</span>
+        </div>
+        <div class="ch-links"><a href="#" class="ch-link">Syllabus: 3.1–3.4</a></div>
+      </div>
+
+      <div class="chapter-card" style="--accent:#D97706" data-search="statistics data collection bar chart pie chart scatter categorical discrete continuous qualitative quantitative">
+        <div class="ch-num">Chapter 4</div>
+        <div class="ch-title">Statistics — Data Collection & Display</div>
+        <div class="ch-keywords">
+          <span class="ch-keyword">Categorical data</span><span class="ch-keyword">Class interval</span><span class="ch-keyword">Continuous data</span>
+          <span class="ch-keyword">Discrete data</span><span class="ch-keyword">Qualitative & quantitative</span>
+        </div>
+        <div class="ch-links">
+          <a href="#" class="ch-link">Syllabus: 11.1–11.2</a>
+          <a href="labs/statistics.html" class="ch-link lab">→ Statistics Lab</a>
+        </div>
+      </div>
+
+      <div class="chapter-card" style="--accent:#8B1A1A" data-search="fractions denominator numerator equivalent lowest terms mixed number simplest standard form">
+        <div class="ch-num">Chapter 5</div>
+        <div class="ch-title">Fractions and Percentages</div>
+        <div class="ch-keywords">
+          <span class="ch-keyword">Denominator & numerator</span><span class="ch-keyword">Equivalent fractions</span><span class="ch-keyword">Mixed numbers</span>
+          <span class="ch-keyword">Simplest form</span><span class="ch-keyword">Standard form</span>
+        </div>
+        <div class="ch-links"><a href="#" class="ch-link">Syllabus: 1.13–1.16</a></div>
+      </div>
+
+      <div class="chapter-card" style="--accent:#1B4F8A" data-search="probability events bias combined experimental independent mutually exclusive outcomes relative frequency sample space">
+        <div class="ch-num">Chapter 8</div>
+        <div class="ch-title">Probability</div>
+        <div class="ch-keywords">
+          <span class="ch-keyword">Events & bias</span><span class="ch-keyword">Combined events</span><span class="ch-keyword">Experimental probability</span>
+          <span class="ch-keyword">Independent events</span><span class="ch-keyword">Mutually exclusive</span><span class="ch-keyword">Relative frequency</span><span class="ch-keyword">Sample space</span>
+        </div>
+        <div class="ch-links">
+          <a href="#" class="ch-link">Syllabus: 8.1–8.4</a>
+          <a href="labs/probability.html" class="ch-link lab">→ Probability Lab</a>
+        </div>
+      </div>
+
+      <div class="chapter-card" style="--accent:#0891B2" data-search="sets venn diagram complement element empty set union intersection universal subset">
+        <div class="ch-num">Chapter 9</div>
+        <div class="ch-title">Sets and Venn Diagrams</div>
+        <div class="ch-keywords">
+          <span class="ch-keyword">Sets & subsets</span><span class="ch-keyword">Venn diagrams</span><span class="ch-keyword">Union & intersection</span>
+          <span class="ch-keyword">Complement</span><span class="ch-keyword">Universal set</span><span class="ch-keyword">Empty set</span>
+        </div>
+        <div class="ch-links">
+          <a href="#" class="ch-link">Syllabus: 2.1–2.3</a>
+          <a href="labs/probability.html" class="ch-link lab">→ Venn Diagrams</a>
+        </div>
+      </div>
+
+      <div class="chapter-card" style="--accent:#7C3AED" data-search="algebra gradient equation line quadratic expand factorise difference squares midpoint constant term">
+        <div class="ch-num">Chapter 10</div>
+        <div class="ch-title">Algebra and Straight Lines</div>
+        <div class="ch-keywords">
+          <span class="ch-keyword">Gradient</span><span class="ch-keyword">Equation of a line</span><span class="ch-keyword">Quadratic equation</span>
+          <span class="ch-keyword">Expand & factorise</span><span class="ch-keyword">Difference of squares</span><span class="ch-keyword">Midpoint</span>
+        </div>
+        <div class="ch-links">
+          <a href="#" class="ch-link">Syllabus: 5.1–5.4</a>
+          <a href="labs/graph-explorer.html" class="ch-link lab">→ Graph Explorer</a>
+        </div>
+      </div>
+
+      <div class="chapter-card" style="--accent:#059669" data-search="similar congruent shapes scale factor hypotenuse geometry triangles">
+        <div class="ch-num">Chapter 11</div>
+        <div class="ch-title">Similarity and Congruence</div>
+        <div class="ch-keywords">
+          <span class="ch-keyword">Congruent shapes</span><span class="ch-keyword">Similar shapes</span><span class="ch-keyword">Scale factor</span>
+          <span class="ch-keyword">Hypotenuse</span>
+        </div>
+        <div class="ch-links">
+          <a href="#" class="ch-link">Syllabus: 3.7–3.9</a>
+          <a href="labs/transformations.html" class="ch-link lab">→ Transformation Lab</a>
+        </div>
+      </div>
+
+      <div class="chapter-card" style="--accent:#D97706" data-search="statistics averages mean median mode range spread interquartile discrete continuous estimated modal class">
+        <div class="ch-num">Chapter 12</div>
+        <div class="ch-title">Statistics — Averages and Spread</div>
+        <div class="ch-keywords">
+          <span class="ch-keyword">Mean</span><span class="ch-keyword">Median</span><span class="ch-keyword">Mode</span><span class="ch-keyword">Range</span>
+          <span class="ch-keyword">Estimated mean</span><span class="ch-keyword">Modal class</span><span class="ch-keyword">IQR</span>
+        </div>
+        <div class="ch-links">
+          <a href="#" class="ch-link">Syllabus: 11.3–11.5</a>
+          <a href="labs/statistics.html" class="ch-link lab">→ Statistics Lab</a>
+        </div>
+      </div>
+
+      <div class="chapter-card" style="--accent:#1B4F8A" data-search="measurement metric imperial conversion exchange rate lower upper bound units">
+        <div class="ch-num">Chapter 13</div>
+        <div class="ch-title">Understanding Measurements</div>
+        <div class="ch-keywords">
+          <span class="ch-keyword">Metric & imperial</span><span class="ch-keyword">Conversion</span><span class="ch-keyword">Exchange rates</span>
+          <span class="ch-keyword">Lower & upper bounds</span>
+        </div>
+        <div class="ch-links"><a href="#" class="ch-link">Syllabus: 1.17–1.20</a></div>
+      </div>
+
+      <div class="chapter-card" style="--accent:#8B1A1A" data-search="equations inequalities simultaneous linear quadratic intersection region linear programming graphical algebraic">
+        <div class="ch-num">Chapter 14</div>
+        <div class="ch-title">Equations and Inequalities</div>
+        <div class="ch-keywords">
+          <span class="ch-keyword">Simultaneous equations</span><span class="ch-keyword">Linear inequalities</span><span class="ch-keyword">Linear programming</span>
+          <span class="ch-keyword">Quadratic equations</span><span class="ch-keyword">Graphical solutions</span>
+        </div>
+        <div class="ch-links">
+          <a href="#" class="ch-link">Syllabus: 5.5–5.8</a>
+          <a href="labs/graph-explorer.html" class="ch-link lab">→ Graph Explorer</a>
+          <a href="labs/functions.html" class="ch-link lab">→ Functions Lab</a>
+        </div>
+      </div>
+
+      <div class="chapter-card" style="--accent:#0D9488" data-search="trigonometry scale drawing bearing sine cosine tangent ratio hypotenuse adjacent opposite sine rule cosine rule">
+        <div class="ch-num">Chapter 15</div>
+        <div class="ch-title">Trigonometry and Bearings</div>
+        <div class="ch-keywords">
+          <span class="ch-keyword">Scale drawings</span><span class="ch-keyword">Bearings</span><span class="ch-keyword">Sin / Cos / Tan</span>
+          <span class="ch-keyword">Sine rule</span><span class="ch-keyword">Cosine rule</span><span class="ch-keyword">Inverse trig</span>
+        </div>
+        <div class="ch-links">
+          <a href="#" class="ch-link">Syllabus: 7.1–7.5</a>
+          <a href="labs/trigonometry.html" class="ch-link lab">→ Trig Unit Circle</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- IGCSE 2 -->
+  <div class="year-section">
+    <div class="year-header">
+      <span class="year-badge" style="background:var(--sbs-crimson)">IGCSE 2 · Year 11</span>
+      <span class="year-title">Extension and Exam Topics</span>
+    </div>
+    <div class="chapter-grid" id="igcse2-grid">
+
+      <div class="chapter-card" style="--accent:#1B4F8A" data-search="scatter diagram bivariate correlation line of best fit positive negative extrapolation trend dependent variable">
+        <div class="ch-num">Chapters 16–17</div>
+        <div class="ch-title">Scatter Diagrams and Correlation</div>
+        <div class="ch-keywords">
+          <span class="ch-keyword">Correlation</span><span class="ch-keyword">Bivariate data</span><span class="ch-keyword">Scatter diagram</span>
+          <span class="ch-keyword">Line of best fit</span><span class="ch-keyword">Positive & negative</span><span class="ch-keyword">Extrapolation</span>
+        </div>
+        <div class="ch-links">
+          <a href="#" class="ch-link">Syllabus: 11.6–11.7</a>
+          <a href="labs/statistics.html" class="ch-link lab">→ Statistics Lab</a>
+        </div>
+      </div>
+
+      <div class="chapter-card" style="--accent:#D97706" data-search="circle theorems alternate segment cyclic quadrilateral symmetry perpendicular bisector rotational plane subtended angle">
+        <div class="ch-num">Chapter 19</div>
+        <div class="ch-title">Circle Theorems and Symmetry</div>
+        <div class="ch-keywords">
+          <span class="ch-keyword">Alternate segment</span><span class="ch-keyword">Cyclic quadrilateral</span><span class="ch-keyword">Axis of symmetry</span>
+          <span class="ch-keyword">Perpendicular bisector</span><span class="ch-keyword">Rotational symmetry</span><span class="ch-keyword">Subtended angle</span>
+        </div>
+        <div class="ch-links">
+          <a href="#" class="ch-link">Syllabus: 4.6–4.8</a>
+          <a href="labs/circle-theorems.html" class="ch-link lab">→ Circle Theorems Lab</a>
+        </div>
+      </div>
+
+      <div class="chapter-card" style="--accent:#8B1A1A" data-search="histogram cumulative frequency curve frequency density percentiles box plot interquartile range">
+        <div class="ch-num">Chapter 20</div>
+        <div class="ch-title">Histograms and Cumulative Frequency</div>
+        <div class="ch-keywords">
+          <span class="ch-keyword">Cumulative frequency</span><span class="ch-keyword">Frequency density</span><span class="ch-keyword">Histogram</span>
+          <span class="ch-keyword">Percentiles</span><span class="ch-keyword">Box plots</span>
+        </div>
+        <div class="ch-links">
+          <a href="#" class="ch-link">Syllabus: 11.3–11.5</a>
+          <a href="labs/statistics.html" class="ch-link lab">→ Statistics Lab</a>
+        </div>
+      </div>
+
+      <div class="chapter-card" style="--accent:#059669" data-search="proportion direct inverse ratio rate speed distance time">
+        <div class="ch-num">Chapter 21</div>
+        <div class="ch-title">Ratio, Proportion and Rates</div>
+        <div class="ch-keywords">
+          <span class="ch-keyword">Direct proportion</span><span class="ch-keyword">Inverse proportion</span><span class="ch-keyword">Rate</span>
+          <span class="ch-keyword">Ratio</span><span class="ch-keyword">Speed / distance / time</span>
+        </div>
+        <div class="ch-links">
+          <a href="#" class="ch-link">Syllabus: 1.21–1.23</a>
+          <a href="labs/graph-explorer.html" class="ch-link lab">→ Graph Explorer</a>
+        </div>
+      </div>
+
+      <div class="chapter-card" style="--accent:#7C3AED" data-search="functions domain range inverse composite transformation f(x) g(x) fg gf notation">
+        <div class="ch-num">Chapter 22</div>
+        <div class="ch-title">Functions</div>
+        <div class="ch-keywords">
+          <span class="ch-keyword">Domain & range</span><span class="ch-keyword">Inverse functions</span><span class="ch-keyword">Composite functions</span>
+          <span class="ch-keyword">Function notation</span><span class="ch-keyword">Transformations of functions</span>
+        </div>
+        <div class="ch-links">
+          <a href="#" class="ch-link">Syllabus: 6.1–6.4</a>
+          <a href="labs/functions.html" class="ch-link lab">→ Functions Lab</a>
+          <a href="labs/graph-explorer.html" class="ch-link lab">→ Graph Explorer</a>
+        </div>
+      </div>
+
+      <div class="chapter-card" style="--accent:#0891B2" data-search="vectors transformations column vector magnitude scalar reflection rotation enlargement translation">
+        <div class="ch-num">Chapter 23</div>
+        <div class="ch-title">Vectors and Transformations</div>
+        <div class="ch-keywords">
+          <span class="ch-keyword">Column vectors</span><span class="ch-keyword">Magnitude</span><span class="ch-keyword">Scalar</span>
+          <span class="ch-keyword">Translation & reflection</span><span class="ch-keyword">Rotation & enlargement</span>
+        </div>
+        <div class="ch-links">
+          <a href="#" class="ch-link">Syllabus: 9.1–9.4, 10.1–10.5</a>
+          <a href="labs/transformations.html" class="ch-link lab">→ Transformation Lab</a>
+        </div>
+      </div>
+
+      <div class="chapter-card" style="--accent:#1B4F8A" data-search="3d geometry volume surface area mensuration cuboid cylinder cone sphere pyramid prism nets">
+        <div class="ch-num">Chapter 24</div>
+        <div class="ch-title">3D Geometry and Mensuration</div>
+        <div class="ch-keywords">
+          <span class="ch-keyword">Volume</span><span class="ch-keyword">Surface area</span><span class="ch-keyword">Cuboid & cylinder</span>
+          <span class="ch-keyword">Cone & sphere</span><span class="ch-keyword">Pyramid & prism</span><span class="ch-keyword">Nets</span>
+        </div>
+        <div class="ch-links">
+          <a href="#" class="ch-link">Syllabus: 4.2–4.5</a>
+          <a href="labs/geometry3d.html" class="ch-link lab">→ 3D Geometry Lab</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <strong>SBS Interactive Mathematics</strong> · Cambridge IGCSE 0580 Extended
+  <div style="margin-top:6px;opacity:0.6">SBS International School Chiangmai · An Arthit Ourairat Institution</div>
+</footer>
+
+<script>
+function filterChapters(query){
+  const q=query.toLowerCase();
+  document.querySelectorAll('.chapter-card').forEach(card=>{
+    const searchText=(card.dataset.search+' '+card.textContent).toLowerCase();
+    card.style.display=q===''||searchText.includes(q)?'':'none';
+  });
+}
+</script>
+</body>
+</html>

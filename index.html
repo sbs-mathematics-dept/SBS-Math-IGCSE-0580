@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SBS Interactive Mathematics | Cambridge IGCSE 0580</title>
+<link rel="stylesheet" href="assets/css/main.css">
+<style>
+.hero-logo { height: 52px; margin-bottom: 1.5rem; filter: brightness(0) invert(1); opacity: 0.9; }
+.lab-card.prob { --card-accent: #7C3AED; --card-bg: #F5F3FF; }
+.lab-card.graph { --card-accent: #0891B2; --card-bg: #ECFEFF; }
+.lab-card.transform { --card-accent: #059669; --card-bg: #ECFDF5; }
+.lab-card.circle { --card-accent: #D97706; --card-bg: #FFFBEB; }
+.lab-card.stats { --card-accent: #DC2626; --card-bg: #FEF2F2; }
+.lab-card.func { --card-accent: #7C3AED; --card-bg: #F5F3FF; }
+.lab-card.trig { --card-accent: #0D9488; --card-bg: #F0FDFA; }
+.lab-card.geo3d { --card-accent: #1B4F8A; --card-bg: #EFF6FF; }
+
+.welcome-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.welcome-card {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+}
+
+.welcome-card h3 { font-size: 15px; font-weight: 600; color: var(--gray-900); margin-bottom: 8px; }
+.welcome-card p { font-size: 13px; color: var(--gray-600); line-height: 1.6; }
+
+.philosophy-strip {
+  background: var(--sbs-blue);
+  color: white;
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.philosophy-strip h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 0.75rem; letter-spacing: -0.02em; }
+.philosophy-strip p { font-size: 14px; opacity: 0.8; max-width: 600px; margin: 0 auto; line-height: 1.7; }
+
+.topic-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 1rem;
+}
+
+.topic-chip {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: var(--gray-100);
+  color: var(--gray-700);
+  border: 1px solid var(--gray-200);
+  cursor: default;
+}
+
+.topic-chip:hover { background: var(--sbs-blue-pale); color: var(--sbs-blue); border-color: #BFDBFE; }
+
+@media (max-width: 640px) { .welcome-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">
+    <img src="assets/logo.png" alt="SBS International School">
+    <div>
+      <div class="nav-title">SBS Mathematics</div>
+      <div class="nav-subtitle">Cambridge IGCSE 0580 Extended</div>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="chapters.html">Chapters</a></li>
+    <li><a href="labs.html">Interactive Labs</a></li>
+    <li><a href="about.html">About</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <img src="assets/logo.png" alt="SBS" class="hero-logo">
+  <div class="hero-badge">✦ Cambridge IGCSE 0580 Extended</div>
+  <h1>Mathematics that<br><span>makes sense</span></h1>
+  <p>Interactive lessons, explorable labs, and Cambridge-quality content — built for SBS students who want to actually understand maths, not just pass it.</p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-num">8</div>
+      <div class="hero-stat-label">Interactive Labs</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">15+</div>
+      <div class="hero-stat-label">Chapter Topics</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">0580</div>
+      <div class="hero-stat-label">Cambridge Syllabus</div>
+    </div>
+  </div>
+</section>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-label">Interactive Labs</div>
+    <div class="section-title">Explore mathematics visually</div>
+    <div class="section-subtitle">Click any lab below to open it — no login, no download, just maths.</div>
+  </div>
+
+  <div class="labs-grid">
+    <a href="labs/probability.html" class="lab-card prob">
+      <div class="lab-icon">🎲</div>
+      <div class="lab-title">Probability Lab</div>
+      <div class="lab-desc">Simulate experiments, explore tree diagrams, and see the law of large numbers in action.</div>
+      <div class="lab-tags">
+        <span class="lab-tag">Tree diagrams</span>
+        <span class="lab-tag">Simulation</span>
+        <span class="lab-tag">Venn diagrams</span>
+      </div>
+      <div class="lab-arrow">→</div>
+    </a>
+
+    <a href="labs/graph-explorer.html" class="lab-card graph">
+      <div class="lab-icon">📊</div>
+      <div class="lab-title">Graph Explorer</div>
+      <div class="lab-desc">Plot and transform any function. Explore gradients, intercepts, and families of curves.</div>
+      <div class="lab-tags">
+        <span class="lab-tag">Linear</span>
+        <span class="lab-tag">Quadratic</span>
+        <span class="lab-tag">Exponential</span>
+      </div>
+      <div class="lab-arrow">→</div>
+    </a>
+
+    <a href="labs/transformations.html" class="lab-card transform">
+      <div class="lab-icon">📐</div>
+      <div class="lab-title">Transformation Lab</div>
+      <div class="lab-desc">Rotate, reflect, translate and enlarge shapes. Watch coordinates change in real time.</div>
+      <div class="lab-tags">
+        <span class="lab-tag">Rotation</span>
+        <span class="lab-tag">Reflection</span>
+        <span class="lab-tag">Enlargement</span>
+      </div>
+      <div class="lab-arrow">→</div>
+    </a>
+
+    <a href="labs/circle-theorems.html" class="lab-card circle">
+      <div class="lab-icon">📏</div>
+      <div class="lab-title">Circle Theorems Explorer</div>
+      <div class="lab-desc">Drag points around a circle and watch theorems prove themselves before your eyes.</div>
+      <div class="lab-tags">
+        <span class="lab-tag">Inscribed angles</span>
+        <span class="lab-tag">Tangents</span>
+        <span class="lab-tag">Chord theorems</span>
+      </div>
+      <div class="lab-arrow">→</div>
+    </a>
+
+    <a href="labs/statistics.html" class="lab-card stats">
+      <div class="lab-icon">📈</div>
+      <div class="lab-title">Statistics Lab</div>
+      <div class="lab-desc">Build histograms, box plots, and cumulative frequency curves from your own data.</div>
+      <div class="lab-tags">
+        <span class="lab-tag">Histograms</span>
+        <span class="lab-tag">Box plots</span>
+        <span class="lab-tag">Cum. frequency</span>
+      </div>
+      <div class="lab-arrow">→</div>
+    </a>
+
+    <a href="labs/functions.html" class="lab-card func">
+      <div class="lab-icon">📉</div>
+      <div class="lab-title">Functions Explorer</div>
+      <div class="lab-desc">Compose, invert, and transform functions. See domain and range come to life.</div>
+      <div class="lab-tags">
+        <span class="lab-tag">Composition</span>
+        <span class="lab-tag">Inverse</span>
+        <span class="lab-tag">Transformations</span>
+      </div>
+      <div class="lab-arrow">→</div>
+    </a>
+
+    <a href="labs/trigonometry.html" class="lab-card trig">
+      <div class="lab-icon">🔺</div>
+      <div class="lab-title">Trigonometry Unit Circle</div>
+      <div class="lab-desc">Spin the unit circle, watch sin, cos, and tan graphs draw themselves live.</div>
+      <div class="lab-tags">
+        <span class="lab-tag">Unit circle</span>
+        <span class="lab-tag">Sin / Cos / Tan</span>
+        <span class="lab-tag">Identities</span>
+      </div>
+      <div class="lab-arrow">→</div>
+    </a>
+
+    <a href="labs/geometry3d.html" class="lab-card geo3d">
+      <div class="lab-icon">📦</div>
+      <div class="lab-title">3D Geometry Explorer</div>
+      <div class="lab-desc">Rotate prisms, pyramids, and spheres. Calculate volumes and surface areas interactively.</div>
+      <div class="lab-tags">
+        <span class="lab-tag">Volume</span>
+        <span class="lab-tag">Surface area</span>
+        <span class="lab-tag">3D shapes</span>
+      </div>
+      <div class="lab-arrow">→</div>
+    </a>
+  </div>
+</div>
+
+<div class="philosophy-strip">
+  <h2>Our design philosophy</h2>
+  <p>We never sacrifice mathematical quality for flashy technology. Your lessons come first. The technology exists to make them easier to teach and more engaging for students. Every lab reinforces Cambridge 0580 Extended content — not replaces it.</p>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-label">Cambridge 0580 Topics</div>
+    <div class="section-title">All major topic areas covered</div>
+  </div>
+  <div class="topic-chips">
+    <span class="topic-chip">Number</span>
+    <span class="topic-chip">Algebra & Graphs</span>
+    <span class="topic-chip">Coordinate Geometry</span>
+    <span class="topic-chip">Geometry</span>
+    <span class="topic-chip">Mensuration</span>
+    <span class="topic-chip">Trigonometry</span>
+    <span class="topic-chip">Transformations & Vectors</span>
+    <span class="topic-chip">Probability</span>
+    <span class="topic-chip">Statistics</span>
+    <span class="topic-chip">Functions</span>
+    <span class="topic-chip">Matrices</span>
+    <span class="topic-chip">Sets</span>
+    <span class="topic-chip">Sequences</span>
+    <span class="topic-chip">Inequalities</span>
+    <span class="topic-chip">Linear Programming</span>
+  </div>
+
+  <div class="welcome-grid" style="margin-top: 2rem;">
+    <div class="welcome-card">
+      <h3>🎓 For students</h3>
+      <p>Open any lab directly — no account needed. Explore concepts visually before or after your teacher's lesson. Use the chapter pages to review key ideas and Cambridge exam tips.</p>
+    </div>
+    <div class="welcome-card">
+      <h3>👨‍🏫 For teachers</h3>
+      <p>Every lab is designed to complement your teaching, not replace it. Project them on screen during lessons, assign specific labs for homework exploration, or use them to introduce new topics.</p>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div><strong>SBS Interactive Mathematics</strong> · Cambridge IGCSE 0580 Extended</div>
+  <div style="margin-top: 6px;">SBS International School Chiangmai · An Arthit Ourairat Institution</div>
+  <div style="margin-top: 6px; opacity: 0.6;">Mathematical quality first. Technology second.</div>
+</footer>
+
+</body>
+</html>

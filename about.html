@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About | SBS Mathematics</title>
+<link rel="stylesheet" href="assets/css/main.css">
+<style>
+.about-hero{background:var(--sbs-blue);color:white;padding:3rem 2rem;text-align:center;}
+.about-hero img{height:60px;filter:brightness(0) invert(1);opacity:0.9;margin-bottom:1rem;}
+.about-hero h1{font-size:2rem;font-weight:700;letter-spacing:-0.02em;}
+.about-hero p{opacity:0.8;max-width:500px;margin:0.75rem auto 0;}
+.principles-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-top:1.5rem;}
+.principle-card{background:white;border:1px solid var(--gray-200);border-radius:12px;padding:1.25rem;}
+.principle-icon{font-size:1.8rem;margin-bottom:8px;}
+.principle-title{font-size:15px;font-weight:600;color:var(--gray-900);margin-bottom:6px;}
+.principle-text{font-size:13px;color:var(--gray-600);line-height:1.6;}
+.team-card{background:white;border:1px solid var(--gray-200);border-radius:12px;padding:1.5rem;display:flex;gap:1rem;align-items:center;}
+.team-avatar{width:56px;height:56px;background:var(--sbs-blue);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:20px;flex-shrink:0;}
+.quote-block{background:var(--sbs-blue-pale);border-left:4px solid var(--sbs-blue);border-radius:0 12px 12px 0;padding:1.5rem 2rem;font-size:1.1rem;font-style:italic;color:var(--gray-700);line-height:1.7;margin:2rem 0;}
+.tech-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin-top:1rem;}
+.tech-item{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--gray-700);}
+.tech-item strong{color:var(--gray-900);}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="nav-logo">
+    <img src="assets/logo.png" alt="SBS">
+    <div><div class="nav-title">SBS Mathematics</div><div class="nav-subtitle">Cambridge IGCSE 0580 Extended</div></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="chapters.html">Chapters</a></li>
+    <li><a href="labs.html">Labs</a></li>
+    <li><a href="about.html" class="active">About</a></li>
+  </ul>
+</nav>
+
+<div class="about-hero">
+  <img src="assets/logo.png" alt="SBS">
+  <h1>SBS Interactive Mathematics</h1>
+  <p>Cambridge IGCSE 0580 Extended · Built for SBS International School Chiangmai</p>
+</div>
+
+<div class="section" style="max-width:900px;">
+
+  <div class="quote-block">
+    "We will never sacrifice mathematical quality for flashy technology. Your lessons come first. The technology exists to make them easier to teach and more engaging for students."
+  </div>
+
+  <div class="section-header">
+    <div class="section-label">Design principles</div>
+    <div class="section-title">How we think about this</div>
+  </div>
+
+  <div class="principles-grid">
+    <div class="principle-card">
+      <div class="principle-icon">🎯</div>
+      <div class="principle-title">Cambridge-first</div>
+      <div class="principle-text">Every lab maps directly to Cambridge 0580 Extended syllabus topics, paper questions, and command words. Nothing is included just because it's interesting.</div>
+    </div>
+    <div class="principle-card">
+      <div class="principle-icon">👨‍🏫</div>
+      <div class="principle-title">Teachers lead, tech supports</div>
+      <div class="principle-text">Labs are designed to reinforce lessons, not replace them. Use them to introduce a topic, provide a visual during class, or as structured homework exploration.</div>
+    </div>
+    <div class="principle-card">
+      <div class="principle-icon">🔢</div>
+      <div class="principle-title">Mathematically rigorous</div>
+      <div class="principle-text">Every calculation is exact. Graphs are plotted correctly. Theorems show real measurements. There are no "close enough" visuals — if it's wrong, it's misleading.</div>
+    </div>
+    <div class="principle-card">
+      <div class="principle-icon">⚡</div>
+      <div class="principle-title">Instant access</div>
+      <div class="principle-text">No login. No app. No download. Students open a link in any browser and start exploring. Every second of friction removed is a second more mathematics.</div>
+    </div>
+    <div class="principle-card">
+      <div class="principle-icon">📱</div>
+      <div class="principle-title">Works everywhere</div>
+      <div class="principle-text">Mobile, tablet, laptop, classroom projector. The circle theorems lab even has full touch support for dragging points on a phone screen.</div>
+    </div>
+    <div class="principle-card">
+      <div class="principle-icon">🆓</div>
+      <div class="principle-title">Completely free</div>
+      <div class="principle-text">No subscriptions, no ads, no paywalls. Built and hosted on GitHub Pages — freely available to every SBS student forever.</div>
+    </div>
+  </div>
+
+  <div class="section-header" style="margin-top:3rem;">
+    <div class="section-label">What's included</div>
+    <div class="section-title">The 8 interactive labs</div>
+  </div>
+
+  <div style="font-size:14px;line-height:2;color:var(--gray-700);">
+    <div>🎲 <strong>Probability Lab</strong> — Simulation, tree diagrams (with & without replacement), Venn diagrams, conditional probability</div>
+    <div>📊 <strong>Graph Explorer</strong> — Plot any function, multiple curves, zero-finding, intercepts, x-value probe</div>
+    <div>📐 <strong>Transformation Lab</strong> — Translation, reflection, rotation (any centre), enlargement (including negative k)</div>
+    <div>📏 <strong>Circle Theorems Explorer</strong> — 7 theorems, fully draggable, real-time angle measurement</div>
+    <div>📈 <strong>Statistics Lab</strong> — Averages & spread, histograms with frequency density, cumulative frequency curves, box plots</div>
+    <div>📉 <strong>Functions Explorer</strong> — fg(x), gf(x), f⁻¹(x), domain & range, function transformations</div>
+    <div>🔺 <strong>Trigonometry Unit Circle</strong> — Animated 0°–360°, sin/cos/tan wave drawing, exact values at key angles</div>
+    <div>📦 <strong>3D Geometry Explorer</strong> — Volume & surface area for 6 shapes, substituted formulae, nets</div>
+  </div>
+
+  <div class="section-header" style="margin-top:3rem;">
+    <div class="section-label">Technical</div>
+    <div class="section-title">How it's built</div>
+  </div>
+
+  <div class="tech-list">
+    <div class="tech-item"><strong>Pure HTML/CSS/JS</strong><br>No frameworks, no build step</div>
+    <div class="tech-item"><strong>GitHub Pages</strong><br>Free hosting, always on</div>
+    <div class="tech-item"><strong>Canvas API</strong><br>All graphs drawn natively</div>
+    <div class="tech-item"><strong>No dependencies</strong><br>Nothing to update or break</div>
+    <div class="tech-item"><strong>Offline capable</strong><br>Works after initial load</div>
+    <div class="tech-item"><strong>Touch support</strong><br>Mobile & tablet friendly</div>
+  </div>
+
+  <div class="section-header" style="margin-top:3rem;">
+    <div class="section-label">SBS International School</div>
+    <div class="section-title">About the school</div>
+  </div>
+
+  <div style="background:white;border:1px solid var(--gray-200);border-radius:12px;padding:1.5rem;display:flex;gap:1.5rem;align-items:center;">
+    <img src="assets/logo.png" alt="SBS" style="height:64px;flex-shrink:0;">
+    <div style="font-size:14px;color:var(--gray-700);line-height:1.7;">
+      <strong style="color:var(--gray-900)">SBS International School Chiangmai</strong> is an Arthit Ourairat Institution offering Cambridge International education. The Mathematics Department is committed to developing students who can think mathematically — not just pass examinations.
+      <div style="margin-top:8px;color:var(--gray-400);font-size:12px;">Cambridge IGCSE 0580 Extended · AS Level · International curriculum</div>
+    </div>
+  </div>
+
+</div>
+
+<footer class="site-footer">
+  <strong>SBS Interactive Mathematics</strong> · Cambridge IGCSE 0580 Extended
+  <div style="margin-top:6px;opacity:0.6">SBS International School Chiangmai · An Arthit Ourairat Institution</div>
+  <div style="margin-top:6px;opacity:0.4;font-size:11px;">Mathematical quality first. Technology second.</div>
+</footer>
+</body>
+</html>
