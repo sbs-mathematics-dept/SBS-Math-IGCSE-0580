@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 18: Sketching Curved Graphs | SBS Mathematics</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/lesson.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a href="../index.html" class="nav-logo">
+    <img src="../assets/logo.png" alt="SBS">
+    <div><div class="nav-title">SBS Mathematics</div><div class="nav-subtitle">Cambridge IGCSE 0580</div></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="../chapters.html" class="active">Chapters</a></li>
+    <li><a href="../labs.html">Labs</a></li>
+  </ul>
+</nav>
+
+<div class="lesson-shell">
+  <div class="lesson-progress-track" id="lesson-progress-track">
+    <div class="lesson-progress-bar"><div class="lesson-progress-fill" id="lesson-progress-fill"></div></div>
+    <div class="lesson-progress-meta">
+      <span id="progress-meta-text">Slide 1 of N</span>
+      <span class="lesson-stars" id="lesson-stars-count">★ 0</span>
+    </div>
+  </div>
+
+  <div class="lesson-header">
+    <div class="lesson-kicker" id="lesson-kicker">Chapter 18</div>
+    <div class="lesson-title" id="lesson-title">Loading...</div>
+    <div class="lesson-sub" id="lesson-sub"></div>
+  </div>
+
+  <div id="lesson-root"></div>
+</div>
+
+<script>
+const LESSON_DATA = {
+  title: "Sketching Curved Graphs",
+  kicker: "Chapter 18 · IGCSE2 (Year 11) · Cambridge 0580 Extended — Graphs §C5/C10",
+  sub: "Quadratics, reciprocals and exponentials: shape, key points, turning points by completing the square, and asymptotes.",
+  slides: [
+
+    {
+      type: "content",
+      tag: "Overview",
+      title: "What this chapter covers",
+      html: `<p>In this chapter you will learn to sketch and interpret three families of curves that appear throughout the Cambridge IGCSE 0580 Extended exam:</p>
+        <ul>
+          <li><b>Quadratic graphs</b> — <code>y = ax² + c</code> and <code>y = ax² + bx + c</code> (parabolas)</li>
+          <li><b>Reciprocal graphs</b> — <code>y = a/x</code> and related hyperbolas</li>
+          <li><b>Exponential graphs</b> — <code>y = a·kˣ</code></li>
+        </ul>
+        <p>For each curve you need to identify: the shape, intercepts with the axes, turning points (maximum/minimum), and any asymptotes — and be able to read values off a sketch or use the graph to solve equations.</p>`,
+      callout: "Exam papers nearly always ask you to find at least one of: x-intercepts, y-intercept, and the turning point — know all three methods cold."
+    },
+
+    {
+      type: "content",
+      tag: "Vocabulary",
+      title: "Key terms",
+      html: `<p>These words appear in mark schemes — use them precisely:</p>
+        <ul>
+          <li><b>Parabola</b> — the U-shaped (or ∩-shaped) curve of a quadratic function</li>
+          <li><b>Turning point / stationary point</b> — where the gradient is momentarily zero; for a parabola this is the maximum or minimum</li>
+          <li><b>Maximum / minimum</b> — the highest or lowest point of the curve</li>
+          <li><b>Hyperbola</b> — the two-branch curve of a reciprocal function <code>y = a/x</code></li>
+          <li><b>Asymptote</b> — a line the curve approaches but never touches (for <code>y = a/x</code>, the asymptotes are the x-axis and y-axis)</li>
+          <li><b>Exponential</b> — a function of the form <code>y = a·kˣ</code> where the variable is the power</li>
+        </ul>`
+    },
+
+    {
+      type: "quiz",
+      qtype: "mcq",
+      title: "Vocabulary check",
+      question: "What is the name of the point on a parabola where the gradient is zero?",
+      options: ["Asymptote", "Turning point", "Intercept", "Coefficient"],
+      correct: 1,
+      explain: "The turning point (also called the stationary point) is where the curve changes direction — gradient zero."
+    },
+
+    {
+      type: "content",
+      tag: "Quadratics",
+      title: "Sketching y = ax² + c",
+      html: `<p>This is the simplest quadratic family — no <code>bx</code> term, so the curve is symmetric about the y-axis.</p>
+        <ul>
+          <li>If <code>a &gt; 0</code>: the parabola opens <b>upward</b> (∪-shape), minimum point</li>
+          <li>If <code>a &lt; 0</code>: the parabola opens <b>downward</b> (∩-shape), maximum point</li>
+          <li>The turning point is always at <code>(0, c)</code></li>
+          <li>Larger |a| makes the parabola narrower</li>
+        </ul>`,
+      svg: `<svg viewBox="0 0 320 220" width="320" height="220" role="img" aria-label="Graph of y = x squared minus 2">
+        <title>y = x² − 2</title>
+        <line x1="20" y1="110" x2="300" y2="110" stroke="#CBD5E1" stroke-width="1.5"/>
+        <line x1="160" y1="10" x2="160" y2="210" stroke="#CBD5E1" stroke-width="1.5"/>
+        <text x="295" y="105" font-size="11" fill="#94A3B8">x</text>
+        <text x="166" y="20" font-size="11" fill="#94A3B8">y</text>
+        <path d="M 60 200 Q 160 0 260 200" fill="none" stroke="#1B4F8A" stroke-width="2.5"/>
+        <circle cx="160" cy="80" r="4" fill="#B8860B"/>
+        <text x="168" y="78" font-size="11" fill="#B8860B" font-weight="600">min (0, −2)</text>
+      </svg>`,
+      formula: "y = x² − 2 &nbsp;→&nbsp; minimum at (0, −2)"
+    },
+
+    {
+      type: "content",
+      tag: "Quadratics",
+      title: "Sketching y = ax² + bx + c — the 5-step method",
+      html: `<p>For the general quadratic, follow this exam-proof method:</p>`,
+      worked: [
+        "<b>Step 1 — Shape:</b> look at the sign of <i>a</i>. Positive → ∪ (minimum). Negative → ∩ (maximum).",
+        "<b>Step 2 — y-intercept:</b> substitute <code>x = 0</code>. The curve crosses the y-axis at <code>(0, c)</code>.",
+        "<b>Step 3 — x-intercepts:</b> set <code>y = 0</code> and solve by factorising, completing the square, or the quadratic formula.",
+        "<b>Step 4 — Turning point:</b> use <code>x = −b/2a</code> to find the x-coordinate, then substitute back to find y.",
+        "<b>Step 5 — Sketch:</b> plot the intercepts and turning point, then draw a smooth curve through them."
+      ],
+      formula: "Turning point x-coordinate: x = −b / 2a",
+      callout: "If the question says 'by completing the square', you must show that method — even if factorising looks faster, you will lose marks for using a different method."
+    },
+
+    {
+      type: "content",
+      tag: "Worked example",
+      title: "Completing the square to find the turning point",
+      html: `<p>Find the turning point of <code>y = −x² − 2x + 3</code> by completing the square.</p>`,
+      worked: [
+        "Factor out −1 from the x² and x terms: <code>y = −(x² + 2x) + 3</code>",
+        "Complete the square inside the bracket: <code>x² + 2x = (x + 1)² − 1</code>",
+        "Substitute back: <code>y = −[(x + 1)² − 1] + 3 = −(x + 1)² + 1 + 3</code>",
+        "Simplify: <code>y = −(x + 1)² + 4</code>",
+        "Since the coefficient is negative, this is a <b>maximum</b> at <code>(−1, 4)</code>"
+      ],
+      formula: "y = −(x + 1)² + 4 &nbsp;→&nbsp; maximum at (−1, 4)"
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Apply it: turning point",
+      question: "The curve y = x² − 6x + 5 has its turning point at (3, k). Find the value of k.",
+      accept: ["-4", "−4"],
+      explain: "Complete the square: x² − 6x + 5 = (x − 3)² − 9 + 5 = (x − 3)² − 4, so the minimum is at (3, −4)."
+    },
+
+    {
+      type: "quiz",
+      qtype: "mcq",
+      title: "Apply it: shape and intercept",
+      question: "For the curve y = −2x² + 8, which statement is correct?",
+      options: [
+        "Maximum point, y-intercept at (0, 8)",
+        "Minimum point, y-intercept at (0, 8)",
+        "Maximum point, y-intercept at (0, −2)",
+        "Minimum point, y-intercept at (0, −8)"
+      ],
+      correct: 0,
+      explain: "a = −2 is negative so the parabola has a maximum; substituting x = 0 gives y = 8, the y-intercept."
+    },
+
+    {
+      type: "content",
+      tag: "Reciprocals",
+      title: "Sketching reciprocal graphs y = a/x",
+      html: `<p>Reciprocal graphs (hyperbolas) behave very differently from parabolas:</p>
+        <ul>
+          <li>The curve <b>never crosses</b> the x-axis or y-axis — these are <b>asymptotes</b></li>
+          <li>If <code>a &gt; 0</code>: branches sit in quadrants 1 and 3 (top-right, bottom-left)</li>
+          <li>If <code>a &lt; 0</code>: branches sit in quadrants 2 and 4 (top-left, bottom-right)</li>
+          <li>As <code>x → ∞</code>, <code>y → 0</code>. As <code>x → 0</code>, <code>y → ±∞</code></li>
+        </ul>`,
+      svg: `<svg viewBox="0 0 320 220" width="320" height="220" role="img" aria-label="Graph of y equals 4 over x">
+        <title>y = 4/x</title>
+        <line x1="20" y1="110" x2="300" y2="110" stroke="#CBD5E1" stroke-width="1.5"/>
+        <line x1="160" y1="10" x2="160" y2="210" stroke="#CBD5E1" stroke-width="1.5"/>
+        <text x="295" y="105" font-size="11" fill="#94A3B8">x</text>
+        <text x="166" y="20" font-size="11" fill="#94A3B8">y</text>
+        <path d="M 175 15 C 185 60, 200 90, 270 100" fill="none" stroke="#8B1A1A" stroke-width="2.5"/>
+        <path d="M 50 120 C 120 130, 135 160, 145 205" fill="none" stroke="#8B1A1A" stroke-width="2.5"/>
+      </svg>`,
+      formula: "y = a/x &nbsp;→&nbsp; asymptotes: x = 0 and y = 0",
+      callout: "Cambridge mark schemes often ask you to 'state the equations of the asymptotes' — the answer is always x = 0 and y = 0 for y = a/x."
+    },
+
+    {
+      type: "quiz",
+      qtype: "mcq",
+      title: "Apply it: reciprocal graphs",
+      question: "Which line(s) are asymptotes of the graph y = −5/x?",
+      options: ["y = −5 only", "x = 0 and y = 0", "x = −5 only", "x = 5 and y = 5"],
+      correct: 1,
+      explain: "Every graph of the form y = a/x has the two axes themselves as asymptotes, regardless of the value of a."
+    },
+
+    {
+      type: "content",
+      tag: "Exponentials",
+      title: "Sketching exponential graphs y = a·kˣ",
+      html: `<p>Exponential graphs model growth and decay:</p>
+        <ul>
+          <li>If <code>k &gt; 1</code>: the curve shows <b>growth</b> — increases rapidly as x increases</li>
+          <li>If <code>0 &lt; k &lt; 1</code>: the curve shows <b>decay</b> — decreases toward zero as x increases</li>
+          <li>The curve always passes through <code>(0, a)</code> since <code>k⁰ = 1</code></li>
+          <li>The x-axis (<code>y = 0</code>) is a horizontal asymptote — the curve gets close to it but never touches it</li>
+        </ul>`,
+      svg: `<svg viewBox="0 0 320 220" width="320" height="220" role="img" aria-label="Graph of y equals 2 to the power x">
+        <title>y = 2ˣ</title>
+        <line x1="20" y1="190" x2="300" y2="190" stroke="#CBD5E1" stroke-width="1.5"/>
+        <line x1="60" y1="10" x2="60" y2="210" stroke="#CBD5E1" stroke-width="1.5"/>
+        <path d="M 60 188 C 120 185, 180 160, 280 30" fill="none" stroke="#14B8A6" stroke-width="2.5"/>
+        <circle cx="60" cy="170" r="4" fill="#B8860B"/>
+        <text x="68" y="168" font-size="11" fill="#B8860B" font-weight="600">(0, a)</text>
+      </svg>`,
+      formula: "y = a·kˣ &nbsp;→&nbsp; passes through (0, a); asymptote y = 0",
+      callout: "Sketch questions often combine an exponential with a line — you may be asked for the number of intersection points, not the exact coordinates."
+    },
+
+    {
+      type: "quiz",
+      qtype: "mcq",
+      title: "Apply it: exponential graphs",
+      question: "The graph of y = 3 × (0.5)ˣ passes through which point, and does it show growth or decay?",
+      options: ["(0, 3), growth", "(0, 0.5), decay", "(0, 3), decay", "(3, 0), decay"],
+      correct: 2,
+      explain: "At x = 0, y = 3 × 1 = 3, so it passes through (0, 3). Since 0 < k < 1 (k = 0.5), the curve decays."
+    },
+
+    {
+      type: "content",
+      tag: "Solving with graphs",
+      title: "Using a sketch to solve equations",
+      html: `<p>A common Extended-paper task: use a sketched/given curve to <b>solve an equation</b> or <b>read off values</b>.</p>
+        <ul>
+          <li>To solve <code>f(x) = 0</code>: read the x-intercepts</li>
+          <li>To solve <code>f(x) = k</code>: draw the horizontal line <code>y = k</code> and read where it crosses the curve</li>
+          <li>To solve <code>f(x) = g(x)</code>: sketch both curves and read the x-coordinates of their intersection points</li>
+        </ul>`,
+      callout: "When the question says 'use your graph', you are expected to read approximate values, not calculate exact ones — small tolerances are allowed in the mark scheme."
+    },
+
+    {
+      type: "quiz",
+      qtype: "mcq",
+      title: "Final check: graph methods",
+      question: "To solve the equation x² − 2x − 3 = 5 using a graph of y = x² − 2x − 3, you should:",
+      options: [
+        "Find where the curve crosses the x-axis",
+        "Draw the line y = 5 and find where it meets the curve",
+        "Find the turning point of the curve",
+        "Find the y-intercept of the curve"
+      ],
+      correct: 1,
+      explain: "Since the equation has been set equal to 5 (not 0), draw the horizontal line y = 5 and read the x-coordinates of the intersection points."
+    },
+
+    {
+      type: "complete",
+      title: "Chapter 18 complete",
+      message: "You've covered quadratics, reciprocals, and exponentials — including completing the square and using graphs to solve equations. Ready for the Cambridge 0580 Extended exam style on this topic."
+    }
+  ]
+};
+</script>
+<script src="../assets/js/lesson-engine.js"></script>
+
+</body>
+</html>
