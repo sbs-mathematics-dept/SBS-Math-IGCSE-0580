@@ -18,6 +18,34 @@
 .lab-feature{font-size:12px;color:var(--gray-600);display:flex;align-items:center;gap:6px;margin:3px 0;}
 .lab-feature::before{content:'✓';color:#059669;font-weight:700;}
 .lab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;}
+.labs-hero{
+  padding:3rem 2rem;
+  position:relative;
+  overflow:hidden;
+  min-height:420px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  background:
+    linear-gradient(90deg, rgba(11,32,68,0.97) 0%, rgba(15,40,82,0.93) 30%, rgba(20,50,95,0.55) 55%, rgba(20,50,95,0.15) 75%, rgba(20,50,95,0) 100%),
+    url('assets/labs-hero.jpg');
+  background-size: cover;
+  background-position: center right;
+  color:#fff;
+}
+.labs-hero::before{ content:none; }
+.labs-hero::after{ content:none; }
+@media (max-width: 700px){
+  .labs-hero{
+    min-height:320px;
+    background:
+      linear-gradient(180deg, rgba(11,32,68,0.95) 0%, rgba(11,32,68,0.88) 60%, rgba(11,32,68,0.75) 100%),
+      url('assets/labs-hero.jpg');
+    background-size: cover;
+    background-position: center 30%;
+  }
+}
+.labs-hero > *{position:relative; z-index:1;}
 </style>
 </head>
 <body>
@@ -34,8 +62,8 @@
   </ul>
 </nav>
 
-<div class="hero" style="padding:3rem 2rem;">
-  <div class="hero-badge">✦ 8 Interactive Labs</div>
+<div class="hero labs-hero">
+  <div class="hero-badge">✦ 9 Interactive Labs</div>
   <h1>Mathematics <span>you can explore</span></h1>
   <p>Every lab is built for Cambridge IGCSE 0580 Extended. Open any lab directly — no login, no app, no download.</p>
 </div>
