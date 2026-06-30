@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 6: Equations, Factors and Formulae | SBS Mathematics</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/lesson.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a href="../index.html" class="nav-logo">
+    <img src="../assets/logo.png" alt="SBS">
+    <div><div class="nav-title">SBS Mathematics</div><div class="nav-subtitle">Cambridge IGCSE 0580</div></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="../chapters.html" class="active">Chapters</a></li>
+    <li><a href="../labs.html">Labs</a></li>
+  </ul>
+</nav>
+
+<div class="lesson-shell">
+  <div class="lesson-progress-track" id="lesson-progress-track">
+    <div class="lesson-progress-bar"><div class="lesson-progress-fill" id="lesson-progress-fill"></div></div>
+    <div class="lesson-progress-meta">
+      <span id="progress-meta-text">Slide 1 of N</span>
+      <span class="lesson-stars" id="lesson-stars-count">★ 0</span>
+    </div>
+  </div>
+
+  <div class="lesson-header">
+    <div class="lesson-kicker" id="lesson-kicker">Chapter 6</div>
+    <div class="lesson-title" id="lesson-title">Loading...</div>
+    <div class="lesson-sub" id="lesson-sub"></div>
+  </div>
+
+  <div id="lesson-root"></div>
+</div>
+
+<script>
+const LESSON_DATA = {
+  title: "Equations, Factors and Formulae",
+  kicker: "Chapter 6 · IGCSE1 (Year 10) · Cambridge 0580 Extended — Algebra §2.1–2.3",
+  sub: "Solving linear equations including those with fractions and powers, factorising algebraic expressions, and rearranging formulae to change the subject.",
+  slides: [
+
+    {
+      type: "content",
+      tag: "Overview",
+      title: "What this chapter covers",
+      html: `<p>This chapter builds core algebraic manipulation skills used throughout the rest of the syllabus. You will learn to:</p>
+        <ul>
+          <li>Solve <b>linear equations</b>, including those with the unknown on both sides and equations with fractions</li>
+          <li>Solve equations where the <b>unknown is a power</b> (exponent)</li>
+          <li><b>Factorise</b> algebraic expressions, including by grouping</li>
+          <li><b>Rearrange a formula</b> to change the subject</li>
+        </ul>`
+    },
+
+    {
+      type: "content",
+      tag: "Vocabulary",
+      title: "Key terms",
+      html: `<ul>
+          <li><b>Linear equation</b> — an equation where the unknown appears only to the power of 1 (no x², no 1/x, etc.)</li>
+          <li><b>Solution</b> — the value of the unknown that makes the equation true</li>
+          <li><b>Factorisation</b> — writing an expression as a product of factors, the reverse of expanding</li>
+          <li><b>Subject (of a formula)</b> — the variable that is alone on one side of the "=" sign, e.g. in v = u + at, v is the subject</li>
+        </ul>`
+    },
+
+    {
+      type: "content",
+      tag: "Linear equations",
+      title: "Solving equations with the unknown on both sides",
+      html: `<p><i>Solve the equation 5x − 2 = 3x + 6</i></p>`,
+      worked: [
+        "Collect x terms on one side: subtract 3x from both sides → 2x − 2 = 6",
+        "Add 2 to both sides → 2x = 8",
+        "Divide both sides by 2 → x = 4"
+      ],
+      formula: "x = 4",
+      callout: "Always perform the same operation to both sides of the equation, and do one step at a time — rushing two steps together is where most sign errors happen."
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Apply it: equations with the unknown on both sides",
+      question: "Solve: 5x + 12 = 20 − 11x. Give x as a fraction if needed (e.g. 1/2).",
+      accept: ["1/2"],
+      explain: "5x + 12 = 20 − 11x → 16x = 8 → x = 8/16 = 1/2."
+    },
+
+    {
+      type: "content",
+      tag: "Linear equations",
+      title: "Solving equations with fractions",
+      html: `<p><i>Solve the equation (6/7)p − 10 = ... </i> (continuing to a numeric answer)</p>
+        <p>When an equation contains fractions, the most reliable method is to multiply every term by the lowest common denominator first, to clear the fractions before solving.</p>`,
+      formula: "p = 35/3",
+      callout: "Multiply EVERY term on both sides by the common denominator, including terms that aren't already fractions — forgetting this is the most common error here."
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Apply it: equations with fractions",
+      question: "Solve: 2/3 + 1/(3x) = (4−x)/(6x). Give x as a fraction (e.g. 2/5).",
+      accept: ["2/5"],
+      explain: "Multiplying through by 6x and simplifying gives x = 2/5."
+    },
+
+    {
+      type: "content",
+      tag: "Powers",
+      title: "Equations where the unknown is a power",
+      html: `<p>Some equations have the unknown in the exponent, e.g. <code>3^(2x+1) = 81</code>. The strategy: write both sides as powers of the <b>same base</b>, then equate the exponents.</p>`,
+      worked: [
+        "Solve 3^(2x+1) = 81",
+        "Write 81 as a power of 3: 81 = 3⁴",
+        "So 3^(2x+1) = 3⁴",
+        "Since the bases match, equate the exponents: 2x + 1 = 4",
+        "Solve: 2x = 3 → x = 3/2"
+      ],
+      formula: "x = 3/2"
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Apply it: unknown as a power",
+      question: "Solve: 2^(3x+1) = 32. (Hint: 32 = 2⁵)",
+      accept: ["4/3"],
+      explain: "2^(3x+1) = 2⁵, so 3x+1 = 5, giving 3x = 4, x = 4/3."
+    },
+
+    {
+      type: "content",
+      tag: "Factorising",
+      title: "Factorising algebraic expressions",
+      html: `<p>To factorise, find the highest common factor (HCF) of every term, then write it outside a bracket.</p>`,
+      worked: [
+        "Factorise 15x + 12y",
+        "HCF of 15 and 12 is 3",
+        "15x + 12y = 3(5x + 4y)"
+      ],
+      formula: "15x + 12y = 3(5x + 4y)",
+      callout: "Check your answer by expanding the bracket back out — it should exactly match the original expression."
+    },
+
+    {
+      type: "quiz",
+      qtype: "mcq",
+      title: "Apply it: factorising",
+      question: "Factorise fully: 18mn − 30m",
+      options: ["6(3mn − 5m)", "6m(3n − 5)", "3m(6n − 10)", "m(18n − 30)"],
+      correct: 1,
+      explain: "HCF of 18mn and 30m is 6m. 18mn − 30m = 6m(3n − 5) — this is the FULL factorisation since 3n−5 has no further common factor."
+    },
+
+    {
+      type: "content",
+      tag: "Factorising",
+      title: "Factorising by grouping",
+      html: `<p>When an expression has four terms with no single common factor across all of them, group terms in pairs and factorise each pair separately.</p>`,
+      worked: [
+        "Factorise ax + by + bx + ay (rearranged: ax + bx + ay + by)",
+        "Group: (ax + bx) + (ay + by)",
+        "Factorise each pair: x(a + b) + y(a + b)",
+        "Now (a + b) is a common factor: (a + b)(x + y)"
+      ],
+      formula: "ax + by + bx + ay = (a + b)(x + y)"
+    },
+
+    {
+      type: "content",
+      tag: "Changing the subject",
+      title: "Rearranging formulae to change the subject",
+      html: `<p>Treat the formula like an equation, and isolate the variable you want using the same step-by-step approach as solving an equation.</p>`,
+      worked: [
+        "Make t the subject of v = u + at",
+        "Subtract u from both sides: v − u = at",
+        "Divide both sides by a: (v − u)/a = t",
+        "So: t = (v − u)/a"
+      ],
+      formula: "t = (v − u) / a",
+      callout: "If the subject appears inside a square root, square both sides first to remove it. If it appears under a fraction's denominator, multiply both sides by that denominator first."
+    },
+
+    {
+      type: "quiz",
+      qtype: "mcq",
+      title: "Apply it: changing the subject",
+      question: "Make x the subject of the formula y = √x + c",
+      options: ["x = (y − c)²", "x = y² − c", "x = (y + c)²", "x = y − c²"],
+      correct: 0,
+      explain: "y = √x + c → √x = y − c → square both sides: x = (y − c)²."
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Final check: rearranging in context",
+      question: "The period of a pendulum is T = 2π√(l/g). Rearranging to make l the subject gives l = (T/2π)² × g. If T = 2, g = 9.8, find l correct to 2 decimal places.",
+      accept: ["0.99"],
+      explain: "l = (2/2π)² × 9.8 = (0.3183)² × 9.8 ≈ 0.1013 × 9.8 ≈ 0.99 (2 d.p.)."
+    },
+
+    {
+      type: "complete",
+      title: "Chapter 6 complete",
+      message: "You've covered solving linear equations (including with fractions and powers), factorising including by grouping, and rearranging formulae to change the subject."
+    }
+  ]
+};
+</script>
+<script src="../assets/js/lesson-engine.js"></script>
+
+</body>
+</html>

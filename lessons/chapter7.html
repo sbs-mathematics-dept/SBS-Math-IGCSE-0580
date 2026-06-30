@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 7: Perimeter, Area and Volume | SBS Mathematics</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/lesson.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a href="../index.html" class="nav-logo">
+    <img src="../assets/logo.png" alt="SBS">
+    <div><div class="nav-title">SBS Mathematics</div><div class="nav-subtitle">Cambridge IGCSE 0580</div></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="../chapters.html" class="active">Chapters</a></li>
+    <li><a href="../labs.html">Labs</a></li>
+  </ul>
+</nav>
+
+<div class="lesson-shell">
+  <div class="lesson-progress-track" id="lesson-progress-track">
+    <div class="lesson-progress-bar"><div class="lesson-progress-fill" id="lesson-progress-fill"></div></div>
+    <div class="lesson-progress-meta">
+      <span id="progress-meta-text">Slide 1 of N</span>
+      <span class="lesson-stars" id="lesson-stars-count">★ 0</span>
+    </div>
+  </div>
+
+  <div class="lesson-header">
+    <div class="lesson-kicker" id="lesson-kicker">Chapter 7</div>
+    <div class="lesson-title" id="lesson-title">Loading...</div>
+    <div class="lesson-sub" id="lesson-sub"></div>
+  </div>
+
+  <div id="lesson-root"></div>
+</div>
+
+<script>
+const LESSON_DATA = {
+  title: "Perimeter, Area and Volume",
+  kicker: "Chapter 7 · IGCSE1 (Year 10) · Cambridge 0580 Extended — Mensuration §4.1–4.5",
+  sub: "Area of 2D shapes, circles, arcs and sectors, nets, and the surface area and volume of prisms, cylinders, cones, pyramids and spheres.",
+  slides: [
+
+    {
+      type: "content",
+      tag: "Overview",
+      title: "What this chapter covers",
+      html: `<p>This chapter covers mensuration — measuring shapes. By the end you will be able to:</p>
+        <ul>
+          <li>Calculate areas and perimeters of <b>2D shapes</b>, including compound shapes</li>
+          <li>Find the <b>circumference</b> and <b>area</b> of circles, and of <b>arcs</b> and <b>sectors</b></li>
+          <li>Use <b>nets</b> to understand 3D solids</li>
+          <li>Calculate the <b>surface area</b> and <b>volume</b> of prisms, cylinders, cones, pyramids, and spheres</li>
+        </ul>`,
+      callout: "Try the 3D Geometry Lab alongside this chapter to rotate and explore each solid interactively."
+    },
+
+    {
+      type: "content",
+      tag: "2D shapes",
+      title: "Area formulas for 2D shapes",
+      html: `<p>These formulas should be instantly recognisable on sight:</p>`,
+      formula: "Triangle: ½bh &nbsp;|&nbsp; Parallelogram: bh &nbsp;|&nbsp; Trapezium: ½(a+b)h",
+      svg: `<svg viewBox="0 0 320 130" width="320" height="130" role="img" aria-label="Triangle, parallelogram and trapezium with base and height labelled">
+        <title>2D shape area diagrams</title>
+        <polygon points="20,110 100,110 60,30" fill="#EFF6FF" stroke="#1B4F8A" stroke-width="2"/>
+        <text x="45" y="125" font-size="10" fill="#475569">b</text>
+        <polygon points="130,110 210,110 230,30 150,30" fill="#FEF2F2" stroke="#8B1A1A" stroke-width="2"/>
+        <text x="165" y="125" font-size="10" fill="#475569">b</text>
+        <polygon points="245,110 305,110 290,30 260,30" fill="#F0FDFA" stroke="#0D9488" stroke-width="2"/>
+        <text x="265" y="125" font-size="10" fill="#475569">a, b</text>
+      </svg>`,
+      callout: "For irregular polygons, split them into triangles and quadrilaterals you already know the formula for, then add the areas together."
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Apply it: triangle area",
+      question: "The area of a triangle is 40 cm². If its base is 5 cm, find the height, in cm.",
+      accept: ["16"],
+      explain: "Area = ½bh, so 40 = ½ × 5 × h → 40 = 2.5h → h = 16 cm."
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Apply it: compound area",
+      question: "A compound shape is made of a 7 cm × 5 cm rectangle with a right-angled triangle of base 5 cm and height 6 cm attached to one side. Find the total area, in cm².",
+      accept: ["50"],
+      explain: "Rectangle area = 7×5 = 35 cm². Triangle area = ½×5×6 = 15 cm². Total = 35+15 = 50 cm²."
+    },
+
+    {
+      type: "content",
+      tag: "Circles",
+      title: "Circumference and area of circles",
+      html: `<p>Every circle calculation starts from the radius r (or diameter d = 2r):</p>`,
+      formula: "Circumference = 2πr = πd &nbsp;&nbsp;|&nbsp;&nbsp; Area = πr²",
+      callout: "Read the question carefully — it may give you the diameter, not the radius. Always check before substituting into the area formula, which needs r."
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Apply it: circle area",
+      question: "Find the area of a circle with diameter 10 m, in terms of π (e.g. write 25π as: 25pi).",
+      accept: ["25pi", "25π"],
+      explain: "Diameter 10 m means radius 5 m. Area = πr² = π × 5² = 25π m²."
+    },
+
+    {
+      type: "content",
+      tag: "Arcs & sectors",
+      title: "Arcs and sectors",
+      html: `<p>A <b>sector</b> is the 'pizza slice' region between two radii. An <b>arc</b> is the curved part of the circle's circumference bounding the sector. The angle θ at the centre tells you what fraction of the full circle you have.</p>`,
+      svg: `<svg viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="Circle showing a sector with angle theta at the centre">
+        <title>Sector of a circle</title>
+        <circle cx="100" cy="100" r="80" fill="none" stroke="#CBD5E1" stroke-width="1.5"/>
+        <path d="M 100 100 L 100 20 A 80 80 0 0 1 168 140 Z" fill="#FEF9C3" stroke="#B8860B" stroke-width="2"/>
+        <text x="120" y="65" font-size="12" fill="#854D0E">θ</text>
+        <circle cx="100" cy="100" r="2.5" fill="#1E293B"/>
+      </svg>`,
+      formula: "Arc length = (θ/360) × 2πr &nbsp;&nbsp;|&nbsp;&nbsp; Sector area = (θ/360) × πr²"
+    },
+
+    {
+      type: "quiz",
+      qtype: "mcq",
+      title: "Apply it: sector area",
+      question: "A sector has radius 6 cm and angle 90°. What fraction of the full circle's area does this sector represent?",
+      options: ["1/2", "1/3", "1/4", "1/6"],
+      correct: 2,
+      explain: "90° out of 360° is 90/360 = 1/4 of the full circle."
+    },
+
+    {
+      type: "content",
+      tag: "3D solids",
+      title: "Nets and prisms",
+      html: `<p>A <b>net</b> is a 2D shape that folds up to form a 3D solid — useful for visualising surface area.</p>
+        <p>A <b>prism</b> is a solid with the same cross-section all along its length (e.g. a triangular prism has a triangle cross-section, a cuboid has a rectangle cross-section).</p>`,
+      formula: "Volume of a prism = (area of cross-section) × length"
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Apply it: cuboid volume",
+      question: "Find the volume of a cuboid with length 8 cm, width 5 cm, and height 3 cm, in cm³.",
+      accept: ["120"],
+      explain: "Volume of cuboid = length × width × height = 8 × 5 × 3 = 120 cm³."
+    },
+
+    {
+      type: "content",
+      tag: "3D solids",
+      title: "Cylinders, cones, pyramids and spheres",
+      html: `<p>These curved/pointed solids each have their own formula — make sure you don't mix them up:</p>`,
+      worked: [
+        "<b>Cylinder:</b> Volume = πr²h &nbsp; Surface area = 2πr² + 2πrh",
+        "<b>Cone:</b> Volume = ⅓πr²h &nbsp; Curved surface area = πrl (l = slant height)",
+        "<b>Pyramid:</b> Volume = ⅓ × base area × perpendicular height",
+        "<b>Sphere:</b> Volume = (4/3)πr³ &nbsp; Surface area = 4πr²"
+      ],
+      callout: "Cone and pyramid volumes both have a 1/3 factor — they're 'pointed' versions of a cylinder/prism with the same base. The full prism/cylinder volume would be 3× larger."
+    },
+
+    {
+      type: "quiz",
+      qtype: "mcq",
+      title: "Apply it: choosing the right formula",
+      question: "Which formula gives the volume of a cone with base radius r and height h?",
+      options: ["πr²h", "⅓πr²h", "(4/3)πr³", "2πr² + 2πrh"],
+      correct: 1,
+      explain: "Cone volume = ⅓πr²h — one third of the volume of a cylinder with the same base and height."
+    },
+
+    {
+      type: "content",
+      tag: "Worked example",
+      title: "Real-world volume problem: the Great Pyramid",
+      html: `<p><i>The Great Pyramid at Giza has a square base of side 230.4 m and perpendicular height 146.7 m. Find its volume, to 3 significant figures.</i></p>`,
+      worked: [
+        "Base area = 230.4² = 53 084.16 m²",
+        "Volume = ⅓ × base area × height",
+        "Volume = ⅓ × 53 084.16 × 146.7",
+        "Volume ≈ 2 600 000 000 m³ (3 s.f.)"
+      ],
+      formula: "Volume ≈ 2.60 × 10⁹ m³"
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Final check: sphere volume",
+      question: "A solid metal sphere has radius 3 cm. Find its volume in terms of π (e.g. write 36π as: 36pi).",
+      accept: ["36pi", "36π"],
+      explain: "Volume = (4/3)πr³ = (4/3)π(3³) = (4/3)π(27) = 36π cm³."
+    },
+
+    {
+      type: "complete",
+      title: "Chapter 7 complete",
+      message: "You've covered 2D shape areas, circles, arcs and sectors, nets, and the surface area and volume of prisms, cylinders, cones, pyramids and spheres. Try the 3D Geometry Lab to explore these solids interactively."
+    }
+  ]
+};
+</script>
+<script src="../assets/js/lesson-engine.js"></script>
+
+</body>
+</html>
