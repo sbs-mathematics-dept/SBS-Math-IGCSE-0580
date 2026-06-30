@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vectors 2D Lab | SBS Mathematics</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<style>
+.vec-layout { display: grid; grid-template-columns: 280px 1fr; gap: 16px; }
+canvas { display:block; border:1px solid var(--gray-200); border-radius:8px; background:white; }
+.v-section { border-bottom:1px solid var(--gray-200); padding:12px 0; }
+.v-section:last-child { border:none; }
+.v-label { font-size:11px;font-weight:600;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px; }
+.vec-row { display:flex; gap:8px; align-items:center; margin-bottom:6px; }
+.vec-row label { font-family:var(--font-mono); font-size:13px; width:60px; color:var(--gray-600); }
+.vec-row input[type=number] { width:64px; padding:4px 6px; border:1px solid var(--gray-200); border-radius:6px; font-family:var(--font-mono); font-size:13px; }
+.vec-pill { display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:999px; font-family:var(--font-mono); font-size:12px; font-weight:600; }
+.pill-a { background:var(--sbs-blue-pale); color:var(--sbs-blue); }
+.pill-b { background:var(--sbs-crimson-pale); color:var(--sbs-crimson); }
+.pill-r { background:#FEF9C3; color:#854D0E; }
+.result-box { font-family:var(--font-mono); font-size:14px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; padding:10px 12px; margin-top:8px; line-height:1.8; }
+.op-btn { padding:6px 10px; border:1px solid var(--gray-200); border-radius:6px; background:white; font-size:12px; cursor:pointer; margin-right:6px; margin-bottom:6px; }
+.op-btn.active { background:var(--sbs-blue); color:white; border-color:var(--sbs-blue); }
+.quiz-box { background:var(--sbs-blue-pale); border:1px solid #BFDBFE; border-radius:10px; padding:16px; margin-top:16px; }
+.quiz-q { font-weight:600; color:var(--sbs-blue); margin-bottom:10px; font-size:14px; }
+.quiz-opt { display:block; width:100%; text-align:left; padding:8px 12px; margin-bottom:6px; border:1px solid var(--gray-200); border-radius:6px; background:white; cursor:pointer; font-family:var(--font-mono); font-size:13px; }
+.quiz-opt:hover { border-color:var(--sbs-blue); }
+.quiz-opt.correct { background:#DCFCE7; border-color:#16A34A; }
+.quiz-opt.wrong { background:#FEE2E2; border-color:#DC2626; }
+.quiz-feedback { font-size:13px; margin-top:8px; font-weight:600; }
+.score-pill { font-family:var(--font-mono); font-size:12px; background:var(--sbs-gold); color:white; padding:3px 10px; border-radius:999px; }
+@media(max-width:700px){.vec-layout{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="../index.html" class="nav-logo">
+    <img src="../assets/logo.png" alt="SBS">
+    <div><div class="nav-title">SBS Mathematics</div><div class="nav-subtitle">Cambridge IGCSE 0580</div></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="../labs.html" class="active">Labs</a></li>
+  </ul>
+</nav>
+
+<div class="lab-page">
+  <div class="lab-header">
+    <div class="lab-header-icon">➡️</div>
+    <div>
+      <div class="lab-header-title">Vectors 2D Lab</div>
+      <div class="lab-header-sub">Cambridge 0580 · Vectors — column vectors, addition, scalar multiplication, magnitude, and geometric vector problems</div>
+    </div>
+    <div style="margin-left:auto;"><span class="cambridge-badge">IGCSE Extended</span></div>
+  </div>
+
+  <div class="lab-container">
+    <div class="controls">
+
+      <div class="v-section">
+        <div class="v-label">Vector a <span class="vec-pill pill-a">a</span></div>
+        <div class="vec-row"><label>a₁ (x)</label><input type="number" id="ax" value="3" oninput="render()"></div>
+        <div class="vec-row"><label>a₂ (y)</label><input type="number" id="ay" value="2" oninput="render()"></div>
+      </div>
+
+      <div class="v-section">
+        <div class="v-label">Vector b <span class="vec-pill pill-b">b</span></div>
+        <div class="vec-row"><label>b₁ (x)</label><input type="number" id="bx" value="-1" oninput="render()"></div>
+        <div class="vec-row"><label>b₂ (y)</label><input type="number" id="by" value="4" oninput="render()"></div>
+      </div>
+
+      <div class="v-section">
+        <div class="v-label">Operation</div>
+        <button class="op-btn active" data-op="add" onclick="setOp('add')">a + b</button>
+        <button class="op-btn" data-op="sub" onclick="setOp('sub')">a − b</button>
+        <button class="op-btn" data-op="scaleA" onclick="setOp('scaleA')">k·a</button>
+        <button class="op-btn" data-op="scaleB" onclick="setOp('scaleB')">k·b</button>
+        <div class="vec-row" style="margin-top:8px;"><label>k =</label><input type="number" id="kval" value="2" step="0.5" oninput="render()"></div>
+      </div>
+
+      <div class="v-section">
+        <div class="v-label">Result <span class="vec-pill pill-r">r</span></div>
+        <div class="result-box" id="result-box">—</div>
+      </div>
+
+      <div class="v-section">
+        <button class="op-btn" style="width:100%;text-align:center;" onclick="newQuizQuestion()">↻ New exam-style question</button>
+      </div>
+    </div>
+
+    <div>
+      <canvas id="vec-canvas" width="640" height="500"></canvas>
+
+      <div class="quiz-box">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <div style="font-weight:700;color:var(--sbs-blue);font-size:14px;">Exam-style quick check</div>
+          <span class="score-pill" id="score-pill">Score: 0/0</span>
+        </div>
+        <div class="quiz-q" id="quiz-q">Loading question...</div>
+        <div id="quiz-opts"></div>
+        <div class="quiz-feedback" id="quiz-feedback"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById('vec-canvas');
+const ctx = canvas.getContext('2d');
+const cx = canvas.width/2, cy = canvas.height/2, scale = 36;
+let currentOp = 'add';
+
+function setOp(op){
+  currentOp = op;
+  document.querySelectorAll('.op-btn[data-op]').forEach(b=>b.classList.toggle('active', b.dataset.op===op));
+  render();
+}
+
+function toPx(x,y){ return [cx + x*scale, cy - y*scale]; }
+
+function drawGrid(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.strokeStyle = '#F1F5F9'; ctx.lineWidth = 1;
+  for(let gx=-16; gx<=16; gx++){
+    let [px] = toPx(gx,0);
+    if(px<0||px>canvas.width) continue;
+    ctx.beginPath(); ctx.moveTo(px,0); ctx.lineTo(px,canvas.height); ctx.stroke();
+  }
+  for(let gy=-12; gy<=12; gy++){
+    let [,py] = toPx(0,gy);
+    if(py<0||py>canvas.height) continue;
+    ctx.beginPath(); ctx.moveTo(0,py); ctx.lineTo(canvas.width,py); ctx.stroke();
+  }
+  ctx.strokeStyle = '#CBD5E1'; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(0,cy); ctx.lineTo(canvas.width,cy); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(cx,0); ctx.lineTo(cx,canvas.height); ctx.stroke();
+}
+
+function drawArrow(x1,y1,x2,y2,color,label,offset=14){
+  const [px1,py1] = toPx(x1,y1);
+  const [px2,py2] = toPx(x2,y2);
+  ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = 2.5;
+  ctx.beginPath(); ctx.moveTo(px1,py1); ctx.lineTo(px2,py2); ctx.stroke();
+  const ang = Math.atan2(py2-py1, px2-px1);
+  ctx.beginPath();
+  ctx.moveTo(px2,py2);
+  ctx.lineTo(px2-12*Math.cos(ang-0.4), py2-12*Math.sin(ang-0.4));
+  ctx.lineTo(px2-12*Math.cos(ang+0.4), py2-12*Math.sin(ang+0.4));
+  ctx.closePath(); ctx.fill();
+  ctx.font = '600 14px JetBrains Mono, monospace';
+  ctx.fillText(label, px2+offset*Math.cos(ang), py2+offset*Math.sin(ang));
+}
+
+function fmtVec(x,y){ return `(${x}, ${y})`; }
+function magnitude(x,y){ return Math.sqrt(x*x+y*y); }
+
+function render(){
+  const ax = parseFloat(document.getElementById('ax').value)||0;
+  const ay = parseFloat(document.getElementById('ay').value)||0;
+  const bx = parseFloat(document.getElementById('bx').value)||0;
+  const by = parseFloat(document.getElementById('by').value)||0;
+  const k = parseFloat(document.getElementById('kval').value)||0;
+
+  drawGrid();
+  drawArrow(0,0,ax,ay,'#2563EB','a');
+  drawArrow(0,0,bx,by,'#8B1A1A','b');
+
+  let rx, ry, expr, label;
+  if(currentOp==='add'){ rx=ax+bx; ry=ay+by; expr=`a + b = (${ax}, ${ay}) + (${bx}, ${by})`; label='a + b'; }
+  else if(currentOp==='sub'){ rx=ax-bx; ry=ay-by; expr=`a − b = (${ax}, ${ay}) − (${bx}, ${by})`; label='a − b'; }
+  else if(currentOp==='scaleA'){ rx=k*ax; ry=k*ay; expr=`${k}a = ${k} × (${ax}, ${ay})`; label=`${k}a`; }
+  else { rx=k*bx; ry=k*by; expr=`${k}b = ${k} × (${bx}, ${by})`; label=`${k}b`; }
+
+  drawArrow(0,0,rx,ry,'#B8860B',label, 18);
+
+  const mag = magnitude(rx,ry);
+  document.getElementById('result-box').innerHTML =
+    `${expr}<br><b>r = (${rx.toFixed(2).replace(/\.00$/,'')}, ${ry.toFixed(2).replace(/\.00$/,'')})</b><br>|r| = √(${rx.toFixed(0)}² + ${ry.toFixed(0)}²) = <b>${mag.toFixed(2)}</b>`;
+}
+
+/* ---------- Exam-style quiz ---------- */
+let score = 0, attempts = 0, currentAnswer = null;
+
+function rnd(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+
+function newQuizQuestion(){
+  const types = ['add','sub','scale','magnitude','column'];
+  const type = types[rnd(0,types.length-1)];
+  const a = [rnd(-6,6), rnd(-6,6)];
+  const b = [rnd(-6,6), rnd(-6,6)];
+  let qText, correct, options;
+
+  if(type==='add'){
+    correct = `(${a[0]+b[0]}, ${a[1]+b[1]})`;
+    qText = `Given a = (${a[0]}, ${a[1]}) and b = (${b[0]}, ${b[1]}), find a + b.`;
+    options = shuffleOptions(correct, [
+      `(${a[0]-b[0]}, ${a[1]-b[1]})`,
+      `(${a[0]+b[1]}, ${a[1]+b[0]})`,
+      `(${a[0]*b[0]}, ${a[1]*b[1]})`
+    ]);
+  } else if(type==='sub'){
+    correct = `(${a[0]-b[0]}, ${a[1]-b[1]})`;
+    qText = `Given a = (${a[0]}, ${a[1]}) and b = (${b[0]}, ${b[1]}), find a − b.`;
+    options = shuffleOptions(correct, [
+      `(${a[0]+b[0]}, ${a[1]+b[1]})`,
+      `(${b[0]-a[0]}, ${b[1]-a[1]})`,
+      `(${a[0]-b[1]}, ${a[1]-b[0]})`
+    ]);
+  } else if(type==='scale'){
+    const k = rnd(2,4);
+    correct = `(${k*a[0]}, ${k*a[1]})`;
+    qText = `Given a = (${a[0]}, ${a[1]}), find ${k}a.`;
+    options = shuffleOptions(correct, [
+      `(${k+a[0]}, ${k+a[1]})`,
+      `(${a[0]}, ${k*a[1]})`,
+      `(${k*a[0]+1}, ${k*a[1]})`
+    ]);
+  } else if(type==='magnitude'){
+    const v = [rnd(-8,8)||3, rnd(-8,8)||4];
+    const m2 = v[0]*v[0]+v[1]*v[1];
+    const perfect = Math.round(Math.sqrt(m2));
+    correct = (perfect*perfect===m2) ? `${perfect}` : `${Math.sqrt(m2).toFixed(2)}`;
+    qText = `Find the magnitude |v| of the vector v = (${v[0]}, ${v[1]}). Give your answer to 2 d.p. where needed.`;
+    options = shuffleOptions(correct, [
+      `${(v[0]+v[1])}`,
+      `${(m2)}`,
+      `${(Math.sqrt(m2)+1).toFixed(2)}`
+    ]);
+  } else {
+    correct = `(${a[0]}, ${a[1]})`;
+    qText = `Points P(0, 0) and Q(${a[0]}, ${a[1]}) are given. Write the column vector PQ→.`;
+    options = shuffleOptions(correct, [
+      `(${-a[0]}, ${-a[1]})`,
+      `(${a[1]}, ${a[0]})`,
+      `(${a[0]+1}, ${a[1]+1})`
+    ]);
+  }
+
+  currentAnswer = correct;
+  document.getElementById('quiz-q').textContent = qText;
+  const optsDiv = document.getElementById('quiz-opts');
+  optsDiv.innerHTML = '';
+  document.getElementById('quiz-feedback').textContent = '';
+  options.forEach(opt=>{
+    const btn = document.createElement('button');
+    btn.className = 'quiz-opt';
+    btn.textContent = opt;
+    btn.onclick = ()=>checkAnswer(btn, opt);
+    optsDiv.appendChild(btn);
+  });
+}
+
+function shuffleOptions(correct, distractors){
+  const all = [correct, ...distractors];
+  for(let i=all.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [all[i],all[j]] = [all[j],all[i]];
+  }
+  return all;
+}
+
+function checkAnswer(btn, val){
+  attempts++;
+  const allBtns = document.querySelectorAll('.quiz-opt');
+  allBtns.forEach(b=>b.onclick=null);
+  if(val===currentAnswer){
+    btn.classList.add('correct');
+    score++;
+    document.getElementById('quiz-feedback').textContent = 'Correct! Well done.';
+    document.getElementById('quiz-feedback').style.color = '#16A34A';
+  } else {
+    btn.classList.add('wrong');
+    allBtns.forEach(b=>{ if(b.textContent===currentAnswer) b.classList.add('correct'); });
+    document.getElementById('quiz-feedback').textContent = `Not quite — the correct answer is ${currentAnswer}.`;
+    document.getElementById('quiz-feedback').style.color = '#DC2626';
+  }
+  document.getElementById('score-pill').textContent = `Score: ${score}/${attempts}`;
+  setTimeout(newQuizQuestion, 1800);
+}
+
+render();
+newQuizQuestion();
+</script>
+
+</body>
+</html>
