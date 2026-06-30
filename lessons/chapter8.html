@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 8: Probability | SBS Mathematics</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/lesson.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a href="../index.html" class="nav-logo">
+    <img src="../assets/logo.png" alt="SBS">
+    <div><div class="nav-title">SBS Mathematics</div><div class="nav-subtitle">Cambridge IGCSE 0580</div></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="../chapters.html" class="active">Chapters</a></li>
+    <li><a href="../labs.html">Labs</a></li>
+  </ul>
+</nav>
+
+<div class="lesson-shell">
+  <div class="lesson-progress-track" id="lesson-progress-track">
+    <div class="lesson-progress-bar"><div class="lesson-progress-fill" id="lesson-progress-fill"></div></div>
+    <div class="lesson-progress-meta">
+      <span id="progress-meta-text">Slide 1 of N</span>
+      <span class="lesson-stars" id="lesson-stars-count">★ 0</span>
+    </div>
+  </div>
+
+  <div class="lesson-header">
+    <div class="lesson-kicker" id="lesson-kicker">Chapter 8</div>
+    <div class="lesson-title" id="lesson-title">Loading...</div>
+    <div class="lesson-sub" id="lesson-sub"></div>
+  </div>
+
+  <div id="lesson-root"></div>
+</div>
+
+<script>
+const LESSON_DATA = {
+  title: "Probability",
+  kicker: "Chapter 8 · IGCSE1 (Year 10) · Cambridge 0580 Extended — Probability §8.1–8.4",
+  sub: "Sample space, theoretical and experimental probability, mutually exclusive and independent events, and combined events.",
+  slides: [
+
+    {
+      type: "content",
+      tag: "Overview",
+      title: "What this chapter covers",
+      html: `<p>This chapter introduces the language and methods of probability used throughout the rest of the syllabus, including with the Probability Lab on this site. You will learn to:</p>
+        <ul>
+          <li>Use core vocabulary: <b>trial</b>, <b>outcome</b>, <b>event</b>, <b>sample space</b></li>
+          <li>Calculate <b>theoretical</b> and <b>experimental probability (relative frequency)</b></li>
+          <li>Identify <b>mutually exclusive</b> and <b>independent events</b></li>
+          <li>Find probabilities of <b>combined events</b> using sample space diagrams</li>
+        </ul>`
+    },
+
+    {
+      type: "content",
+      tag: "Vocabulary",
+      title: "Core probability vocabulary",
+      html: `<ul>
+          <li><b>Trial</b> — a single performance of an experiment (e.g. one roll of a die)</li>
+          <li><b>Outcome</b> — a possible result of a trial</li>
+          <li><b>Event</b> — a set of one or more outcomes you are interested in</li>
+          <li><b>Sample space</b> — the set of all possible outcomes</li>
+          <li><b>Bias</b> — when an experiment or object favours certain outcomes unfairly (e.g. a weighted die)</li>
+        </ul>`,
+      formula: "P(event) = number of favourable outcomes ÷ total number of outcomes"
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Apply it: theoretical probability",
+      question: "A fair six-sided die is rolled once. What is the probability of rolling a number greater than 4? Give your answer as a fraction (e.g. 1/3).",
+      accept: ["1/3"],
+      explain: "Numbers greater than 4 are 5 and 6 — that's 2 favourable outcomes out of 6 total: 2/6 = 1/3."
+    },
+
+    {
+      type: "content",
+      tag: "Experimental probability",
+      title: "Theoretical vs experimental probability",
+      html: `<ul>
+          <li><b>Theoretical probability</b> — calculated from known, equally likely outcomes (e.g. a fair coin)</li>
+          <li><b>Experimental probability (relative frequency)</b> — based on actual results of repeated trials</li>
+        </ul>`,
+      formula: "Relative frequency = number of times event occurred ÷ total number of trials",
+      callout: "The more trials you perform, the closer the experimental probability tends to get to the theoretical probability — this is sometimes called the Law of Large Numbers."
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Apply it: relative frequency",
+      question: "A spinner is spun 80 times. It lands on red 24 times. What is the relative frequency of landing on red? Give your answer as a decimal.",
+      accept: ["0.3"],
+      explain: "24 ÷ 80 = 0.3."
+    },
+
+    {
+      type: "content",
+      tag: "Combining events",
+      title: "Mutually exclusive and independent events",
+      html: `<ul>
+          <li><b>Mutually exclusive events</b> — events that cannot happen at the same time (e.g. rolling a 3 and rolling a 5 on one die). For mutually exclusive events: <code>P(A or B) = P(A) + P(B)</code></li>
+          <li><b>Independent events</b> — the outcome of one event does not affect the other (e.g. flipping a coin twice). For independent events: <code>P(A and B) = P(A) × P(B)</code></li>
+        </ul>`,
+      formula: "Mutually exclusive: P(A or B) = P(A) + P(B) &nbsp;|&nbsp; Independent: P(A and B) = P(A) × P(B)",
+      callout: "A very common exam error: using the 'or' rule when events are NOT mutually exclusive (i.e. they can both happen), which requires subtracting the overlap. Always check whether the events can occur together."
+    },
+
+    {
+      type: "quiz",
+      qtype: "mcq",
+      title: "Apply it: independent events",
+      question: "A fair coin is flipped and a fair die is rolled. What is P(coin shows heads AND die shows 6)?",
+      options: ["1/2", "1/6", "1/12", "7/12"],
+      correct: 2,
+      explain: "These are independent events: P(heads) × P(6) = 1/2 × 1/6 = 1/12."
+    },
+
+    {
+      type: "content",
+      tag: "Sample space",
+      title: "Sample space diagrams for combined events",
+      html: `<p>When two events happen together (e.g. rolling two dice), a sample space diagram lists every possible combined outcome in a grid — making it easy to count favourable outcomes accurately.</p>`,
+      svg: `<svg viewBox="0 0 260 230" width="260" height="230" role="img" aria-label="Sample space diagram for sums of two dice">
+        <title>Sample space: sum of two dice</title>
+        <text x="10" y="15" font-size="10" fill="#475569">Die 2 →</text>
+        <text x="125" y="225" font-size="10" fill="#475569" text-anchor="middle">Die 1 ↓</text>
+        ${(()=>{ let s=''; for(let i=0;i<=6;i++){ s += `<line x1="${30+i*30}" y1="25" x2="${30+i*30}" y2="205" stroke="#E2E8F0"/>`; s += `<line x1="30" y1="${25+i*30}" x2="210" y2="${25+i*30}" stroke="#E2E8F0"/>`; } return s; })()}
+        ${(()=>{ let s=''; for(let c=1;c<=6;c++) s += `<text x="${15+c*30}" y="20" font-size="10" fill="#1B4F8A" text-anchor="middle">${c}</text>`; return s; })()}
+        ${(()=>{ let s=''; for(let r=1;r<=6;r++) s += `<text x="22" y="${30+r*30}" font-size="10" fill="#1B4F8A" text-anchor="middle">${r}</text>`; return s; })()}
+        ${(()=>{ let s=''; for(let r=1;r<=6;r++) for(let c=1;c<=6;c++) s += `<text x="${15+c*30}" y="${30+r*30}" font-size="10" fill="#475569" text-anchor="middle">${r+c}</text>`; return s; })()}
+      </svg>`
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Final check: sample space",
+      question: "Using the sample space diagram above for two dice, what is P(sum = 7)? Give your answer as a fraction with denominator 36 (e.g. 5/36).",
+      accept: ["6/36"],
+      explain: "There are 6 combinations summing to 7: (1,6)(2,5)(3,4)(4,3)(5,2)(6,1), out of 36 total — so P = 6/36."
+    },
+
+    {
+      type: "complete",
+      title: "Chapter 8 complete",
+      message: "You've covered probability vocabulary, theoretical vs experimental probability, mutually exclusive/independent events, and sample space diagrams. Try the Probability Lab to explore combined events interactively."
+    }
+  ]
+};
+</script>
+<script src="../assets/js/lesson-engine.js"></script>
+
+</body>
+</html>

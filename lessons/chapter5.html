@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 5: Fractions and Percentages | SBS Mathematics</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/lesson.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a href="../index.html" class="nav-logo">
+    <img src="../assets/logo.png" alt="SBS">
+    <div><div class="nav-title">SBS Mathematics</div><div class="nav-subtitle">Cambridge IGCSE 0580</div></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="../chapters.html" class="active">Chapters</a></li>
+    <li><a href="../labs.html">Labs</a></li>
+  </ul>
+</nav>
+
+<div class="lesson-shell">
+  <div class="lesson-progress-track" id="lesson-progress-track">
+    <div class="lesson-progress-bar"><div class="lesson-progress-fill" id="lesson-progress-fill"></div></div>
+    <div class="lesson-progress-meta">
+      <span id="progress-meta-text">Slide 1 of N</span>
+      <span class="lesson-stars" id="lesson-stars-count">★ 0</span>
+    </div>
+  </div>
+
+  <div class="lesson-header">
+    <div class="lesson-kicker" id="lesson-kicker">Chapter 5</div>
+    <div class="lesson-title" id="lesson-title">Loading...</div>
+    <div class="lesson-sub" id="lesson-sub"></div>
+  </div>
+
+  <div id="lesson-root"></div>
+</div>
+
+<script>
+const LESSON_DATA = {
+  title: "Fractions and Percentages",
+  kicker: "Chapter 5 · IGCSE1 (Year 10) · Cambridge 0580 Extended — Number §1.13–1.16",
+  sub: "Fraction vocabulary, equivalent fractions, simplifying, mixed numbers, and converting between fractions, decimals and percentages.",
+  slides: [
+
+    {
+      type: "content",
+      tag: "Overview",
+      title: "What this chapter covers",
+      html: `<p>This chapter builds fluency with fractions and links them to percentages, a connection used throughout the syllabus (finance, ratio, probability):</p>
+        <ul>
+          <li>Core fraction vocabulary: <b>numerator</b>, <b>denominator</b>, <b>equivalent fractions</b></li>
+          <li>Simplifying to <b>lowest terms</b> and converting <b>mixed numbers</b></li>
+          <li>Operations with fractions and converting between fractions, decimals, and percentages</li>
+        </ul>`
+    },
+
+    {
+      type: "content",
+      tag: "Vocabulary",
+      title: "Fraction vocabulary",
+      html: `<ul>
+          <li><b>Numerator</b> — the top number of a fraction (how many parts you have)</li>
+          <li><b>Denominator</b> — the bottom number of a fraction (how many equal parts the whole is split into)</li>
+          <li><b>Equivalent fractions</b> — fractions that represent the same value, e.g. 1/2 = 2/4 = 3/6</li>
+          <li><b>Common denominator</b> — a shared denominator used to add or subtract fractions</li>
+          <li><b>Lowest terms (simplest form)</b> — when the numerator and denominator share no common factor other than 1</li>
+          <li><b>Mixed number</b> — a whole number combined with a fraction, e.g. 2¾</li>
+        </ul>`,
+      formula: "3/4 → numerator 3, denominator 4"
+    },
+
+    {
+      type: "quiz",
+      qtype: "mcq",
+      title: "Vocabulary check",
+      question: "Which fraction is 18/24 written in its simplest form?",
+      options: ["9/12", "6/8", "3/4", "2/3"],
+      correct: 2,
+      explain: "HCF of 18 and 24 is 6. 18÷6=3, 24÷6=4, giving 3/4 — and 3 and 4 share no common factor other than 1."
+    },
+
+    {
+      type: "content",
+      tag: "Fraction operations",
+      title: "Adding and subtracting fractions",
+      html: `<p>To add or subtract fractions, they must share a <b>common denominator</b>:</p>`,
+      worked: [
+        "Find the lowest common multiple (LCM) of the denominators",
+        "Convert each fraction to an equivalent fraction with that denominator",
+        "Add or subtract the numerators, keeping the denominator the same",
+        "Simplify the result if possible"
+      ],
+      formula: "1/4 + 2/3 = 3/12 + 8/12 = 11/12"
+    },
+
+    {
+      type: "quiz",
+      qtype: "mcq",
+      title: "Apply it: adding fractions",
+      question: "Calculate 2/5 + 1/3, giving your answer as a single fraction.",
+      options: ["3/8", "11/15", "3/15", "2/15"],
+      correct: 1,
+      explain: "LCM of 5 and 3 is 15. 2/5 = 6/15, 1/3 = 5/15. 6/15 + 5/15 = 11/15."
+    },
+
+    {
+      type: "content",
+      tag: "Mixed numbers",
+      title: "Converting mixed numbers and improper fractions",
+      html: `<p>An <b>improper fraction</b> has a numerator larger than its denominator. To convert between forms:</p>`,
+      worked: [
+        "Mixed → improper: multiply the whole number by the denominator, then add the numerator. Keep the same denominator.",
+        "Example: 2¾ → (2×4)+3 = 11, so 2¾ = 11/4",
+        "Improper → mixed: divide the numerator by the denominator. The quotient is the whole number; the remainder becomes the new numerator."
+      ],
+      formula: "2¾ = 11/4"
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Apply it: improper fractions",
+      question: "Convert 17/5 to a mixed number. Write your answer in the form a b/c (e.g. 3 1/2).",
+      accept: ["3 2/5"],
+      explain: "17 ÷ 5 = 3 remainder 2, so 17/5 = 3 2/5."
+    },
+
+    {
+      type: "content",
+      tag: "Conversions",
+      title: "Fractions, decimals, and percentages",
+      html: `<p>These three forms are interchangeable, and Cambridge questions move between them freely:</p>`,
+      worked: [
+        "Fraction → decimal: divide numerator by denominator",
+        "Decimal → percentage: multiply by 100",
+        "Percentage → fraction: write over 100 and simplify",
+        "Fraction → percentage: convert to a decimal first, then multiply by 100"
+      ],
+      formula: "3/8 = 0.375 = 37.5%"
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Apply it: fraction to percentage",
+      question: "Convert 7/20 to a percentage.",
+      accept: ["35", "35%"],
+      explain: "7/20 = 0.35 → 0.35 × 100 = 35%."
+    },
+
+    {
+      type: "quiz",
+      qtype: "mcq",
+      title: "Final check: comparing values",
+      question: "Which of these is the largest value: 3/5, 0.58, or 57%?",
+      options: ["3/5", "0.58", "57%", "They are all equal"],
+      correct: 0,
+      explain: "3/5 = 0.6 = 60%, which is greater than both 0.58 (58%) and 57%."
+    },
+
+    {
+      type: "complete",
+      title: "Chapter 5 complete",
+      message: "You've covered fraction vocabulary, fraction operations, mixed numbers, and conversions between fractions, decimals and percentages."
+    }
+  ]
+};
+</script>
+<script src="../assets/js/lesson-engine.js"></script>
+
+</body>
+</html>

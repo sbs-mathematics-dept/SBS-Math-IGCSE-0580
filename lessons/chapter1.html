@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 1: Number | SBS Mathematics</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/lesson.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a href="../index.html" class="nav-logo">
+    <img src="../assets/logo.png" alt="SBS">
+    <div><div class="nav-title">SBS Mathematics</div><div class="nav-subtitle">Cambridge IGCSE 0580</div></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="../chapters.html" class="active">Chapters</a></li>
+    <li><a href="../labs.html">Labs</a></li>
+  </ul>
+</nav>
+
+<div class="lesson-shell">
+  <div class="lesson-progress-track" id="lesson-progress-track">
+    <div class="lesson-progress-bar"><div class="lesson-progress-fill" id="lesson-progress-fill"></div></div>
+    <div class="lesson-progress-meta">
+      <span id="progress-meta-text">Slide 1 of N</span>
+      <span class="lesson-stars" id="lesson-stars-count">★ 0</span>
+    </div>
+  </div>
+
+  <div class="lesson-header">
+    <div class="lesson-kicker" id="lesson-kicker">Chapter 1</div>
+    <div class="lesson-title" id="lesson-title">Loading...</div>
+    <div class="lesson-sub" id="lesson-sub"></div>
+  </div>
+
+  <div id="lesson-root"></div>
+</div>
+
+<script>
+const LESSON_DATA = {
+  title: "Number",
+  kicker: "Chapter 1 · IGCSE1 (Year 10) · Cambridge 0580 Extended — Number §1.1–1.6",
+  sub: "Natural numbers, integers, primes, factors and multiples, squares and cubes, directed numbers, and BODMAS.",
+  slides: [
+
+    {
+      type: "content",
+      tag: "Overview",
+      title: "What this chapter covers",
+      html: `<p>Chapter 1 builds the foundations every other chapter relies on. You will learn to:</p>
+        <ul>
+          <li>Classify numbers as <b>natural numbers</b>, <b>integers</b>, or <b>prime numbers</b></li>
+          <li>Find <b>factors</b> and <b>multiples</b>, including HCF and LCM</li>
+          <li>Work with <b>squares</b>, <b>square roots</b>, <b>cubes</b>, and <b>cube roots</b></li>
+          <li>Add, subtract, multiply and divide <b>directed numbers</b> (positive and negative)</li>
+          <li>Apply the correct <b>order of operations</b> (BODMAS)</li>
+        </ul>`,
+      callout: "These skills appear inside almost every other topic on the exam — a small error here (e.g. sign mistakes with negative numbers) often costs marks in much later questions."
+    },
+
+    {
+      type: "content",
+      tag: "Vocabulary",
+      title: "Number sets and key terms",
+      html: `<ul>
+          <li><b>Natural numbers</b> — the counting numbers 1, 2, 3, 4, ... (sometimes including 0)</li>
+          <li><b>Integers</b> — all whole numbers, positive, negative, and zero: ..., −2, −1, 0, 1, 2, ...</li>
+          <li><b>Prime number</b> — a number greater than 1 with exactly two factors: 1 and itself (2, 3, 5, 7, 11, 13, ...)</li>
+          <li><b>Multiple</b> — the result of multiplying a number by an integer (multiples of 4: 4, 8, 12, 16, ...)</li>
+          <li><b>Factor</b> — a number that divides exactly into another number with no remainder</li>
+        </ul>`,
+      callout: "Remember: 1 is not a prime number — it has only one factor, not two. This is a common exam trap."
+    },
+
+    {
+      type: "quiz",
+      qtype: "mcq",
+      title: "Vocabulary check",
+      question: "Which of these is a prime number?",
+      options: ["1", "9", "17", "21"],
+      correct: 2,
+      explain: "17 has exactly two factors (1 and 17). 1 isn't prime, and 9 = 3×3, 21 = 3×7 both have more than two factors."
+    },
+
+    {
+      type: "content",
+      tag: "Factors & multiples",
+      title: "Highest common factor (HCF) and lowest common multiple (LCM)",
+      html: `<p>The HCF is the largest number that divides exactly into two (or more) numbers. The LCM is the smallest number that both numbers divide into exactly.</p>
+        <p>The most reliable exam method is <b>prime factorisation</b>:</p>`,
+      worked: [
+        "Write each number as a product of prime factors (use a factor tree)",
+        "For the <b>HCF</b>: multiply the prime factors that are common to <i>both</i> numbers, using the lowest power",
+        "For the <b>LCM</b>: multiply <i>every</i> prime factor that appears in either number, using the highest power"
+      ],
+      formula: "154 = 2 × 7 × 11 &nbsp;&nbsp; 88 = 2³ × 11 &nbsp;&nbsp; → HCF = 2 × 11 = 22"
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Apply it: HCF",
+      question: "Find the HCF of 95 and 120. (95 = 5 × 19, 120 = 2³ × 3 × 5)",
+      accept: ["5"],
+      explain: "The only prime factor common to both 95 and 120 is 5, so HCF = 5."
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Apply it: LCM",
+      question: "Find the LCM of 54 and 72. (54 = 2 × 3³, 72 = 2³ × 3²)",
+      accept: ["216"],
+      explain: "Take the highest power of each prime: 2³ × 3³ = 8 × 27 = 216."
+    },
+
+    {
+      type: "content",
+      tag: "Worked example",
+      title: "LCM in context: the radio competition problem",
+      html: `<p><i>A radio station gives every 30th caller a free airtime voucher and every 120th caller a free mobile phone. How many callers must phone in before one caller receives both?</i></p>`,
+      worked: [
+        "This is asking for the LCM of 30 and 120, since we need a caller number divisible by both",
+        "30 = 2 × 3 × 5 &nbsp;&nbsp; 120 = 2³ × 3 × 5",
+        "LCM = 2³ × 3 × 5 = 120",
+        "The 120th caller receives both prizes"
+      ],
+      callout: "Spotting whether a worded problem needs HCF or LCM is a key exam skill. 'Every Nth thing happens together again' → LCM. 'Split into the largest equal groups' → HCF."
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Apply it: LCM in context",
+      question: "Lee runs round a track in 12 minutes; James runs the same track in 18 minutes. Starting together, after how many minutes will they next cross the start line together?",
+      accept: ["36"],
+      explain: "This needs the LCM of 12 and 18. 12 = 2²×3, 18 = 2×3², so LCM = 2²×3² = 36 minutes."
+    },
+
+    {
+      type: "content",
+      tag: "Powers & roots",
+      title: "Squares, square roots, cubes, and cube roots",
+      html: `<ul>
+          <li>A <b>square number</b> is a number multiplied by itself: 13² = 13 × 13 = 169</li>
+          <li>The <b>square root</b> reverses this: √169 = 13</li>
+          <li>A <b>cube number</b> is a number multiplied by itself three times: 5³ = 5 × 5 × 5 = 125</li>
+          <li>The <b>cube root</b> reverses this: ³√125 = 5</li>
+        </ul>`,
+      formula: "13² = 169 &nbsp;&nbsp;|&nbsp;&nbsp; ³√125 = 5",
+      callout: "Memorise square numbers up to 15² and cube numbers up to 5³ — they appear constantly and recalling them instantly saves valuable exam time."
+    },
+
+    {
+      type: "quiz",
+      qtype: "mcq",
+      title: "Apply it: powers and roots",
+      question: "What is ³√8?",
+      options: ["2", "3", "4", "64"],
+      correct: 0,
+      explain: "2 × 2 × 2 = 8, so the cube root of 8 is 2."
+    },
+
+    {
+      type: "content",
+      tag: "Directed numbers",
+      title: "Working with directed numbers",
+      html: `<p>Directed numbers are positive and negative numbers. The key rules for multiplying and dividing:</p>
+        <ul>
+          <li>(+) × (+) = (+) and (−) × (−) = (+) — same signs give a positive result</li>
+          <li>(+) × (−) = (−) and (−) × (+) = (−) — different signs give a negative result</li>
+          <li>The same sign rules apply to division</li>
+        </ul>
+        <p>For addition and subtraction, think of a number line: adding a negative is the same as subtracting, and subtracting a negative is the same as adding.</p>`,
+      formula: "−5 − (−3) = −5 + 3 = −2",
+      callout: "Always rewrite 'subtract a negative' as 'add a positive' before calculating — this avoids the most common sign error on the paper."
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Apply it: directed numbers",
+      question: "Calculate: −8 − (−5) + (−2)",
+      accept: ["-5", "−5"],
+      explain: "−8 − (−5) + (−2) = −8 + 5 − 2 = −5."
+    },
+
+    {
+      type: "content",
+      tag: "Order of operations",
+      title: "BODMAS",
+      html: `<p>When a calculation has more than one operation, follow this order:</p>
+        <ul>
+          <li><b>B</b>rackets first</li>
+          <li><b>O</b>rders (powers and roots)</li>
+          <li><b>D</b>ivision and <b>M</b>ultiplication (left to right, same priority)</li>
+          <li><b>A</b>ddition and <b>S</b>ubtraction (left to right, same priority)</li>
+        </ul>`,
+      formula: "3 + 4 × (2 + 1)² = 3 + 4 × 9 = 3 + 36 = 39",
+      callout: "Division and multiplication have equal priority — work left to right between them, don't always do multiplication first."
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Final check: BODMAS",
+      question: "Calculate: 5 + 2 × (6 − 3)² − 4",
+      accept: ["19"],
+      explain: "Brackets first: (6−3)=3. Orders: 3²=9. Multiply: 2×9=18. Then: 5+18−4 = 19."
+    },
+
+    {
+      type: "complete",
+      title: "Chapter 1 complete",
+      message: "You've covered number classification, HCF/LCM, powers and roots, directed numbers, and BODMAS — the foundation for every chapter ahead."
+    }
+  ]
+};
+</script>
+<script src="../assets/js/lesson-engine.js"></script>
+
+</body>
+</html>

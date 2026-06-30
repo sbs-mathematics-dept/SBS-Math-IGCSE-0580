@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 9: Sets and Venn Diagrams | SBS Mathematics</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/lesson.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a href="../index.html" class="nav-logo">
+    <img src="../assets/logo.png" alt="SBS">
+    <div><div class="nav-title">SBS Mathematics</div><div class="nav-subtitle">Cambridge IGCSE 0580</div></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="../chapters.html" class="active">Chapters</a></li>
+    <li><a href="../labs.html">Labs</a></li>
+  </ul>
+</nav>
+
+<div class="lesson-shell">
+  <div class="lesson-progress-track" id="lesson-progress-track">
+    <div class="lesson-progress-bar"><div class="lesson-progress-fill" id="lesson-progress-fill"></div></div>
+    <div class="lesson-progress-meta">
+      <span id="progress-meta-text">Slide 1 of N</span>
+      <span class="lesson-stars" id="lesson-stars-count">★ 0</span>
+    </div>
+  </div>
+
+  <div class="lesson-header">
+    <div class="lesson-kicker" id="lesson-kicker">Chapter 9</div>
+    <div class="lesson-title" id="lesson-title">Loading...</div>
+    <div class="lesson-sub" id="lesson-sub"></div>
+  </div>
+
+  <div id="lesson-root"></div>
+</div>
+
+<script>
+const LESSON_DATA = {
+  title: "Sets and Venn Diagrams",
+  kicker: "Chapter 9 · IGCSE1 (Year 10) · Cambridge 0580 Extended — Sets §2.1–2.3",
+  sub: "Set notation, subsets, the universal set and complement, union and intersection, and Venn diagrams.",
+  slides: [
+
+    {
+      type: "content",
+      tag: "Overview",
+      title: "What this chapter covers",
+      html: `<p>Sets give you precise, symbolic language to describe groups of objects — used heavily in probability and logic questions. You will learn to:</p>
+        <ul>
+          <li>Use correct <b>set notation</b>: elements, subsets, the empty set</li>
+          <li>Understand the <b>universal set</b> and the <b>complement</b> of a set</li>
+          <li>Find the <b>union</b> and <b>intersection</b> of sets</li>
+          <li>Draw and interpret <b>Venn diagrams</b>, including shading regions and counting elements</li>
+        </ul>`,
+      callout: "This lab pairs directly with the Probability Lab's Venn diagram mode — try it after this lesson to visualise the regions interactively."
+    },
+
+    {
+      type: "content",
+      tag: "Vocabulary",
+      title: "Sets, elements, and subsets",
+      html: `<ul>
+          <li><b>Set</b> — a well-defined collection of objects, written with curly brackets: A = {1, 2, 3, 4}</li>
+          <li><b>Element</b> — a member of a set; written with the symbol ∈ (e.g. 3 ∈ A means "3 is an element of A")</li>
+          <li><b>Empty set</b> — a set with no elements, written ∅ or { }</li>
+          <li><b>Subset</b> — a set where every element also belongs to another set, written A ⊆ B</li>
+        </ul>`,
+      formula: "A = {2, 4, 6} &nbsp;→&nbsp; 4 ∈ A, but 5 ∉ A"
+    },
+
+    {
+      type: "quiz",
+      qtype: "mcq",
+      title: "Vocabulary check",
+      question: "If A = {1, 3, 5, 7} and B = {1, 5}, what is the relationship between A and B?",
+      options: ["B ⊆ A (B is a subset of A)", "A ⊆ B (A is a subset of B)", "A and B are equal", "A and B have no relationship"],
+      correct: 0,
+      explain: "Every element of B (1 and 5) is also in A, so B is a subset of A: B ⊆ A."
+    },
+
+    {
+      type: "content",
+      tag: "Universal set",
+      title: "The universal set and complement",
+      html: `<ul>
+          <li><b>Universal set (ℰ)</b> — the set containing all elements being considered in a particular context</li>
+          <li><b>Complement (A′)</b> — all the elements in the universal set that are NOT in set A</li>
+        </ul>`,
+      svg: `<svg viewBox="0 0 220 160" width="220" height="160" role="img" aria-label="Venn diagram showing set A and its complement inside the universal set">
+        <title>Set A and complement A'</title>
+        <rect x="10" y="10" width="200" height="140" fill="none" stroke="#94A3B8" stroke-width="1.5"/>
+        <text x="15" y="25" font-size="11" fill="#94A3B8">ℰ</text>
+        <circle cx="110" cy="80" r="55" fill="#EFF6FF" stroke="#1B4F8A" stroke-width="2"/>
+        <text x="110" y="85" font-size="13" fill="#1B4F8A" text-anchor="middle" font-weight="600">A</text>
+        <text x="30" y="140" font-size="11" fill="#475569">A′ (shaded region outside A)</text>
+      </svg>`,
+      formula: "n(A) + n(A′) = n(ℰ)",
+      callout: "n(A) means 'the number of elements in set A'. This notation appears constantly in exam questions."
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Apply it: complement",
+      question: "ℰ = {1, 2, 3, ..., 10} and A = {2, 4, 6, 8, 10}. How many elements are in A′?",
+      accept: ["5"],
+      explain: "n(ℰ) = 10, n(A) = 5, so n(A′) = 10 − 5 = 5 (the odd numbers 1,3,5,7,9)."
+    },
+
+    {
+      type: "content",
+      tag: "Union & intersection",
+      title: "Union (∪) and intersection (∩)",
+      html: `<ul>
+          <li><b>Union (A ∪ B)</b> — all elements that are in A, or B, or both</li>
+          <li><b>Intersection (A ∩ B)</b> — only the elements that are in BOTH A and B</li>
+        </ul>`,
+      svg: `<svg viewBox="0 0 240 150" width="240" height="150" role="img" aria-label="Venn diagram of two overlapping sets A and B">
+        <title>Two-set Venn diagram</title>
+        <circle cx="90" cy="75" r="55" fill="#EFF6FF" stroke="#1B4F8A" stroke-width="2" fill-opacity="0.7"/>
+        <circle cx="150" cy="75" r="55" fill="#FEF2F2" stroke="#8B1A1A" stroke-width="2" fill-opacity="0.7"/>
+        <text x="60" y="50" font-size="13" fill="#1B4F8A" font-weight="600">A</text>
+        <text x="180" y="50" font-size="13" fill="#8B1A1A" font-weight="600">B</text>
+        <text x="120" y="80" font-size="11" fill="#1E293B" text-anchor="middle">A∩B</text>
+      </svg>`,
+      formula: "n(A ∪ B) = n(A) + n(B) − n(A ∩ B)",
+      callout: "This formula prevents double-counting the overlap — it's one of the most-tested formulas in this topic."
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Apply it: union and intersection formula",
+      question: "n(A) = 12, n(B) = 9, and n(A ∩ B) = 4. Find n(A ∪ B).",
+      accept: ["17"],
+      explain: "n(A ∪ B) = n(A) + n(B) − n(A ∩ B) = 12 + 9 − 4 = 17."
+    },
+
+    {
+      type: "content",
+      tag: "Worked example",
+      title: "Reading a Venn diagram with numbers",
+      html: `<p>A Venn diagram shows the number of students who study French (F) and Spanish (S) in a class of 30. The diagram shows 8 in F only, 5 in both, and 10 in S only.</p>`,
+      worked: [
+        "Students studying French: 8 (F only) + 5 (both) = 13",
+        "Students studying Spanish: 10 (S only) + 5 (both) = 15",
+        "Students studying neither: 30 − (8 + 5 + 10) = 30 − 23 = 7"
+      ],
+      formula: "n(neither) = n(ℰ) − n(F ∪ S)"
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Final check: Venn diagram regions",
+      question: "Using the French/Spanish example above, how many students study French only or Spanish only (but not both)?",
+      accept: ["18"],
+      explain: "F only (8) + S only (10) = 18."
+    },
+
+    {
+      type: "complete",
+      title: "Chapter 9 complete",
+      message: "You've covered set notation, the universal set and complement, union and intersection, and reading Venn diagrams. Try the Venn Diagrams lab next to practise interactively."
+    }
+  ]
+};
+</script>
+<script src="../assets/js/lesson-engine.js"></script>
+
+</body>
+</html>

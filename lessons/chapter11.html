@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 11: Similarity and Congruence | SBS Mathematics</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/lesson.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a href="../index.html" class="nav-logo">
+    <img src="../assets/logo.png" alt="SBS">
+    <div><div class="nav-title">SBS Mathematics</div><div class="nav-subtitle">Cambridge IGCSE 0580</div></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="../chapters.html" class="active">Chapters</a></li>
+    <li><a href="../labs.html">Labs</a></li>
+  </ul>
+</nav>
+
+<div class="lesson-shell">
+  <div class="lesson-progress-track" id="lesson-progress-track">
+    <div class="lesson-progress-bar"><div class="lesson-progress-fill" id="lesson-progress-fill"></div></div>
+    <div class="lesson-progress-meta">
+      <span id="progress-meta-text">Slide 1 of N</span>
+      <span class="lesson-stars" id="lesson-stars-count">★ 0</span>
+    </div>
+  </div>
+
+  <div class="lesson-header">
+    <div class="lesson-kicker" id="lesson-kicker">Chapter 11</div>
+    <div class="lesson-title" id="lesson-title">Loading...</div>
+    <div class="lesson-sub" id="lesson-sub"></div>
+  </div>
+
+  <div id="lesson-root"></div>
+</div>
+
+<script>
+const LESSON_DATA = {
+  title: "Similarity and Congruence",
+  kicker: "Chapter 11 · IGCSE1 (Year 10) · Cambridge 0580 Extended — Geometry §6.1–6.2",
+  sub: "Congruent and similar shapes, scale factors, and using similarity to find unknown lengths — including right-angled triangles.",
+  slides: [
+
+    {
+      type: "content",
+      tag: "Overview",
+      title: "What this chapter covers",
+      html: `<p>This chapter is about comparing shapes precisely. You will learn to:</p>
+        <ul>
+          <li>Distinguish between <b>congruent</b> and <b>similar</b> shapes</li>
+          <li>Use <b>scale factor</b> to find missing lengths in similar shapes</li>
+          <li>Apply similarity to right-angled triangles, including the <b>hypotenuse</b></li>
+        </ul>`
+    },
+
+    {
+      type: "content",
+      tag: "Vocabulary",
+      title: "Congruent vs similar",
+      html: `<ul>
+          <li><b>Congruent shapes</b> — identical in shape AND size (one is an exact copy of the other, possibly rotated or reflected)</li>
+          <li><b>Similar shapes</b> — identical in shape but NOT necessarily size; corresponding angles are equal and corresponding sides are in the same ratio</li>
+          <li><b>Scale factor</b> — the ratio between corresponding lengths in two similar shapes</li>
+          <li><b>Hypotenuse</b> — the longest side of a right-angled triangle, opposite the right angle</li>
+        </ul>`,
+      svg: `<svg viewBox="0 0 280 140" width="280" height="140" role="img" aria-label="Two similar triangles with different sizes">
+        <title>Similar triangles</title>
+        <polygon points="20,120 80,120 20,60" fill="#EFF6FF" stroke="#1B4F8A" stroke-width="2"/>
+        <text x="30" y="135" font-size="10" fill="#1B4F8A">4 cm</text>
+        <polygon points="140,120 260,120 140,30" fill="#FEF2F2" stroke="#8B1A1A" stroke-width="2"/>
+        <text x="180" y="135" font-size="10" fill="#8B1A1A">8 cm</text>
+      </svg>`,
+      callout: "Congruent shapes ARE similar (with scale factor 1) — but similar shapes are not always congruent. Don't mix up the two terms in your written reasoning."
+    },
+
+    {
+      type: "quiz",
+      qtype: "mcq",
+      title: "Vocabulary check",
+      question: "Two triangles have exactly the same angles, but one has sides twice as long as the other. What is the relationship between them?",
+      options: ["Congruent only", "Similar only", "Neither congruent nor similar", "Both congruent and similar"],
+      correct: 1,
+      explain: "Equal angles and proportional sides (here, scale factor 2) means the triangles are similar but not congruent, since they are different sizes."
+    },
+
+    {
+      type: "content",
+      tag: "Scale factor",
+      title: "Using scale factor to find missing lengths",
+      html: `<p>If two shapes are similar, you can find an unknown length using the scale factor between corresponding sides:</p>`,
+      worked: [
+        "Two similar rectangles: the smaller has a side of 6 cm corresponding to 15 cm on the larger",
+        "Scale factor = 15 ÷ 6 = 2.5",
+        "If the smaller rectangle has another side of 4 cm, the corresponding side on the larger is 4 × 2.5 = 10 cm"
+      ],
+      formula: "Scale factor = corresponding length on new shape ÷ corresponding length on original shape"
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Apply it: scale factor",
+      question: "Two similar triangles have corresponding sides of 5 cm and 12.5 cm. A second side on the smaller triangle is 8 cm. Find the corresponding side on the larger triangle, in cm.",
+      accept: ["20"],
+      explain: "Scale factor = 12.5 ÷ 5 = 2.5. Corresponding side = 8 × 2.5 = 20 cm."
+    },
+
+    {
+      type: "content",
+      tag: "Worked example",
+      title: "Similar right-angled triangles",
+      html: `<p>Similar triangles are often used to find heights or distances that can't be measured directly — a classic 'shadow' or 'ladder' problem.</p>`,
+      worked: [
+        "A 1.2 m stick casts a 0.6 m shadow. At the same time, a tree casts a 12 m shadow. Find the tree's height.",
+        "Set up the ratio: stick height / stick shadow = tree height / tree shadow",
+        "1.2 / 0.6 = h / 12",
+        "2 = h / 12  →  h = 24 m"
+      ],
+      formula: "Tree height = 24 m",
+      callout: "This 'shadow problem' format appears regularly on Cambridge papers — always set up the ratio with matching quantities in the same position (height/shadow on both sides)."
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Final check: similar triangles in context",
+      question: "A 1.5 m person casts a 2 m shadow. At the same time, a flagpole casts an 8 m shadow. What is the height of the flagpole, in metres? Give your answer to 2 decimal places if needed.",
+      accept: ["6"],
+      explain: "1.5 / 2 = h / 8 → h = (1.5 × 8) / 2 = 12 / 2 = 6 m."
+    },
+
+    {
+      type: "complete",
+      title: "Chapter 11 complete",
+      message: "You've covered the difference between congruent and similar shapes, scale factor, and applying similarity to real-world height and distance problems."
+    }
+  ]
+};
+</script>
+<script src="../assets/js/lesson-engine.js"></script>
+
+</body>
+</html>

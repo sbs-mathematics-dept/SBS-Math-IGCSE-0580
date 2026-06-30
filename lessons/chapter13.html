@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 13: Understanding Measurements | SBS Mathematics</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/lesson.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a href="../index.html" class="nav-logo">
+    <img src="../assets/logo.png" alt="SBS">
+    <div><div class="nav-title">SBS Mathematics</div><div class="nav-subtitle">Cambridge IGCSE 0580</div></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="../chapters.html" class="active">Chapters</a></li>
+    <li><a href="../labs.html">Labs</a></li>
+  </ul>
+</nav>
+
+<div class="lesson-shell">
+  <div class="lesson-progress-track" id="lesson-progress-track">
+    <div class="lesson-progress-bar"><div class="lesson-progress-fill" id="lesson-progress-fill"></div></div>
+    <div class="lesson-progress-meta">
+      <span id="progress-meta-text">Slide 1 of N</span>
+      <span class="lesson-stars" id="lesson-stars-count">★ 0</span>
+    </div>
+  </div>
+
+  <div class="lesson-header">
+    <div class="lesson-kicker" id="lesson-kicker">Chapter 13</div>
+    <div class="lesson-title" id="lesson-title">Loading...</div>
+    <div class="lesson-sub" id="lesson-sub"></div>
+  </div>
+
+  <div id="lesson-root"></div>
+</div>
+
+<script>
+const LESSON_DATA = {
+  title: "Understanding Measurements",
+  kicker: "Chapter 13 · IGCSE1 (Year 10) Extended · Cambridge 0580 — Number & Measures §1.17–1.20",
+  sub: "Metric and imperial units, unit conversion, exchange rates, and lower/upper bounds of rounded measurements.",
+  slides: [
+
+    {
+      type: "content",
+      tag: "Overview",
+      title: "What this chapter covers",
+      html: `<p>This chapter applies number skills to real-world measurement contexts. You will learn to:</p>
+        <ul>
+          <li>Convert between <b>metric</b> units, and between metric and <b>imperial</b> units</li>
+          <li>Apply <b>exchange rates</b> for currency conversion</li>
+          <li>Find the <b>lower bound</b> and <b>upper bound</b> of a measurement that has been rounded</li>
+        </ul>`
+    },
+
+    {
+      type: "content",
+      tag: "Units",
+      title: "Metric and imperial units",
+      html: `<p>The <b>metric</b> system (used in most of the world and in science) is based on powers of 10. The <b>imperial</b> system (still used in everyday contexts in some countries) uses different conversion factors that must be memorised.</p>
+        <ul>
+          <li>1 km = 1000 m, 1 m = 100 cm, 1 cm = 10 mm</li>
+          <li>1 kg = 1000 g, 1 litre = 1000 ml</li>
+          <li>Imperial examples (Cambridge usually gives these in the question): 1 inch ≈ 2.54 cm, 1 mile ≈ 1.6 km, 1 pound ≈ 0.45 kg</li>
+        </ul>`,
+      callout: "Cambridge will always give you any imperial conversion factor you need in the question — you don't need to memorise them, just apply them correctly."
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Apply it: metric conversion",
+      question: "Convert 3.5 km into metres.",
+      accept: ["3500"],
+      explain: "1 km = 1000 m, so 3.5 km = 3.5 × 1000 = 3500 m."
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Apply it: imperial conversion",
+      question: "Given that 1 mile ≈ 1.6 km, convert 8 miles into kilometres.",
+      accept: ["12.8"],
+      explain: "8 × 1.6 = 12.8 km."
+    },
+
+    {
+      type: "content",
+      tag: "Exchange rates",
+      title: "Currency exchange rates",
+      html: `<p>Exchange rate questions follow the same logic as unit conversion — multiply or divide depending on which direction you're converting.</p>`,
+      worked: [
+        "If $1 = ฿35.50, convert $120 into Thai Baht",
+        "Multiply by the rate: 120 × 35.50 = ฿4260",
+        "To convert Baht back to Dollars, divide by the rate instead"
+      ],
+      formula: "Amount in target currency = amount × exchange rate"
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Apply it: exchange rates",
+      question: "If £1 = $1.25, how many dollars is £80?",
+      accept: ["100"],
+      explain: "80 × 1.25 = $100."
+    },
+
+    {
+      type: "content",
+      tag: "Bounds",
+      title: "Lower bound and upper bound",
+      html: `<p>When a measurement is rounded, the true value lies within a range. The <b>lower bound</b> is the smallest possible true value, and the <b>upper bound</b> is the largest.</p>`,
+      worked: [
+        "A length is given as 24 cm, rounded to the nearest cm",
+        "Half of 1 cm = 0.5 cm",
+        "Lower bound = 24 − 0.5 = 23.5 cm",
+        "Upper bound = 24 + 0.5 = 24.5 cm"
+      ],
+      formula: "Bounds = rounded value ± half of the rounding unit",
+      callout: "The upper bound is technically NOT included (the true value can equal it in the limit but the rounding convention means values exactly at the upper bound round UP) — Cambridge accepts the simple ± half method shown here for finding both bounds."
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Apply it: lower bound",
+      question: "A mass is given as 350 g, rounded to the nearest 10 g. Find the lower bound, in grams.",
+      accept: ["345"],
+      explain: "Half of 10 g = 5 g. Lower bound = 350 − 5 = 345 g."
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Final check: bounds in calculations",
+      question: "A rectangle's sides are measured as 8 cm and 5 cm, both rounded to the nearest cm. What is the maximum possible area, in cm²? (Use the upper bound of each side.)",
+      accept: ["46.75"],
+      explain: "Upper bounds: 8.5 cm and 5.5 cm. Maximum area = 8.5 × 5.5 = 46.75 cm²."
+    },
+
+    {
+      type: "complete",
+      title: "Chapter 13 complete",
+      message: "You've covered metric and imperial conversions, exchange rates, and finding lower and upper bounds of rounded measurements."
+    }
+  ]
+};
+</script>
+<script src="../assets/js/lesson-engine.js"></script>
+
+</body>
+</html>

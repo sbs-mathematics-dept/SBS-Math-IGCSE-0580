@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 10: Algebra and Straight Lines | SBS Mathematics</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/lesson.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a href="../index.html" class="nav-logo">
+    <img src="../assets/logo.png" alt="SBS">
+    <div><div class="nav-title">SBS Mathematics</div><div class="nav-subtitle">Cambridge IGCSE 0580</div></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="../chapters.html" class="active">Chapters</a></li>
+    <li><a href="../labs.html">Labs</a></li>
+  </ul>
+</nav>
+
+<div class="lesson-shell">
+  <div class="lesson-progress-track" id="lesson-progress-track">
+    <div class="lesson-progress-bar"><div class="lesson-progress-fill" id="lesson-progress-fill"></div></div>
+    <div class="lesson-progress-meta">
+      <span id="progress-meta-text">Slide 1 of N</span>
+      <span class="lesson-stars" id="lesson-stars-count">★ 0</span>
+    </div>
+  </div>
+
+  <div class="lesson-header">
+    <div class="lesson-kicker" id="lesson-kicker">Chapter 10</div>
+    <div class="lesson-title" id="lesson-title">Loading...</div>
+    <div class="lesson-sub" id="lesson-sub"></div>
+  </div>
+
+  <div id="lesson-root"></div>
+</div>
+
+<script>
+const LESSON_DATA = {
+  title: "Algebra and Straight Lines",
+  kicker: "Chapter 10 · IGCSE1 (Year 10) · Cambridge 0580 Extended — Algebra & Graphs §5.1–5.4",
+  sub: "Expanding and factorising, the difference of two squares, quadratic expressions, and the equation of a straight line.",
+  slides: [
+
+    {
+      type: "content",
+      tag: "Overview",
+      title: "What this chapter covers",
+      html: `<p>This chapter connects algebraic manipulation with coordinate geometry. You will learn to:</p>
+        <ul>
+          <li><b>Expand</b> brackets and recognise the <b>difference of two squares</b></li>
+          <li>Work with <b>quadratic expressions</b> and basic <b>quadratic equations</b></li>
+          <li>Find the <b>gradient</b> and <b>midpoint</b> of a line segment</li>
+          <li>Find the <b>equation of a line</b> in the form y = mx + c</li>
+        </ul>`
+    },
+
+    {
+      type: "content",
+      tag: "Vocabulary",
+      title: "Key algebra terms",
+      html: `<ul>
+          <li><b>Expand</b> — multiply out brackets, e.g. 3(x + 2) = 3x + 6</li>
+          <li><b>Constant term</b> — a term in an expression with no variable, e.g. in 2x + 5, the constant term is 5</li>
+          <li><b>Quadratic expression</b> — an expression where the highest power of the variable is 2, e.g. x² + 3x − 4</li>
+          <li><b>Quadratic equation</b> — a quadratic expression set equal to a value, usually 0</li>
+        </ul>`
+    },
+
+    {
+      type: "content",
+      tag: "Difference of two squares",
+      title: "The difference of two squares",
+      html: `<p>This is one of the most useful factorising patterns on the exam:</p>`,
+      formula: "a² − b² = (a + b)(a − b)",
+      worked: [
+        "Example: factorise x² − 16",
+        "Recognise this as a² − b² with a = x, b = 4 (since 16 = 4²)",
+        "x² − 16 = (x + 4)(x − 4)"
+      ],
+      callout: "Look for this pattern whenever you see 'something squared minus something squared' — including with numbers, like 9x² − 25."
+    },
+
+    {
+      type: "quiz",
+      qtype: "mcq",
+      title: "Apply it: difference of two squares",
+      question: "Factorise 9x² − 25.",
+      options: ["(3x − 5)(3x − 5)", "(3x + 5)(3x − 5)", "(9x + 25)(x − 1)", "(3x + 25)(3x − 1)"],
+      correct: 1,
+      explain: "9x² = (3x)² and 25 = 5², so 9x² − 25 = (3x + 5)(3x − 5)."
+    },
+
+    {
+      type: "content",
+      tag: "Quadratics",
+      title: "Expanding and factorising quadratic expressions",
+      html: `<p>To expand two brackets, multiply every term in the first bracket by every term in the second (sometimes called FOIL: First, Outer, Inner, Last).</p>`,
+      worked: [
+        "Expand (x + 3)(x − 5)",
+        "First: x × x = x²",
+        "Outer: x × (−5) = −5x",
+        "Inner: 3 × x = 3x",
+        "Last: 3 × (−5) = −15",
+        "Combine: x² − 5x + 3x − 15 = x² − 2x − 15"
+      ],
+      formula: "(x + 3)(x − 5) = x² − 2x − 15"
+    },
+
+    {
+      type: "quiz",
+      qtype: "mcq",
+      title: "Apply it: factorising quadratics",
+      question: "Factorise x² + 2x − 15.",
+      options: ["(x + 5)(x − 3)", "(x − 5)(x + 3)", "(x + 15)(x − 1)", "(x + 5)(x + 3)"],
+      correct: 0,
+      explain: "We need two numbers that multiply to −15 and add to +2: 5 and −3. So x² + 2x − 15 = (x + 5)(x − 3)."
+    },
+
+    {
+      type: "content",
+      tag: "Straight lines",
+      title: "Gradient and midpoint",
+      html: `<p>For two points A(x₁, y₁) and B(x₂, y₂):</p>`,
+      formula: "Gradient m = (y₂ − y₁) / (x₂ − x₁) &nbsp;&nbsp;|&nbsp;&nbsp; Midpoint = ((x₁+x₂)/2, (y₁+y₂)/2)",
+      callout: "A common sign error: keep x and y differences in the same order in numerator and denominator — don't mix (y₂−y₁) with (x₁−x₂)."
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Apply it: gradient",
+      question: "Find the gradient of the line joining A(1, 2) and B(5, 14).",
+      accept: ["3"],
+      explain: "m = (14 − 2) / (5 − 1) = 12 / 4 = 3."
+    },
+
+    {
+      type: "content",
+      tag: "Straight lines",
+      title: "The equation of a straight line",
+      html: `<p>The standard form is <code>y = mx + c</code>, where m is the gradient and c is the y-intercept.</p>`,
+      worked: [
+        "Find the equation of the line through (2, 7) with gradient 3",
+        "Start with y = 3x + c",
+        "Substitute the point: 7 = 3(2) + c → 7 = 6 + c → c = 1",
+        "Equation: y = 3x + 1"
+      ],
+      formula: "y = mx + c"
+    },
+
+    {
+      type: "quiz",
+      qtype: "mcq",
+      title: "Final check: equation of a line",
+      question: "A line has gradient −2 and passes through (0, 5). What is its equation?",
+      options: ["y = −2x + 5", "y = 5x − 2", "y = 2x + 5", "y = −2x − 5"],
+      correct: 0,
+      explain: "Since the line passes through (0, 5), the y-intercept c = 5. With gradient m = −2: y = −2x + 5."
+    },
+
+    {
+      type: "complete",
+      title: "Chapter 10 complete",
+      message: "You've covered expanding, the difference of two squares, factorising quadratics, gradient, midpoint, and finding the equation of a line. Try the Graph Explorer lab to visualise straight lines."
+    }
+  ]
+};
+</script>
+<script src="../assets/js/lesson-engine.js"></script>
+
+</body>
+</html>

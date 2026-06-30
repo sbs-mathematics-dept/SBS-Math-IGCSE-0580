@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 15: Trigonometry and Bearings | SBS Mathematics</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/lesson.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a href="../index.html" class="nav-logo">
+    <img src="../assets/logo.png" alt="SBS">
+    <div><div class="nav-title">SBS Mathematics</div><div class="nav-subtitle">Cambridge IGCSE 0580</div></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="../chapters.html" class="active">Chapters</a></li>
+    <li><a href="../labs.html">Labs</a></li>
+  </ul>
+</nav>
+
+<div class="lesson-shell">
+  <div class="lesson-progress-track" id="lesson-progress-track">
+    <div class="lesson-progress-bar"><div class="lesson-progress-fill" id="lesson-progress-fill"></div></div>
+    <div class="lesson-progress-meta">
+      <span id="progress-meta-text">Slide 1 of N</span>
+      <span class="lesson-stars" id="lesson-stars-count">★ 0</span>
+    </div>
+  </div>
+
+  <div class="lesson-header">
+    <div class="lesson-kicker" id="lesson-kicker">Chapter 15</div>
+    <div class="lesson-title" id="lesson-title">Loading...</div>
+    <div class="lesson-sub" id="lesson-sub"></div>
+  </div>
+
+  <div id="lesson-root"></div>
+</div>
+
+<script>
+const LESSON_DATA = {
+  title: "Trigonometry and Bearings",
+  kicker: "Chapter 15 · IGCSE1 (Year 10) Extended · Cambridge 0580 — Geometry & Trigonometry §7.1–7.5",
+  sub: "Scale drawings, three-figure bearings, and the sine, cosine and tangent ratios for right-angled triangles.",
+  slides: [
+
+    {
+      type: "content",
+      tag: "Overview",
+      title: "What this chapter covers",
+      html: `<p>This chapter introduces right-angled trigonometry — one of the highest-weighted topics on the Extended paper. You will learn to:</p>
+        <ul>
+          <li>Interpret <b>scale drawings</b></li>
+          <li>Use and calculate <b>three-figure bearings</b></li>
+          <li>Apply <b>sine</b>, <b>cosine</b>, and <b>tangent</b> ratios to find missing sides and angles</li>
+        </ul>`,
+      callout: "Try the Trig Unit Circle lab alongside this lesson to build intuition for how sine and cosine values change."
+    },
+
+    {
+      type: "content",
+      tag: "Scale drawings",
+      title: "Scale drawings",
+      html: `<p>A scale drawing represents a real object or distance at a fixed ratio. For example, a scale of 1:50 000 means 1 cm on the map represents 50 000 cm (500 m) in real life.</p>`,
+      formula: "Real distance = drawing distance × scale factor"
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Apply it: scale drawings",
+      question: "A map has a scale of 1:25 000. Two towns are 6 cm apart on the map. What is the real distance, in km? (Give your answer as a decimal, e.g. 1.5)",
+      accept: ["1.5"],
+      explain: "6 × 25 000 = 150 000 cm = 1500 m = 1.5 km."
+    },
+
+    {
+      type: "content",
+      tag: "Bearings",
+      title: "Three-figure bearings",
+      html: `<p>A bearing gives a direction as an angle measured <b>clockwise from north</b>, always written with <b>three digits</b> (e.g. 045°, not 45°).</p>`,
+      svg: `<svg viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="Bearing diagram showing angle measured clockwise from north">
+        <title>Bearing of 060 degrees</title>
+        <line x1="100" y1="100" x2="100" y2="20" stroke="#94A3B8" stroke-width="1.5"/>
+        <text x="92" y="14" font-size="11" fill="#94A3B8">N</text>
+        <line x1="100" y1="100" x2="165" y2="55" stroke="#1B4F8A" stroke-width="2.5"/>
+        <path d="M 100 70 A 30 30 0 0 1 126 62" fill="none" stroke="#B8860B" stroke-width="1.5"/>
+        <text x="118" y="55" font-size="11" fill="#B8860B">060°</text>
+        <circle cx="100" cy="100" r="3" fill="#1E293B"/>
+      </svg>`,
+      callout: "A common exam trick: back bearings. If the bearing of B from A is θ, the bearing of A from B is θ + 180° (or θ − 180° if θ > 180°)."
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Apply it: back bearings",
+      question: "The bearing of point B from point A is 110°. What is the bearing of point A from point B?",
+      accept: ["290"],
+      explain: "Since 110° < 180°, add 180°: 110 + 180 = 290°."
+    },
+
+    {
+      type: "content",
+      tag: "Trigonometric ratios",
+      title: "Sine, cosine, and tangent (SOH-CAH-TOA)",
+      html: `<p>In a right-angled triangle, label the sides relative to the angle you're working with: <b>opposite</b>, <b>adjacent</b>, and <b>hypotenuse</b> (the longest side, opposite the right angle).</p>`,
+      formula: "sin θ = O/H &nbsp;&nbsp; cos θ = A/H &nbsp;&nbsp; tan θ = O/A",
+      callout: "SOH-CAH-TOA: Sine = Opposite/Hypotenuse, Cosine = Adjacent/Hypotenuse, Tangent = Opposite/Adjacent."
+    },
+
+    {
+      type: "quiz",
+      qtype: "mcq",
+      title: "Vocabulary check",
+      question: "In a right-angled triangle, which ratio would you use to find a missing side if you know the hypotenuse and one angle, and need the side opposite that angle?",
+      options: ["Sine", "Cosine", "Tangent", "Pythagoras' theorem"],
+      correct: 0,
+      explain: "Sine relates the opposite side and the hypotenuse: sin θ = O/H."
+    },
+
+    {
+      type: "content",
+      tag: "Worked example",
+      title: "The ladder problem",
+      html: `<p>A 4.8 m ladder leans against a wall, making an angle of 70° with the ground. Find how far up the wall the ladder reaches, and how far the foot of the ladder is from the wall.</p>`,
+      worked: [
+        "Height up the wall = opposite side; the ladder = hypotenuse",
+        "sin 70° = height / 4.8  →  height = 4.8 × sin 70° ≈ 4.5 m",
+        "Distance from wall = adjacent side",
+        "cos 70° = distance / 4.8  →  distance = 4.8 × cos 70° ≈ 1.64 m"
+      ],
+      formula: "Ladder reaches 4.5 m up the wall; foot is 1.64 m from the wall"
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Apply it: finding a missing side",
+      question: "In a right-angled triangle, the hypotenuse is 10 cm and one angle is 36.9°. Find the length of the side opposite this angle, to 1 decimal place (use sin 36.9° ≈ 0.6).",
+      accept: ["6", "6.0"],
+      explain: "Opposite = hypotenuse × sin θ = 10 × 0.6 = 6.0 cm."
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Final check: finding a missing angle",
+      question: "A right-angled triangle has opposite side 12 cm and adjacent side 5 cm. Use tan⁻¹ to find the angle, to the nearest degree (tan⁻¹(2.4) ≈ 67°).",
+      accept: ["67"],
+      explain: "tan θ = O/A = 12/5 = 2.4, so θ = tan⁻¹(2.4) ≈ 67°."
+    },
+
+    {
+      type: "complete",
+      title: "Chapter 15 complete",
+      message: "You've covered scale drawings, three-figure bearings, and the sine, cosine and tangent ratios for solving right-angled triangles."
+    }
+  ]
+};
+</script>
+<script src="../assets/js/lesson-engine.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 12: Statistics — Averages and Spread | SBS Mathematics</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/lesson.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a href="../index.html" class="nav-logo">
+    <img src="../assets/logo.png" alt="SBS">
+    <div><div class="nav-title">SBS Mathematics</div><div class="nav-subtitle">Cambridge IGCSE 0580</div></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="../chapters.html" class="active">Chapters</a></li>
+    <li><a href="../labs.html">Labs</a></li>
+  </ul>
+</nav>
+
+<div class="lesson-shell">
+  <div class="lesson-progress-track" id="lesson-progress-track">
+    <div class="lesson-progress-bar"><div class="lesson-progress-fill" id="lesson-progress-fill"></div></div>
+    <div class="lesson-progress-meta">
+      <span id="progress-meta-text">Slide 1 of N</span>
+      <span class="lesson-stars" id="lesson-stars-count">★ 0</span>
+    </div>
+  </div>
+
+  <div class="lesson-header">
+    <div class="lesson-kicker" id="lesson-kicker">Chapter 12</div>
+    <div class="lesson-title" id="lesson-title">Loading...</div>
+    <div class="lesson-sub" id="lesson-sub"></div>
+  </div>
+
+  <div id="lesson-root"></div>
+</div>
+
+<script>
+const LESSON_DATA = {
+  title: "Statistics — Averages and Spread",
+  kicker: "Chapter 12 · IGCSE1 (Year 10) · Cambridge 0580 Extended — Statistics §11.3–11.5",
+  sub: "Mean, median, mode and range for discrete data, and what each average tells you about a data set.",
+  slides: [
+
+    {
+      type: "content",
+      tag: "Overview",
+      title: "What this chapter covers",
+      html: `<p>Having learned to collect and display data (Chapter 4), this chapter teaches you to summarise it with a single representative value. You will learn to find:</p>
+        <ul>
+          <li>The <b>mean</b>, <b>median</b>, and <b>mode</b> — three different types of average</li>
+          <li>The <b>range</b> and how it measures spread</li>
+          <li>Which average is most appropriate for a given data set</li>
+        </ul>`
+    },
+
+    {
+      type: "content",
+      tag: "Vocabulary",
+      title: "The three averages and range",
+      html: `<ul>
+          <li><b>Mean</b> — add all the values and divide by how many there are</li>
+          <li><b>Median</b> — the middle value when the data is arranged in order (average the two middle values if there's an even number of items)</li>
+          <li><b>Mode</b> — the value that occurs most often (a data set can have no mode, one mode, or several modes)</li>
+          <li><b>Range</b> — the difference between the highest and lowest value; a measure of <b>spread</b>, not an average</li>
+        </ul>`,
+      formula: "Mean = (sum of values) ÷ (number of values) &nbsp;|&nbsp; Range = highest − lowest"
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Apply it: mean",
+      question: "Find the mean of: 4, 7, 9, 12, 13.",
+      accept: ["9"],
+      explain: "Sum = 4+7+9+12+13 = 45. Mean = 45 ÷ 5 = 9."
+    },
+
+    {
+      type: "content",
+      tag: "Worked example",
+      title: "Finding the median with an even number of values",
+      html: `<p>Find the median of: 3, 8, 5, 12, 9, 15</p>`,
+      worked: [
+        "First, arrange in order: 3, 5, 8, 9, 12, 15",
+        "There are 6 values (even), so the median is the average of the 3rd and 4th values",
+        "3rd value = 8, 4th value = 9",
+        "Median = (8 + 9) ÷ 2 = 8.5"
+      ],
+      formula: "Median = 8.5",
+      callout: "Always sort the data first — finding the 'middle' of unsorted data is a very common mistake."
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Apply it: median",
+      question: "Find the median of: 6, 2, 9, 4, 7, 2, 10 (7 values).",
+      accept: ["6"],
+      explain: "Sorted: 2, 2, 4, 6, 7, 9, 10. With 7 values, the median is the 4th value: 6."
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Apply it: mode and range",
+      question: "A data set is: 5, 8, 5, 3, 8, 5, 9. What is the range of this data set?",
+      accept: ["6"],
+      explain: "Highest = 9, lowest = 3. Range = 9 − 3 = 6. (The mode here would be 5, which appears three times.)"
+    },
+
+    {
+      type: "content",
+      tag: "Choosing an average",
+      title: "Which average should you use?",
+      html: `<ul>
+          <li><b>Mean</b> — uses every value, but is affected by extreme values (outliers)</li>
+          <li><b>Median</b> — not affected by outliers, good for skewed data</li>
+          <li><b>Mode</b> — useful for categorical (non-numerical) data, and when you need the most "popular" value</li>
+        </ul>`,
+      callout: "A frequent exam question: 'Which average best represents this data, and why?' Be ready to mention an outlier or the data's spread in your justification."
+    },
+
+    {
+      type: "quiz",
+      qtype: "mcq",
+      title: "Final check: choosing the right average",
+      question: "A small company has salaries: $25k, $26k, $27k, $28k, $250k (the owner). Which average would most fairly represent a 'typical' salary?",
+      options: ["Mean", "Median", "Mode", "Range"],
+      correct: 1,
+      explain: "The mean is heavily skewed upward by the $250k outlier. The median (here $27k) is unaffected by the extreme value and better represents a typical employee's salary."
+    },
+
+    {
+      type: "complete",
+      title: "Chapter 12 complete",
+      message: "You've covered mean, median, mode, and range — and how to choose the most appropriate average for a given data set."
+    }
+  ]
+};
+</script>
+<script src="../assets/js/lesson-engine.js"></script>
+
+</body>
+</html>

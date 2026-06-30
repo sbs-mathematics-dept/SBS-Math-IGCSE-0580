@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 4: Statistics — Data Collection & Display | SBS Mathematics</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/lesson.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a href="../index.html" class="nav-logo">
+    <img src="../assets/logo.png" alt="SBS">
+    <div><div class="nav-title">SBS Mathematics</div><div class="nav-subtitle">Cambridge IGCSE 0580</div></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="../chapters.html" class="active">Chapters</a></li>
+    <li><a href="../labs.html">Labs</a></li>
+  </ul>
+</nav>
+
+<div class="lesson-shell">
+  <div class="lesson-progress-track" id="lesson-progress-track">
+    <div class="lesson-progress-bar"><div class="lesson-progress-fill" id="lesson-progress-fill"></div></div>
+    <div class="lesson-progress-meta">
+      <span id="progress-meta-text">Slide 1 of N</span>
+      <span class="lesson-stars" id="lesson-stars-count">★ 0</span>
+    </div>
+  </div>
+
+  <div class="lesson-header">
+    <div class="lesson-kicker" id="lesson-kicker">Chapter 4</div>
+    <div class="lesson-title" id="lesson-title">Loading...</div>
+    <div class="lesson-sub" id="lesson-sub"></div>
+  </div>
+
+  <div id="lesson-root"></div>
+</div>
+
+<script>
+const LESSON_DATA = {
+  title: "Statistics — Data Collection and Display",
+  kicker: "Chapter 4 · IGCSE1 (Year 10) · Cambridge 0580 Extended — Statistics §11.1–11.2",
+  sub: "Types of data, stem-and-leaf diagrams, two-way tables, and charts: pictograms, bar charts, pie charts and line graphs.",
+  slides: [
+
+    {
+      type: "content",
+      tag: "Overview",
+      title: "What this chapter covers",
+      html: `<p>Before you can analyse data (later chapters), you need to know how to classify and display it correctly. You will learn to:</p>
+        <ul>
+          <li>Classify data as <b>qualitative</b> or <b>quantitative</b>, <b>discrete</b> or <b>continuous</b></li>
+          <li>Organise raw data using <b>stem-and-leaf diagrams</b> and <b>two-way tables</b></li>
+          <li>Display data using <b>pictograms</b>, <b>bar charts</b>, <b>pie charts</b>, and <b>line graphs</b></li>
+        </ul>`
+    },
+
+    {
+      type: "content",
+      tag: "Vocabulary",
+      title: "Types of data",
+      html: `<ul>
+          <li><b>Qualitative (categorical) data</b> — non-numerical data, described in categories (e.g. favourite colour, type of car)</li>
+          <li><b>Quantitative (numerical) data</b> — numerical data that can be counted or measured</li>
+          <li><b>Discrete data</b> — quantitative data that can only take exact, separate values (e.g. number of siblings — you can't have 2.5 siblings)</li>
+          <li><b>Continuous data</b> — quantitative data that can take any value within a range (e.g. height, time, mass)</li>
+        </ul>`,
+      callout: "If a value could theoretically be measured with more decimal places (height, time), it's continuous. If it's a count of whole items, it's discrete."
+    },
+
+    {
+      type: "quiz",
+      qtype: "mcq",
+      title: "Vocabulary check",
+      question: "The number of cars passing a checkpoint each hour is an example of:",
+      options: ["Qualitative data", "Continuous data", "Discrete data", "Class interval"],
+      correct: 2,
+      explain: "You can only count cars in whole numbers (you can't have 4.5 cars), so this is discrete quantitative data."
+    },
+
+    {
+      type: "quiz",
+      qtype: "mcq",
+      title: "Apply it: continuous data",
+      question: "Which of these is an example of continuous data?",
+      options: ["Number of students in a class", "Shoe size category (small/medium/large)", "Time taken to run 100m", "Number of pets owned"],
+      correct: 2,
+      explain: "Time can take any value (10.3s, 10.31s, 10.314s, ...) so it is continuous. The others are discrete or qualitative."
+    },
+
+    {
+      type: "content",
+      tag: "Organising data",
+      title: "Stem-and-leaf diagrams",
+      html: `<p>A stem-and-leaf diagram organises numerical data while keeping every original value visible. Each value is split into a 'stem' (e.g. the tens digit) and a 'leaf' (the units digit).</p>
+        <p>A <b>key</b> must always be included to show how to read the diagram.</p>`,
+      svg: `<svg viewBox="0 0 220 130" width="220" height="130" role="img" aria-label="Stem and leaf diagram example">
+        <title>Stem-and-leaf example</title>
+        <text x="10" y="20" font-family="monospace" font-size="13" fill="#1E293B">Stem | Leaf</text>
+        <line x1="10" y1="28" x2="210" y2="28" stroke="#CBD5E1"/>
+        <text x="10" y="48" font-family="monospace" font-size="13" fill="#1E293B">1    | 2 5 8</text>
+        <text x="10" y="68" font-family="monospace" font-size="13" fill="#1E293B">2    | 0 3 3 7</text>
+        <text x="10" y="88" font-family="monospace" font-size="13" fill="#1E293B">3    | 1 4</text>
+        <text x="10" y="112" font-family="monospace" font-size="11" fill="#475569">Key: 1 | 2 = 12</text>
+      </svg>`,
+      callout: "Stem-and-leaf diagrams must have the leaves in order (ascending) within each row — exam mark schemes check this."
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Apply it: reading a stem-and-leaf diagram",
+      question: "Using the stem-and-leaf diagram shown above (stems 1, 2, 3), how many data values are recorded in total?",
+      accept: ["9"],
+      explain: "Row 1: 3 leaves (12,15,18). Row 2: 4 leaves (20,23,23,27). Row 3: 2 leaves (31,34). Total = 3+4+2 = 9."
+    },
+
+    {
+      type: "content",
+      tag: "Organising data",
+      title: "Two-way tables",
+      html: `<p>A two-way table displays the frequency of data across two categories at once, making it easy to compare groups and find totals.</p>`,
+      svg: `<svg viewBox="0 0 280 110" width="280" height="110" role="img" aria-label="Two way table example showing boys and girls preferring football or tennis">
+        <title>Two-way table example</title>
+        <rect x="10" y="10" width="260" height="90" fill="none" stroke="#CBD5E1"/>
+        <line x1="90" y1="10" x2="90" y2="100" stroke="#CBD5E1"/>
+        <line x1="180" y1="10" x2="180" y2="100" stroke="#CBD5E1"/>
+        <line x1="10" y1="40" x2="270" y2="40" stroke="#CBD5E1"/>
+        <line x1="10" y1="70" x2="270" y2="70" stroke="#CBD5E1"/>
+        <text x="95" y="30" font-size="11" fill="#1E293B" font-weight="600">Football</text>
+        <text x="195" y="30" font-size="11" fill="#1E293B" font-weight="600">Tennis</text>
+        <text x="15" y="58" font-size="11" fill="#1E293B" font-weight="600">Boys</text>
+        <text x="120" y="58" font-size="11" fill="#1E293B">14</text>
+        <text x="215" y="58" font-size="11" fill="#1E293B">6</text>
+        <text x="15" y="88" font-size="11" fill="#1E293B" font-weight="600">Girls</text>
+        <text x="120" y="88" font-size="11" fill="#1E293B">9</text>
+        <text x="215" y="88" font-size="11" fill="#1E293B">11</text>
+      </svg>`
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Apply it: two-way tables",
+      question: "Using the two-way table above, how many students in total prefer Tennis?",
+      accept: ["17"],
+      explain: "Boys who prefer tennis (6) + girls who prefer tennis (11) = 17."
+    },
+
+    {
+      type: "content",
+      tag: "Charts",
+      title: "Choosing and reading the right chart",
+      html: `<ul>
+          <li><b>Pictogram</b> — uses repeated symbols/icons to represent frequency; needs a key to show how much one symbol represents</li>
+          <li><b>Bar chart</b> — uses bars of equal width to compare frequencies across categories</li>
+          <li><b>Pie chart</b> — shows data as proportions of a whole circle (360°); each sector's angle is proportional to its frequency</li>
+          <li><b>Line graph</b> — connects points to show how a value changes over time</li>
+        </ul>`,
+      formula: "Pie chart sector angle = (frequency ÷ total frequency) × 360°",
+      callout: "For pie charts, always show your working for the angle calculation — this is where the method marks are awarded, not just the final chart."
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Apply it: pie chart angles",
+      question: "In a survey of 60 people, 15 chose 'Maths' as their favourite subject. What angle, in degrees, represents Maths on a pie chart?",
+      accept: ["90"],
+      explain: "(15 ÷ 60) × 360 = 0.25 × 360 = 90°."
+    },
+
+    {
+      type: "quiz",
+      qtype: "mcq",
+      title: "Final check: choosing a chart",
+      question: "Which type of chart is best for showing how a company's monthly sales changed over a year?",
+      options: ["Pie chart", "Pictogram", "Line graph", "Two-way table"],
+      correct: 2,
+      explain: "A line graph clearly shows trends and changes over a continuous variable like time."
+    },
+
+    {
+      type: "complete",
+      title: "Chapter 4 complete",
+      message: "You've covered data types, stem-and-leaf diagrams, two-way tables, and the four main chart types used to display data."
+    }
+  ]
+};
+</script>
+<script src="../assets/js/lesson-engine.js"></script>
+
+</body>
+</html>

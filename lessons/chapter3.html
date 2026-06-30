@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 3: Angles and Parallel Lines | SBS Mathematics</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/lesson.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a href="../index.html" class="nav-logo">
+    <img src="../assets/logo.png" alt="SBS">
+    <div><div class="nav-title">SBS Mathematics</div><div class="nav-subtitle">Cambridge IGCSE 0580</div></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="../chapters.html" class="active">Chapters</a></li>
+    <li><a href="../labs.html">Labs</a></li>
+  </ul>
+</nav>
+
+<div class="lesson-shell">
+  <div class="lesson-progress-track" id="lesson-progress-track">
+    <div class="lesson-progress-bar"><div class="lesson-progress-fill" id="lesson-progress-fill"></div></div>
+    <div class="lesson-progress-meta">
+      <span id="progress-meta-text">Slide 1 of N</span>
+      <span class="lesson-stars" id="lesson-stars-count">★ 0</span>
+    </div>
+  </div>
+
+  <div class="lesson-header">
+    <div class="lesson-kicker" id="lesson-kicker">Chapter 3</div>
+    <div class="lesson-title" id="lesson-title">Loading...</div>
+    <div class="lesson-sub" id="lesson-sub"></div>
+  </div>
+
+  <div id="lesson-root"></div>
+</div>
+
+<script>
+const LESSON_DATA = {
+  title: "Angles and Parallel Lines",
+  kicker: "Chapter 3 · IGCSE1 (Year 10) · Cambridge 0580 Extended — Geometry §3.1–3.4",
+  sub: "Angle types, complementary and supplementary angles, vertically opposite angles, and angles in parallel lines.",
+  slides: [
+
+    {
+      type: "content",
+      tag: "Overview",
+      title: "What this chapter covers",
+      html: `<p>This chapter is about precise geometric vocabulary and the angle facts that come from it. You will learn to:</p>
+        <ul>
+          <li>Name and classify <b>types of angles</b></li>
+          <li>Use <b>complementary</b>, <b>supplementary</b>, and <b>vertically opposite</b> angle facts</li>
+          <li>Identify <b>alternate</b>, <b>co-interior</b>, and <b>corresponding</b> angles formed by a transversal crossing parallel lines</li>
+        </ul>`,
+      callout: "Exam questions almost always require you to state the angle fact you used by name (e.g. 'corresponding angles are equal') — using the correct vocabulary earns the reasoning mark, not just the right number."
+    },
+
+    {
+      type: "content",
+      tag: "Vocabulary",
+      title: "Types of angles",
+      html: `<ul>
+          <li><b>Acute angle</b> — between 0° and 90°</li>
+          <li><b>Right angle</b> — exactly 90°</li>
+          <li><b>Obtuse angle</b> — between 90° and 180°</li>
+          <li><b>Straight angle</b> — exactly 180°</li>
+          <li><b>Reflex angle</b> — between 180° and 360°</li>
+          <li><b>Revolution</b> — a full turn, exactly 360°</li>
+        </ul>`,
+      svg: `<svg viewBox="0 0 360 120" width="360" height="120" role="img" aria-label="Diagram of acute, right, obtuse and reflex angles">
+        <title>Angle types</title>
+        <line x1="20" y1="90" x2="70" y2="90" stroke="#1B4F8A" stroke-width="2"/>
+        <line x1="20" y1="90" x2="60" y2="50" stroke="#1B4F8A" stroke-width="2"/>
+        <text x="15" y="108" font-size="10" fill="#475569">Acute</text>
+        <line x1="110" y1="90" x2="160" y2="90" stroke="#1B4F8A" stroke-width="2"/>
+        <line x1="110" y1="90" x2="110" y2="40" stroke="#1B4F8A" stroke-width="2"/>
+        <rect x="110" y="80" width="10" height="10" fill="none" stroke="#1B4F8A"/>
+        <text x="105" y="108" font-size="10" fill="#475569">Right</text>
+        <line x1="200" y1="90" x2="250" y2="90" stroke="#1B4F8A" stroke-width="2"/>
+        <line x1="200" y1="90" x2="225" y2="40" stroke="#1B4F8A" stroke-width="2"/>
+        <text x="195" y="108" font-size="10" fill="#475569">Obtuse</text>
+        <line x1="290" y1="60" x2="340" y2="60" stroke="#1B4F8A" stroke-width="2"/>
+        <line x1="290" y1="60" x2="320" y2="95" stroke="#1B4F8A" stroke-width="2"/>
+        <path d="M 320 65 A 25 25 0 1 1 295 55" fill="none" stroke="#B8860B" stroke-width="1.5"/>
+        <text x="280" y="108" font-size="10" fill="#475569">Reflex</text>
+      </svg>`
+    },
+
+    {
+      type: "quiz",
+      qtype: "mcq",
+      title: "Vocabulary check",
+      question: "An angle of 215° is best described as:",
+      options: ["Acute", "Obtuse", "Reflex", "Straight"],
+      correct: 2,
+      explain: "215° is between 180° and 360°, so it is a reflex angle."
+    },
+
+    {
+      type: "content",
+      tag: "Angle facts",
+      title: "Complementary, supplementary, and vertically opposite angles",
+      html: `<ul>
+          <li><b>Complementary angles</b> — two angles that add up to 90°</li>
+          <li><b>Supplementary angles</b> — two angles that add up to 180°</li>
+          <li><b>Vertically opposite angles</b> — formed when two straight lines cross; the angles facing each other across the intersection are equal</li>
+        </ul>`,
+      svg: `<svg viewBox="0 0 240 160" width="240" height="160" role="img" aria-label="Two crossing lines showing vertically opposite angles">
+        <title>Vertically opposite angles</title>
+        <line x1="40" y1="40" x2="200" y2="120" stroke="#1B4F8A" stroke-width="2"/>
+        <line x1="40" y1="120" x2="200" y2="40" stroke="#8B1A1A" stroke-width="2"/>
+        <text x="100" y="55" font-size="12" fill="#1B4F8A" font-weight="600">a</text>
+        <text x="135" y="55" font-size="12" fill="#8B1A1A" font-weight="600">b</text>
+        <text x="100" y="115" font-size="12" fill="#1B4F8A" font-weight="600">a</text>
+        <text x="135" y="115" font-size="12" fill="#8B1A1A" font-weight="600">b</text>
+      </svg>`,
+      formula: "Vertically opposite angles are always equal: a = a, b = b"
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Apply it: complementary angles",
+      question: "Two complementary angles are in the ratio 2:3. Find the size of the smaller angle, in degrees.",
+      accept: ["36"],
+      explain: "The angles sum to 90°. Split into 5 parts: 90÷5 = 18. Smaller angle = 2×18 = 36°."
+    },
+
+    {
+      type: "content",
+      tag: "Parallel lines",
+      title: "Angles formed by a transversal crossing parallel lines",
+      html: `<p>When a straight line (a <b>transversal</b>) crosses two <b>parallel</b> lines, three special angle relationships are created:</p>
+        <ul>
+          <li><b>Corresponding angles</b> — in matching positions at each intersection; they are <b>equal</b> ("F-shape")</li>
+          <li><b>Alternate angles</b> — on opposite sides of the transversal, between the two parallel lines; they are <b>equal</b> ("Z-shape")</li>
+          <li><b>Co-interior angles</b> — on the same side of the transversal, between the two parallel lines; they <b>sum to 180°</b> ("C-shape" or "U-shape")</li>
+        </ul>`,
+      svg: `<svg viewBox="0 0 280 180" width="280" height="180" role="img" aria-label="Transversal crossing two parallel lines showing alternate, corresponding and co-interior angles">
+        <title>Transversal and parallel lines</title>
+        <line x1="20" y1="50" x2="260" y2="50" stroke="#94A3B8" stroke-width="2"/>
+        <line x1="20" y1="130" x2="260" y2="130" stroke="#94A3B8" stroke-width="2"/>
+        <line x1="60" y1="20" x2="220" y2="160" stroke="#1B4F8A" stroke-width="2"/>
+        <text x="265" y="54" font-size="10" fill="#94A3B8">l₁</text>
+        <text x="265" y="134" font-size="10" fill="#94A3B8">l₂</text>
+        <circle cx="105" cy="50" r="3" fill="#B8860B"/>
+        <circle cx="175" cy="130" r="3" fill="#B8860B"/>
+      </svg>`,
+      formula: "Alternate angles equal · Corresponding angles equal · Co-interior angles sum to 180°"
+    },
+
+    {
+      type: "quiz",
+      qtype: "mcq",
+      title: "Apply it: naming the relationship",
+      question: "A transversal crosses two parallel lines. Two angles are on the same side of the transversal, between the parallel lines, and sum to 180°. What are they called?",
+      options: ["Alternate angles", "Corresponding angles", "Co-interior angles", "Vertically opposite angles"],
+      correct: 2,
+      explain: "Angles on the same side of the transversal between the parallel lines that sum to 180° are co-interior (also called allied) angles."
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Final check: co-interior angles",
+      question: "Two co-interior angles formed by a transversal crossing parallel lines are x° and (x + 40)°. Find x.",
+      accept: ["70"],
+      explain: "Co-interior angles sum to 180°: x + (x+40) = 180, so 2x = 140, x = 70."
+    },
+
+    {
+      type: "complete",
+      title: "Chapter 3 complete",
+      message: "You've covered angle types, complementary/supplementary/vertically opposite angles, and the three parallel-line angle relationships."
+    }
+  ]
+};
+</script>
+<script src="../assets/js/lesson-engine.js"></script>
+
+</body>
+</html>

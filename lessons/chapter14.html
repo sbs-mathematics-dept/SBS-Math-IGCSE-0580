@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 14: Equations and Inequalities | SBS Mathematics</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/lesson.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a href="../index.html" class="nav-logo">
+    <img src="../assets/logo.png" alt="SBS">
+    <div><div class="nav-title">SBS Mathematics</div><div class="nav-subtitle">Cambridge IGCSE 0580</div></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="../chapters.html" class="active">Chapters</a></li>
+    <li><a href="../labs.html">Labs</a></li>
+  </ul>
+</nav>
+
+<div class="lesson-shell">
+  <div class="lesson-progress-track" id="lesson-progress-track">
+    <div class="lesson-progress-bar"><div class="lesson-progress-fill" id="lesson-progress-fill"></div></div>
+    <div class="lesson-progress-meta">
+      <span id="progress-meta-text">Slide 1 of N</span>
+      <span class="lesson-stars" id="lesson-stars-count">★ 0</span>
+    </div>
+  </div>
+
+  <div class="lesson-header">
+    <div class="lesson-kicker" id="lesson-kicker">Chapter 14</div>
+    <div class="lesson-title" id="lesson-title">Loading...</div>
+    <div class="lesson-sub" id="lesson-sub"></div>
+  </div>
+
+  <div id="lesson-root"></div>
+</div>
+
+<script>
+const LESSON_DATA = {
+  title: "Further Solving of Equations and Inequalities",
+  kicker: "Chapter 14 · IGCSE1 (Year 10) · Cambridge 0580 Extended — Algebra §1.21–1.23",
+  sub: "Simultaneous equations (graphical and algebraic), linear inequalities and regions, linear programming, and solving quadratics.",
+  slides: [
+
+    {
+      type: "content",
+      tag: "Overview",
+      title: "What this chapter covers",
+      html: `<p>This chapter develops equation-solving into more advanced territory used throughout the Extended paper. You will learn to:</p>
+        <ul>
+          <li>Solve <b>simultaneous equations</b> both graphically and algebraically</li>
+          <li>Solve and represent <b>linear inequalities</b>, including shading regions</li>
+          <li>Use <b>linear programming</b> to find optimal solutions within a region</li>
+          <li>Solve <b>quadratic equations</b> by factorising, completing the square, and the quadratic formula</li>
+        </ul>`
+    },
+
+    {
+      type: "content",
+      tag: "Simultaneous equations",
+      title: "Solving simultaneous equations algebraically",
+      html: `<p>Simultaneous equations have two unknowns and need two equations to solve. The two main algebraic methods are <b>elimination</b> and <b>substitution</b>.</p>`,
+      worked: [
+        "Solve: 2x + y = 11 and x − y = 1 (elimination)",
+        "Add the equations to eliminate y: (2x + y) + (x − y) = 11 + 1 → 3x = 12 → x = 4",
+        "Substitute x = 4 into x − y = 1: 4 − y = 1 → y = 3",
+        "Solution: x = 4, y = 3"
+      ],
+      formula: "Check: 2(4) + 3 = 11 ✓ &nbsp;&nbsp; 4 − 3 = 1 ✓"
+    },
+
+    {
+      type: "quiz",
+      qtype: "mcq",
+      title: "Apply it: simultaneous equations",
+      question: "Solve: x + y = 9 and x − y = 3. What is the value of x?",
+      options: ["3", "6", "9", "12"],
+      correct: 1,
+      explain: "Adding the equations: 2x = 12, so x = 6 (then y = 3)."
+    },
+
+    {
+      type: "content",
+      tag: "Graphical solutions",
+      title: "Solving simultaneous equations graphically",
+      html: `<p>If you plot both equations as straight lines, the point where they <b>intersect</b> is the solution to the simultaneous equations — its coordinates satisfy both equations at once.</p>`,
+      callout: "If the lines are parallel (same gradient), there is no solution. If the lines are identical, there are infinitely many solutions."
+    },
+
+    {
+      type: "content",
+      tag: "Inequalities",
+      title: "Linear inequalities and shaded regions",
+      html: `<p>An inequality like <code>y &gt; 2x − 1</code> describes a whole region of the coordinate plane, not just a line.</p>
+        <ul>
+          <li>Draw the boundary line <code>y = 2x − 1</code></li>
+          <li>Use a <b>solid line</b> for ≤ or ≥ (the boundary IS included)</li>
+          <li>Use a <b>dashed/not closed line</b> for &lt; or &gt; (the boundary is NOT included)</li>
+          <li>Shade the <b>unwanted region</b> (Cambridge convention), leaving the wanted region unshaded — always check which convention the question specifies</li>
+        </ul>`,
+      formula: "y + 2x > 4 &nbsp;→&nbsp; boundary line y + 2x = 4, region above the line"
+    },
+
+    {
+      type: "quiz",
+      qtype: "mcq",
+      title: "Apply it: inequality boundaries",
+      question: "For the inequality x ≤ 5, what type of boundary line should be drawn?",
+      options: ["Dashed line, not included", "Solid line, included", "No line needed", "A curved line"],
+      correct: 1,
+      explain: "≤ means 'less than or equal to', so the boundary IS included — draw a solid line."
+    },
+
+    {
+      type: "content",
+      tag: "Linear programming",
+      title: "Linear programming",
+      html: `<p><b>Linear programming</b> uses several inequalities together to define a feasible region — the set of all points satisfying every inequality at once. Exam questions typically ask you to find the maximum or minimum of some quantity within that region.</p>`,
+      worked: [
+        "Identify all the inequalities and shade to find the feasible region (the unshaded overlap)",
+        "The optimal value of a linear expression (e.g. maximum profit) always occurs at a vertex (corner) of the feasible region",
+        "Test the expression at each vertex of the region to find the maximum or minimum"
+      ],
+      callout: "You don't need calculus here — just identify the corners of the feasible region and test each one."
+    },
+
+    {
+      type: "content",
+      tag: "Quadratics",
+      title: "Solving quadratic equations: three methods",
+      html: `<ul>
+          <li><b>Factorising</b> — fastest when the quadratic factorises neatly</li>
+          <li><b>Completing the square</b> — useful for finding turning points, and works even when factorising doesn't</li>
+          <li><b>Quadratic formula</b> — always works, especially for non-factorisable quadratics</li>
+        </ul>`,
+      formula: "x = (−b ± √(b² − 4ac)) / 2a &nbsp;&nbsp; for ax² + bx + c = 0"
+    },
+
+    {
+      type: "quiz",
+      qtype: "mcq",
+      title: "Apply it: quadratic formula",
+      question: "For the equation 2x² + 3x − 5 = 0, what are the values of a, b, and c to substitute into the quadratic formula?",
+      options: ["a=2, b=3, c=−5", "a=2, b=3, c=5", "a=2, b=−3, c=5", "a=3, b=2, c=−5"],
+      correct: 0,
+      explain: "Matching ax² + bx + c = 0 to 2x² + 3x − 5 = 0 directly gives a=2, b=3, c=−5."
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Final check: factorising a quadratic equation",
+      question: "Solve x² − 5x + 6 = 0 by factorising. Give the smaller solution for x.",
+      accept: ["2"],
+      explain: "x² − 5x + 6 = (x − 2)(x − 3) = 0, so x = 2 or x = 3. The smaller solution is 2."
+    },
+
+    {
+      type: "complete",
+      title: "Chapter 14 complete",
+      message: "You've covered simultaneous equations, linear inequalities and regions, linear programming, and three methods for solving quadratic equations."
+    }
+  ]
+};
+</script>
+<script src="../assets/js/lesson-engine.js"></script>
+
+</body>
+</html>

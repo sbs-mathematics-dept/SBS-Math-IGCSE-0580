@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 2: Fractions, Decimals and Indices | SBS Mathematics</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/lesson.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a href="../index.html" class="nav-logo">
+    <img src="../assets/logo.png" alt="SBS">
+    <div><div class="nav-title">SBS Mathematics</div><div class="nav-subtitle">Cambridge IGCSE 0580</div></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="../chapters.html" class="active">Chapters</a></li>
+    <li><a href="../labs.html">Labs</a></li>
+  </ul>
+</nav>
+
+<div class="lesson-shell">
+  <div class="lesson-progress-track" id="lesson-progress-track">
+    <div class="lesson-progress-bar"><div class="lesson-progress-fill" id="lesson-progress-fill"></div></div>
+    <div class="lesson-progress-meta">
+      <span id="progress-meta-text">Slide 1 of N</span>
+      <span class="lesson-stars" id="lesson-stars-count">★ 0</span>
+    </div>
+  </div>
+
+  <div class="lesson-header">
+    <div class="lesson-kicker" id="lesson-kicker">Chapter 2</div>
+    <div class="lesson-title" id="lesson-title">Loading...</div>
+    <div class="lesson-sub" id="lesson-sub"></div>
+  </div>
+
+  <div id="lesson-root"></div>
+</div>
+
+<script>
+const LESSON_DATA = {
+  title: "Fractions, Decimals and Indices",
+  kicker: "Chapter 2 · IGCSE1 (Year 10) · Cambridge 0580 Extended — Number §1.7–1.12",
+  sub: "Rational and irrational numbers, indices and the laws of indices, standard form, significant figures, and time.",
+  slides: [
+
+    {
+      type: "content",
+      tag: "Overview",
+      title: "What this chapter covers",
+      html: `<p>This chapter extends Chapter 1's number work into fractions, decimals, indices and practical time calculations:</p>
+        <ul>
+          <li><b>Rational</b> and <b>irrational</b> numbers</li>
+          <li><b>Indices (exponents)</b> and the laws of indices, including negative and fractional powers</li>
+          <li><b>Standard form</b> and <b>significant figures</b></li>
+          <li>Working with <b>12-hour and 24-hour time</b>, timetables, and time conversions</li>
+        </ul>`
+    },
+
+    {
+      type: "content",
+      tag: "Vocabulary",
+      title: "Rational vs irrational numbers",
+      html: `<ul>
+          <li><b>Rational number</b> — can be written as a fraction a/b where a and b are integers and b ≠ 0. This includes integers, terminating decimals, and recurring decimals.</li>
+          <li><b>Irrational number</b> — cannot be written as an exact fraction; the decimal goes on forever with no repeating pattern. Examples: π, √2, √3.</li>
+        </ul>`,
+      formula: "Rational: 0.75 = 3/4, 0.333... = 1/3 &nbsp;&nbsp;|&nbsp;&nbsp; Irrational: π, √2",
+      callout: "A common exam trap: √4 = 2, which IS rational (it simplifies to a whole number) — only un-simplifiable square roots like √2 or √5 are irrational."
+    },
+
+    {
+      type: "quiz",
+      qtype: "mcq",
+      title: "Vocabulary check",
+      question: "Which of the following is irrational?",
+      options: ["√9", "0.6", "√7", "5/2"],
+      correct: 2,
+      explain: "√9 = 3 (rational). 0.6 and 5/2 are both fractions/terminating decimals. √7 cannot be simplified to a whole number or fraction, so it is irrational."
+    },
+
+    {
+      type: "content",
+      tag: "Indices",
+      title: "Indices (exponents) — the basics",
+      html: `<p>An index (or exponent) tells you how many times to multiply a number by itself.</p>
+        <p>8² is read "8 to the power 2" or "8 squared" — it means 8 × 8 = 64.</p>
+        <p>The number being multiplied is the <b>base</b>; the small raised number is the <b>index</b> or <b>power</b>.</p>`,
+      formula: "aⁿ = a × a × a × ... (n times)"
+    },
+
+    {
+      type: "content",
+      tag: "Indices",
+      title: "The laws of indices",
+      html: `<p>These rules let you simplify expressions with powers without expanding them fully — they are essential and appear constantly across the whole syllabus:</p>`,
+      worked: [
+        "<b>Multiplying:</b> aᵐ × aⁿ = a^(m+n) — add the powers",
+        "<b>Dividing:</b> aᵐ ÷ aⁿ = a^(m−n) — subtract the powers",
+        "<b>Power of a power:</b> (aᵐ)ⁿ = a^(mn) — multiply the powers",
+        "<b>Zero power:</b> a⁰ = 1 (for any a ≠ 0)",
+        "<b>Negative power:</b> a⁻ⁿ = 1/aⁿ — flips to a reciprocal",
+        "<b>Fractional power:</b> a^(1/n) = ⁿ√a — this is the nth root"
+      ],
+      formula: "2³ × 2⁴ = 2⁷ = 128 &nbsp;&nbsp;|&nbsp;&nbsp; 5⁻² = 1/25"
+    },
+
+    {
+      type: "quiz",
+      qtype: "mcq",
+      title: "Apply it: laws of indices",
+      question: "Simplify: x⁵ ÷ x²",
+      options: ["x³", "x⁷", "x¹⁰", "x²·⁵"],
+      correct: 0,
+      explain: "When dividing powers of the same base, subtract the indices: 5 − 2 = 3, so x⁵ ÷ x² = x³."
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Apply it: negative indices",
+      question: "Evaluate 4⁻². Give your answer as a fraction in the form a/b (e.g. 1/16).",
+      accept: ["1/16"],
+      explain: "4⁻² = 1/4² = 1/16."
+    },
+
+    {
+      type: "content",
+      tag: "Standard form",
+      title: "Standard form (scientific notation)",
+      html: `<p>Standard form writes very large or very small numbers as:</p>`,
+      formula: "A × 10ⁿ &nbsp; where 1 ≤ A &lt; 10, and n is an integer",
+      html2: "",
+      callout: "If the original number is ≥ 10, the power of 10 is positive. If the original number is between 0 and 1, the power of 10 is negative.",
+      worked: [
+        "Example: 45 000 = 4.5 × 10⁴",
+        "Example: 0.0032 = 3.2 × 10⁻³"
+      ]
+    },
+
+    {
+      type: "quiz",
+      qtype: "mcq",
+      title: "Apply it: standard form",
+      question: "Write 0.00067 in standard form.",
+      options: ["6.7 × 10⁻⁴", "6.7 × 10⁴", "67 × 10⁻⁵", "0.67 × 10⁻³"],
+      correct: 0,
+      explain: "Move the decimal point 4 places to get 6.7, and since the original number is less than 1, the power is negative: 6.7 × 10⁻⁴."
+    },
+
+    {
+      type: "content",
+      tag: "Significant figures",
+      title: "Significant figures",
+      html: `<p>Significant figures (s.f.) tell you how precisely a number is given.</p>
+        <ul>
+          <li>The first significant figure is the first non-zero digit</li>
+          <li>All digits after that are significant, including zeros between non-zero digits</li>
+          <li>Trailing zeros after a decimal point ARE significant; leading zeros before the first non-zero digit are NOT</li>
+        </ul>`,
+      formula: "0.004507 → 4.51 × 10⁻³ (3 s.f.)",
+      callout: "Always read the question carefully: 'correct to 2 decimal places' and 'correct to 2 significant figures' are different instructions and often give different answers."
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Apply it: significant figures",
+      question: "Round 0.038472 to 2 significant figures.",
+      accept: ["0.038"],
+      explain: "The first significant figure is 3, the second is 8. Looking at the next digit (4) to round: 0.038472 → 0.038 (2 s.f.)."
+    },
+
+    {
+      type: "content",
+      tag: "Time",
+      title: "12-hour and 24-hour time, and time conversions",
+      html: `<p>Cambridge exam questions often combine time with timetables and decimal-time conversions:</p>
+        <ul>
+          <li>24-hour clock has no a.m./p.m. — e.g. 3:45 p.m. = 15:45</li>
+          <li>To convert decimal hours to hours/minutes: multiply the decimal part by 60</li>
+        </ul>`,
+      worked: [
+        "Convert 8.3 hours to hours and minutes",
+        "8.3 hours = 8 hours + 0.3 hours",
+        "0.3 × 60 = 18 minutes",
+        "So 8.3 hours = 8 hours 18 minutes"
+      ],
+      callout: "Time is NOT decimal — never just write '8.3 hours = 8 hours 30 minutes'. Always multiply the decimal part by 60 to get minutes."
+    },
+
+    {
+      type: "quiz",
+      qtype: "numeric",
+      title: "Final check: time conversion",
+      question: "Convert 0.4 hours into minutes.",
+      accept: ["24"],
+      explain: "0.4 × 60 = 24 minutes."
+    },
+
+    {
+      type: "complete",
+      title: "Chapter 2 complete",
+      message: "You've covered rational/irrational numbers, the laws of indices, standard form, significant figures, and time conversions."
+    }
+  ]
+};
+</script>
+<script src="../assets/js/lesson-engine.js"></script>
+
+</body>
+</html>
