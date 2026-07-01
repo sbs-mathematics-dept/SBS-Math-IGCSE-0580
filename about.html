@@ -3,31 +3,87 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>About | SBS Mathematics</title>
-<link rel="stylesheet" href="assets/css/main.css">
+<title>Meet the Team | SBS Mathematics</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
 <style>
-.about-hero{background:var(--sbs-blue);color:white;padding:3rem 2rem;text-align:center;}
-.about-hero img{height:60px;filter:brightness(0) invert(1);opacity:0.9;margin-bottom:1rem;}
-.about-hero h1{font-size:2rem;font-weight:700;letter-spacing:-0.02em;}
-.about-hero p{opacity:0.8;max-width:500px;margin:0.75rem auto 0;}
-.principles-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-top:1.5rem;}
-.principle-card{background:white;border:1px solid var(--gray-200);border-radius:12px;padding:1.25rem;}
-.principle-icon{font-size:1.8rem;margin-bottom:8px;}
-.principle-title{font-size:15px;font-weight:600;color:var(--gray-900);margin-bottom:6px;}
-.principle-text{font-size:13px;color:var(--gray-600);line-height:1.6;}
-.team-card{background:white;border:1px solid var(--gray-200);border-radius:12px;padding:1.5rem;display:flex;gap:1rem;align-items:center;}
-.team-avatar{width:56px;height:56px;background:var(--sbs-blue);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:20px;flex-shrink:0;}
-.quote-block{background:var(--sbs-blue-pale);border-left:4px solid var(--sbs-blue);border-radius:0 12px 12px 0;padding:1.5rem 2rem;font-size:1.1rem;font-style:italic;color:var(--gray-700);line-height:1.7;margin:2rem 0;}
-.tech-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin-top:1rem;}
-.tech-item{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--gray-700);}
-.tech-item strong{color:var(--gray-900);}
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--navy:#1B3F6A;--gold:#B8860B;--cream:#FAF8F4;--blue:#1B4F8A;--crimson:#8B1A1A;}
+body{font-family:'Inter',sans-serif;background:var(--cream);overflow-x:hidden;}
+
+nav{background:#fff;border-bottom:1px solid #e5e7eb;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;min-height:72px;position:sticky;top:0;z-index:100;}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.nav-logo img{height:60px;width:auto;}
+.nav-links{display:flex;gap:2rem;list-style:none;}
+.nav-links a{text-decoration:none;color:#374151;font-size:14px;font-weight:500;}
+.nav-links a:hover,.nav-links a.active{color:var(--blue);}
+
+.hero{position:relative;overflow:hidden;min-height:480px;background:linear-gradient(135deg,var(--navy) 0%,#1a3a6e 60%,var(--crimson) 100%);display:flex;align-items:center;justify-content:center;text-align:center;padding:4rem 2rem;}
+.hero-bg{position:absolute;inset:0;opacity:0.18;background-image:url('assets/teachers-hallway-crop.jpg');background-size:cover;background-position:center top;}
+.hero-content{position:relative;z-index:1;color:#fff;}
+.hero-tag{font-family:'Caveat',cursive;font-size:22px;color:#fbbf24;margin-bottom:12px;display:block;animation:wiggle 2s ease-in-out infinite;}
+@keyframes wiggle{0%,100%{transform:rotate(-1deg);}50%{transform:rotate(1deg);}}
+.hero h1{font-size:clamp(2.2rem,5vw,3.8rem);font-weight:900;line-height:1.1;margin-bottom:16px;}
+.hero h1 span{color:#93c5fd;}
+.hero p{font-size:1.1rem;opacity:0.85;max-width:560px;margin:0 auto;}
+.floater{position:absolute;font-size:2rem;opacity:0.12;pointer-events:none;animation:float 6s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-20px) rotate(8deg);}}
+.f1{top:10%;left:5%;}
+.f2{top:20%;right:8%;animation-delay:1s;font-size:1.5rem;}
+.f3{bottom:15%;left:12%;animation-delay:2s;font-size:1.8rem;}
+.f4{bottom:20%;right:5%;animation-delay:.5s;}
+.f5{top:50%;left:2%;animation-delay:1.5s;font-size:1.2rem;}
+
+.intro-strip{background:#fff;border-bottom:1px solid #e5e7eb;padding:2.5rem 2rem;text-align:center;}
+.intro-strip blockquote{font-family:'Caveat',cursive;font-size:1.6rem;color:var(--navy);max-width:720px;margin:0 auto;line-height:1.5;}
+.intro-strip blockquote em{color:var(--crimson);font-style:normal;}
+
+.team-section{max-width:1100px;margin:0 auto;padding:4rem 2rem 5rem;}
+.section-label{text-align:center;font-family:'Caveat',cursive;font-size:1.4rem;color:var(--gold);margin-bottom:6px;}
+.section-title{text-align:center;font-size:2.2rem;font-weight:900;color:var(--navy);margin-bottom:3rem;}
+
+.teacher-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2rem;}
+@media(max-width:720px){.teacher-grid{grid-template-columns:1fr;}}
+
+.teacher-card{background:#fff;border-radius:20px;box-shadow:0 4px 24px rgba(27,63,106,.10);overflow:hidden;transition:transform .3s ease,box-shadow .3s ease;opacity:0;transform:translateY(40px);}
+.teacher-card.visible{animation:slideUp .6s ease forwards;}
+@keyframes slideUp{to{opacity:1;transform:translateY(0);}}
+.teacher-card:hover{transform:translateY(-6px) rotate(-.5deg);box-shadow:0 12px 40px rgba(27,63,106,.18);}
+
+.card-photo-wrap{width:100%;height:260px;overflow:hidden;position:relative;}
+.card-photo-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease;}
+.teacher-card:hover .card-photo-wrap img{transform:scale(1.04);}
+
+.card-body{padding:1.5rem 1.5rem 1.8rem;}
+.card-emoji{font-size:2rem;margin-bottom:8px;display:inline-block;animation:bounce 2s ease infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+.card-name{font-size:1.4rem;font-weight:900;color:var(--navy);margin-bottom:4px;}
+.card-role{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;}
+.card-bio{font-size:14px;color:#374151;line-height:1.75;margin-bottom:16px;}
+.card-fun{background:var(--cream);border-left:3px solid var(--crimson);padding:10px 14px;border-radius:0 8px 8px 0;font-family:'Caveat',cursive;font-size:1rem;color:var(--crimson);}
+
+.team-photo-section{position:relative;overflow:hidden;}
+.team-photo-section img{width:100%;height:420px;object-fit:cover;object-position:center;display:block;}
+.team-photo-overlay{position:absolute;inset:0;background:linear-gradient(to right,rgba(27,63,106,.88) 0%,rgba(27,63,106,.25) 55%,transparent 100%);display:flex;align-items:center;padding:3rem;}
+.team-quote{color:#fff;max-width:480px;}
+.team-quote h2{font-size:2rem;font-weight:900;line-height:1.2;margin-bottom:12px;}
+.team-quote h2 span{color:#fbbf24;font-family:'Caveat',cursive;font-size:2.4rem;}
+.team-quote p{font-size:1rem;opacity:.85;line-height:1.7;}
+
+.facts-strip{background:var(--navy);color:#fff;padding:3rem 2rem;text-align:center;}
+.facts-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;max-width:900px;margin:0 auto;}
+@media(max-width:640px){.facts-grid{grid-template-columns:repeat(2,1fr);}}
+.fact-num{font-size:2.8rem;font-weight:900;color:#fbbf24;font-family:'Caveat',cursive;}
+.fact-label{font-size:12px;opacity:.7;text-transform:uppercase;letter-spacing:.06em;margin-top:4px;}
+
+footer{background:#0b1635;color:rgba(255,255,255,.5);text-align:center;padding:2rem;font-size:13px;}
+footer a{color:rgba(255,255,255,.6);text-decoration:none;}
 </style>
 </head>
 <body>
-<nav class="nav">
+
+<nav>
   <a href="index.html" class="nav-logo">
-    <img src="assets/logo.png" alt="SBS">
-    <div><div class="nav-title">SBS Mathematics</div><div class="nav-subtitle">Cambridge IGCSE 0580 Extended</div></div>
+    <img src="assets/logo-full.png" alt="SBS International School">
   </a>
   <ul class="nav-links">
     <li><a href="index.html">Home</a></li>
@@ -37,105 +93,151 @@
   </ul>
 </nav>
 
-<div class="about-hero">
-  <img src="assets/logo.png" alt="SBS">
-  <h1>SBS Interactive Mathematics</h1>
-  <p>Cambridge IGCSE 0580 Extended · Built for SBS International School Chiangmai</p>
+<div class="hero">
+  <div class="hero-bg"></div>
+  <span class="floater f1">∑</span>
+  <span class="floater f2">π</span>
+  <span class="floater f3">√x</span>
+  <span class="floater f4">∞</span>
+  <span class="floater f5">θ</span>
+  <div class="hero-content">
+    <span class="hero-tag" id="hero-tag">⚠️ Warning: May cause sudden interest in mathematics</span>
+    <h1>Meet the <span>Maths Squad</span></h1>
+    <p>Four humans who voluntarily chose to spend their days surrounded by equations, calculators, and teenagers. We salute them.</p>
+  </div>
 </div>
 
-<div class="section" style="max-width:900px;">
-
-  <div class="quote-block">
-    "We will never sacrifice mathematical quality for flashy technology. Your lessons come first. The technology exists to make them easier to teach and more engaging for students."
-  </div>
-
-  <div class="section-header">
-    <div class="section-label">Design principles</div>
-    <div class="section-title">How we think about this</div>
-  </div>
-
-  <div class="principles-grid">
-    <div class="principle-card">
-      <div class="principle-icon">🎯</div>
-      <div class="principle-title">Cambridge-first</div>
-      <div class="principle-text">Every lab maps directly to Cambridge 0580 Extended syllabus topics, paper questions, and command words. Nothing is included just because it's interesting.</div>
-    </div>
-    <div class="principle-card">
-      <div class="principle-icon">👨‍🏫</div>
-      <div class="principle-title">Teachers lead, tech supports</div>
-      <div class="principle-text">Labs are designed to reinforce lessons, not replace them. Use them to introduce a topic, provide a visual during class, or as structured homework exploration.</div>
-    </div>
-    <div class="principle-card">
-      <div class="principle-icon">🔢</div>
-      <div class="principle-title">Mathematically rigorous</div>
-      <div class="principle-text">Every calculation is exact. Graphs are plotted correctly. Theorems show real measurements. There are no "close enough" visuals — if it's wrong, it's misleading.</div>
-    </div>
-    <div class="principle-card">
-      <div class="principle-icon">⚡</div>
-      <div class="principle-title">Instant access</div>
-      <div class="principle-text">No login. No app. No download. Students open a link in any browser and start exploring. Every second of friction removed is a second more mathematics.</div>
-    </div>
-    <div class="principle-card">
-      <div class="principle-icon">📱</div>
-      <div class="principle-title">Works everywhere</div>
-      <div class="principle-text">Mobile, tablet, laptop, classroom projector. The circle theorems lab even has full touch support for dragging points on a phone screen.</div>
-    </div>
-    <div class="principle-card">
-      <div class="principle-icon">🆓</div>
-      <div class="principle-title">Completely free</div>
-      <div class="principle-text">No subscriptions, no ads, no paywalls. Built and hosted on GitHub Pages — freely available to every SBS student forever.</div>
-    </div>
-  </div>
-
-  <div class="section-header" style="margin-top:3rem;">
-    <div class="section-label">What's included</div>
-    <div class="section-title">The 8 interactive labs</div>
-  </div>
-
-  <div style="font-size:14px;line-height:2;color:var(--gray-700);">
-    <div>🎲 <strong>Probability Lab</strong> — Simulation, tree diagrams (with & without replacement), Venn diagrams, conditional probability</div>
-    <div>📊 <strong>Graph Explorer</strong> — Plot any function, multiple curves, zero-finding, intercepts, x-value probe</div>
-    <div>📐 <strong>Transformation Lab</strong> — Translation, reflection, rotation (any centre), enlargement (including negative k)</div>
-    <div>📏 <strong>Circle Theorems Explorer</strong> — 7 theorems, fully draggable, real-time angle measurement</div>
-    <div>📈 <strong>Statistics Lab</strong> — Averages & spread, histograms with frequency density, cumulative frequency curves, box plots</div>
-    <div>📉 <strong>Functions Explorer</strong> — fg(x), gf(x), f⁻¹(x), domain & range, function transformations</div>
-    <div>🔺 <strong>Trigonometry Unit Circle</strong> — Animated 0°–360°, sin/cos/tan wave drawing, exact values at key angles</div>
-    <div>📦 <strong>3D Geometry Explorer</strong> — Volume & surface area for 6 shapes, substituted formulae, nets</div>
-  </div>
-
-  <div class="section-header" style="margin-top:3rem;">
-    <div class="section-label">Technical</div>
-    <div class="section-title">How it's built</div>
-  </div>
-
-  <div class="tech-list">
-    <div class="tech-item"><strong>Pure HTML/CSS/JS</strong><br>No frameworks, no build step</div>
-    <div class="tech-item"><strong>GitHub Pages</strong><br>Free hosting, always on</div>
-    <div class="tech-item"><strong>Canvas API</strong><br>All graphs drawn natively</div>
-    <div class="tech-item"><strong>No dependencies</strong><br>Nothing to update or break</div>
-    <div class="tech-item"><strong>Offline capable</strong><br>Works after initial load</div>
-    <div class="tech-item"><strong>Touch support</strong><br>Mobile & tablet friendly</div>
-  </div>
-
-  <div class="section-header" style="margin-top:3rem;">
-    <div class="section-label">SBS International School</div>
-    <div class="section-title">About the school</div>
-  </div>
-
-  <div style="background:white;border:1px solid var(--gray-200);border-radius:12px;padding:1.5rem;display:flex;gap:1.5rem;align-items:center;">
-    <img src="assets/logo.png" alt="SBS" style="height:64px;flex-shrink:0;">
-    <div style="font-size:14px;color:var(--gray-700);line-height:1.7;">
-      <strong style="color:var(--gray-900)">SBS International School Chiangmai</strong> is an Arthit Ourairat Institution offering Cambridge International education. The Mathematics Department is committed to developing students who can think mathematically — not just pass examinations.
-      <div style="margin-top:8px;color:var(--gray-400);font-size:12px;">Cambridge IGCSE 0580 Extended · AS Level · International curriculum</div>
-    </div>
-  </div>
-
+<div class="intro-strip">
+  <blockquote>"Together we solve, together we <em>survive</em> — I mean, <em>grow</em>."</blockquote>
 </div>
 
-<footer class="site-footer">
-  <strong>SBS Interactive Mathematics</strong> · Cambridge IGCSE 0580 Extended
-  <div style="margin-top:6px;opacity:0.6">SBS International School Chiangmai · An Arthit Ourairat Institution</div>
-  <div style="margin-top:6px;opacity:0.4;font-size:11px;">Mathematical quality first. Technology second.</div>
+<div class="team-section">
+  <div class="section-label">The Department</div>
+  <div class="section-title">People Behind the Maths</div>
+  <div class="teacher-grid">
+
+    <div class="teacher-card">
+      <div class="card-photo-wrap">
+        <img src="assets/teachers-classroom.jpg" alt="Teacher Robert" style="object-position:8% 0%;">
+      </div>
+      <div class="card-body">
+        <span class="card-emoji" style="animation-delay:0s;">☕</span>
+        <div class="card-name">Mr. Robert</div>
+        <div class="card-role">Lower Secondary Mathematics</div>
+        <div class="card-bio">The department's most enthusiastic guide to the fundamentals. Mr. Robert specialises in Lower Secondary maths and has a remarkable gift for making Year 7 and 8 students feel like they already know what they're doing — even when they absolutely do not. Armed with patience, positivity, and a coffee mug that says "math is awesome."</div>
+        <div class="card-fun">💬 "Negative numbers aren't scary. They're just positive numbers having a bad day."</div>
+      </div>
+    </div>
+
+    <div class="teacher-card">
+      <div class="card-photo-wrap">
+        <img src="assets/teachers-classroom.jpg" alt="Teacher Rene" style="object-position:36% 0%;">
+      </div>
+      <div class="card-body">
+        <span class="card-emoji" style="animation-delay:0.3s;">📐</span>
+        <div class="card-name">Mr. Rene</div>
+        <div class="card-role">Lower Secondary &amp; Cambridge IGCSE Mathematics</div>
+        <div class="card-bio">The bridge between "I kind of get maths" and "I actually get maths." Mr. Rene teaches across Lower Secondary and IGCSE, expertly guiding students from basic algebra all the way to Cambridge exam technique. Famous for his perfectly drawn freehand circles and the dramatic pause before revealing the value of x.</div>
+        <div class="card-fun">💬 "x is not lost. x is just on a journey of self-discovery."</div>
+      </div>
+    </div>
+
+    <div class="teacher-card">
+      <div class="card-photo-wrap">
+        <img src="assets/teachers-classroom.jpg" alt="Teacher Hanna" style="object-position:64% 0%;">
+      </div>
+      <div class="card-body">
+        <span class="card-emoji" style="animation-delay:0.6s;">📊</span>
+        <div class="card-name">Ms. Hanna</div>
+        <div class="card-role">Cambridge IGCSE &amp; A Level Mathematics</div>
+        <div class="card-bio">Ms. Hanna teaches at the highest levels — Cambridge IGCSE Extended and A Level — which means her students are the ones who said "I want the hard version." She delivers. Whether it's integration, vectors, or probability distributions, Ms. Hanna makes Advanced Maths feel less like a mountain and more like a very steep set of stairs. Still steep. But stairs.</div>
+        <div class="card-fun">💬 "The syllabus says 'prove.' I say 'let's have a conversation with the examiner.'"</div>
+      </div>
+    </div>
+
+    <div class="teacher-card">
+      <div class="card-photo-wrap">
+        <img src="assets/teachers-classroom.jpg" alt="Ms Cheng" style="object-position:90% 0%;">
+      </div>
+      <div class="card-body">
+        <span class="card-emoji" style="animation-delay:0.9s;">🏆</span>
+        <div class="card-name">Ms. Cheng</div>
+        <div class="card-role">Head of Mathematics · IGCSE &amp; A Level</div>
+        <div class="card-bio">Head of Department, Cambridge IGCSE 0580 and A Level specialist, and the person who built this entire website. Ms. Cheng coordinates the whole Mathematics Department while somehow also teaching IGCSE Extended and A Level — and finding time to create 9 interactive labs and 15+ lesson pages. Students describe her as: "she makes hard things feel obvious — then we look at our notes and realise how hard they actually were."</div>
+        <div class="card-fun">💬 "I didn't build 15 interactive lessons for you to use the textbook. Open. The. Website."</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="team-photo-section">
+  <img src="assets/teachers-loft-crop.jpg" alt="SBS Mathematics Department team at the Maths Loft">
+  <div class="team-photo-overlay">
+    <div class="team-quote">
+      <h2>The <span>SBS Maths Loft.</span><br>Where equations get solved.</h2>
+      <p>And where occasional debates about whether 0 is a natural number have lasted significantly longer than they should.</p>
+    </div>
+  </div>
+</div>
+
+<div class="facts-strip">
+  <div class="facts-grid">
+    <div class="fact-item"><div class="fact-num">4</div><div class="fact-label">Dedicated Teachers</div></div>
+    <div class="fact-item"><div class="fact-num">15+</div><div class="fact-label">Chapters Built</div></div>
+    <div class="fact-item"><div class="fact-num">9</div><div class="fact-label">Interactive Labs</div></div>
+    <div class="fact-item"><div class="fact-num">∞</div><div class="fact-label">Bad Maths Puns</div></div>
+  </div>
+</div>
+
+<footer>
+  <p>SBS Mathematics Department · Cambridge IGCSE 0580 Extended · <a href="index.html">← Back to Home</a></p>
+  <p style="margin-top:8px;">No calculators were harmed in the making of this page.</p>
 </footer>
+
+<script>
+// Scroll-triggered card animations
+const cards = document.querySelectorAll('.teacher-card');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if(e.isIntersecting){
+      setTimeout(() => e.target.classList.add('visible'), i * 150);
+      observer.unobserve(e.target);
+    }
+  });
+}, {threshold: 0.1});
+cards.forEach(c => observer.observe(c));
+
+// Typing effect on hero tag
+const tag = document.getElementById('hero-tag');
+const original = tag.textContent;
+tag.textContent = '';
+let i = 0;
+const type = () => { if(i < original.length){ tag.textContent += original[i++]; setTimeout(type, 38); }};
+setTimeout(type, 800);
+
+// Counter animation for facts
+const nums = document.querySelectorAll('.fact-num');
+const countObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      const el = e.target;
+      const target = el.textContent;
+      if(!isNaN(target)){
+        let n = 0;
+        const end = parseInt(target);
+        const step = Math.max(1, Math.ceil(end/30));
+        const timer = setInterval(() => {
+          n = Math.min(n + step, end);
+          el.textContent = n + (target.includes('+') ? '+' : '');
+          if(n >= end) clearInterval(timer);
+        }, 50);
+      }
+      countObs.unobserve(el);
+    }
+  });
+}, {threshold: 0.5});
+nums.forEach(n => countObs.observe(n));
+</script>
 </body>
 </html>
