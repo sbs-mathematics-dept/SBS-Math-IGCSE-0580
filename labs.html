@@ -4,57 +4,77 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Interactive Labs | SBS Mathematics</title>
-<link rel="stylesheet" href="assets/css/main.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-.lab-card.prob{--card-accent:#7C3AED;--card-bg:#F5F3FF;}
-.lab-card.graph{--card-accent:#0891B2;--card-bg:#ECFEFF;}
-.lab-card.transform{--card-accent:#059669;--card-bg:#ECFDF5;}
-.lab-card.vector{--card-accent:#B8860B;--card-bg:#FFFBEB;}
-.lab-card.circle{--card-accent:#D97706;--card-bg:#FFFBEB;}
-.lab-card.stats{--card-accent:#DC2626;--card-bg:#FEF2F2;}
-.lab-card.func{--card-accent:#7C3AED;--card-bg:#F5F3FF;}
-.lab-card.trig{--card-accent:#0D9488;--card-bg:#F0FDFA;}
-.lab-card.geo3d{--card-accent:#1B4F8A;--card-bg:#EFF6FF;}
-.lab-feature{font-size:12px;color:var(--gray-600);display:flex;align-items:center;gap:6px;margin:3px 0;}
-.lab-feature::before{content:'✓';color:#059669;font-weight:700;}
-.lab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;}
-.labs-hero{
-  padding:3rem 2rem;
-  position:relative;
-  overflow:hidden;
-  min-height:420px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  text-align:left;
-  background:
-    linear-gradient(90deg, rgba(11,32,68,0.97) 0%, rgba(15,40,82,0.93) 30%, rgba(20,50,95,0.55) 55%, rgba(20,50,95,0.15) 75%, rgba(20,50,95,0) 100%),
-    url('assets/labs-hero.jpg');
-  background-size: cover;
-  background-position: center right;
-  color:#fff;
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--navy:#071a44;--blue:#1B4F8A;--gold:#C8960C;--crimson:#8B1A1A;--cream:#FAF8F4;--white:#fff;
+--g100:#F1F5F9;--g200:#E2E8F0;--g400:#94A3B8;--g500:#64748B;--g600:#475569;--g700:#334155;--g900:#0F172A;}
+body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--navy);}
+a{text-decoration:none;color:inherit;}
+
+nav{background:var(--white);border-bottom:1px solid var(--g200);padding:0 2.5rem;display:flex;align-items:center;justify-content:space-between;height:68px;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,.06);}
+.nav-logo{display:flex;align-items:center;}
+.nav-logo img{width:auto;display:block;}
+.nav-logo .logo-full{height:52px;}
+.nav-logo .logo-mark{height:40px;display:none;}
+.nav-links{display:flex;gap:2rem;list-style:none;align-items:center;}
+.nav-links a{color:var(--g700);font-size:14px;font-weight:500;}
+.nav-links a.active,.nav-links a:hover{color:var(--blue);}
+
+.labs-hero{position:relative;overflow:hidden;min-height:400px;display:flex;flex-direction:column;justify-content:center;padding:3rem 2.5rem;color:#fff;
+  background:linear-gradient(90deg,rgba(7,26,68,.97) 0%,rgba(11,32,68,.93) 32%,rgba(20,50,95,.55) 56%,rgba(20,50,95,.12) 78%,rgba(20,50,95,0) 100%),url('assets/labs-hero.jpg');
+  background-size:cover;background-position:center right;}
+.labs-hero h1{font-size:clamp(2.2rem,4.5vw,3.6rem);font-weight:900;line-height:1.05;max-width:640px;margin-bottom:.7rem;}
+.labs-hero h1 span{color:#7FB2E8;}
+.labs-hero p{max-width:560px;font-size:1rem;line-height:1.55;opacity:.9;}
+
+.section-wrap{max-width:1200px;margin:0 auto;padding:2.5rem 2rem 3rem;}
+.lab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px;align-items:start;}
+
+.lab-card{background:var(--white);border:1px solid var(--g200);border-radius:16px;overflow:hidden;box-shadow:0 4px 16px rgba(7,26,68,.09);transition:transform .22s ease,box-shadow .22s ease;display:flex;flex-direction:column;border-top:3px solid var(--accent);}
+.lab-card:hover{transform:translateY(-5px);box-shadow:0 18px 44px rgba(7,26,68,.20);}
+.lab-photo{display:block;width:100%;height:auto;background:#fff;border-bottom:1px solid var(--g100);}
+.lab-body{padding:1rem 1.1rem 1.15rem;display:flex;flex-direction:column;gap:.5rem;flex:1;}
+.lab-title{font-size:1.06rem;font-weight:800;color:var(--navy);line-height:1.2;}
+.lab-meta{font-size:11px;font-weight:700;letter-spacing:.02em;color:var(--accent);text-transform:uppercase;margin-top:-.15rem;}
+.lab-desc{font-size:13.5px;line-height:1.5;color:var(--g700);}
+.lab-features{list-style:none;display:flex;flex-direction:column;gap:4px;margin:.1rem 0;}
+.lab-features li{font-size:12px;color:var(--g600);line-height:1.45;padding-left:20px;position:relative;}
+.lab-features li::before{content:'✓';position:absolute;left:0;top:0;color:#059669;font-weight:800;}
+.lab-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:.15rem;}
+.tag{font-size:10.5px;font-weight:600;padding:3px 9px;border-radius:999px;background:color-mix(in srgb,var(--accent) 10%,#fff);color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 22%,#fff);}
+.lab-open{margin-top:auto;padding-top:.5rem;font-size:.82rem;font-weight:800;color:var(--accent);display:flex;align-items:center;gap:.35rem;align-self:flex-end;}
+.lab-open b{font-size:1rem;transition:transform .18s ease;}
+.lab-card:hover .lab-open b{transform:translateX(4px);}
+
+.principle{margin-top:2rem;background:var(--white);border:1px solid var(--g200);border-left:4px solid var(--gold);border-radius:12px;padding:1rem 1.2rem;font-size:14px;line-height:1.6;color:var(--g700);}
+.principle strong{color:var(--navy);}
+
+footer{background:var(--navy);color:rgba(255,255,255,.55);text-align:center;padding:1.5rem;font-size:13px;}
+footer strong{color:rgba(255,255,255,.85);}
+footer div{margin-top:6px;opacity:.75;}
+
+@media(max-width:640px){
+  nav{padding:0 1.25rem;}
+  .nav-links{display:none;}
+  .nav-logo .logo-full{display:none;}
+  .nav-logo .logo-mark{display:block;}
+  .labs-hero{min-height:300px;padding:2.25rem 1.25rem;
+    background:linear-gradient(180deg,rgba(7,26,68,.95) 0%,rgba(11,32,68,.88) 60%,rgba(11,32,68,.72) 100%),url('assets/labs-hero.jpg');
+    background-size:cover;background-position:center 30%;}
+  .section-wrap{padding:2rem 1.25rem 3rem;}
 }
-.labs-hero h1, .labs-hero p { margin-left:0; margin-right:auto; max-width:640px; }
-.labs-hero::before{ content:none !important; display:none !important; background:none !important; }
-.labs-hero::after{ content:none !important; display:none !important; background:none !important; }
-@media (max-width: 700px){
-  .labs-hero{
-    min-height:320px;
-    background:
-      linear-gradient(180deg, rgba(11,32,68,0.95) 0%, rgba(11,32,68,0.88) 60%, rgba(11,32,68,0.75) 100%),
-      url('assets/labs-hero.jpg');
-    background-size: cover;
-    background-position: center 30%;
-  }
+@media(prefers-reduced-motion:reduce){
+  .lab-card{transition:none;} .lab-card:hover{transform:none;} .lab-card:hover .lab-open b{transform:none;}
 }
-.labs-hero > *{position:relative; z-index:1;}
 </style>
 </head>
 <body>
-<nav class="nav">
-  <a href="index.html" class="nav-logo">
-    <img src="assets/logo.png" alt="SBS">
-    <div><div class="nav-title">SBS Mathematics</div><div class="nav-subtitle">Cambridge IGCSE 0580 Extended</div></div>
+
+<nav>
+  <a href="index.html" class="nav-logo" aria-label="SBS Mathematics — Home">
+    <img class="logo-full" src="assets/logo-full.png" alt="SBS International School Chiangmai — Mathematics Department">
+    <img class="logo-mark" src="assets/logo-mark.png" alt="SBS">
   </a>
   <ul class="nav-links">
     <li><a href="index.html">Home</a></li>
@@ -64,204 +84,167 @@
   </ul>
 </nav>
 
-<div class="hero labs-hero">
+<header class="labs-hero">
   <h1>Mathematics <span>you can explore</span></h1>
   <p>Every lab is built for Cambridge IGCSE 0580 Extended. Open any lab directly — no login, no app, no download.</p>
-</div>
+</header>
 
-<div class="section">
+<main class="section-wrap">
   <div class="lab-grid">
 
-    <a href="labs/probability.html" class="lab-card prob" style="display:flex;flex-direction:column;gap:10px;text-decoration:none;color:inherit;">
-      <div style="display:flex;align-items:center;gap:10px;">
-        <div class="lab-icon">🎲</div>
-        <div>
-          <div class="lab-title">Probability Lab</div>
-          <div style="font-size:11px;color:var(--gray-400);margin-top:1px">Cambridge 0580 · Ch. 8 · Topic 8</div>
-        </div>
+    <a class="lab-card" style="--accent:#7C3AED" href="labs/probability.html" aria-label="Open Probability Lab">
+      <img class="lab-photo" src="assets/labs/probability_photo.png" alt="Probability Lab illustration" loading="lazy">
+      <div class="lab-body">
+        <h2 class="lab-title">Probability Lab</h2>
+        <div class="lab-meta">Cambridge 0580 · Ch. 8 · Topic 8</div>
+        <p class="lab-desc">Run probability experiments with thousands of trials and watch the Law of Large Numbers in action.</p>
+        <ul class="lab-features">
+          <li>Coin &amp; dice simulation — run up to 1,000 trials at once</li>
+          <li>Interactive tree diagrams with live probability calculations</li>
+          <li>Venn diagram builder with union, intersection, and P(A|B)</li>
+        </ul>
+        <div class="lab-tags"><span class="tag">Experimental probability</span><span class="tag">Tree diagrams</span><span class="tag">Venn diagrams</span><span class="tag">Conditional probability</span></div>
+        <span class="lab-open">Open lab <b>&rarr;</b></span>
       </div>
-      <div class="lab-desc">Run probability experiments with thousands of trials and watch the Law of Large Numbers in action.</div>
-      <div>
-        <div class="lab-feature">Coin & dice simulation — run up to 1,000 trials at once</div>
-        <div class="lab-feature">Interactive tree diagrams with live probability calculations</div>
-        <div class="lab-feature">Venn diagram builder with union, intersection, and P(A|B)</div>
-      </div>
-      <div class="lab-tags">
-        <span class="lab-tag">Experimental probability</span><span class="lab-tag">Tree diagrams</span><span class="lab-tag">Venn diagrams</span><span class="lab-tag">Conditional probability</span>
-      </div>
-      <div class="lab-arrow" style="align-self:flex-end;">→</div>
     </a>
 
-    <a href="labs/graph-explorer.html" class="lab-card graph" style="display:flex;flex-direction:column;gap:10px;text-decoration:none;color:inherit;">
-      <div style="display:flex;align-items:center;gap:10px;">
-        <div class="lab-icon">📊</div>
-        <div>
-          <div class="lab-title">Graph Explorer</div>
-          <div style="font-size:11px;color:var(--gray-400);margin-top:1px">Cambridge 0580 · Ch. 10, 14 · Topic 5</div>
-        </div>
+    <a class="lab-card" style="--accent:#0891B2" href="labs/graph-explorer.html" aria-label="Open Graph Explorer">
+      <img class="lab-photo" src="assets/labs/graph_photo.png" alt="Graph Explorer illustration" loading="lazy">
+      <div class="lab-body">
+        <h2 class="lab-title">Graph Explorer</h2>
+        <div class="lab-meta">Cambridge 0580 · Ch. 10, 14 · Topic 5</div>
+        <p class="lab-desc">Plot any function and explore its key features — gradients, intercepts, zeros, and more.</p>
+        <ul class="lab-features">
+          <li>Plot multiple functions simultaneously in different colours</li>
+          <li>Automatic detection of zeros, y-intercept, and key features</li>
+          <li>x-value probe: evaluate any function at any point</li>
+        </ul>
+        <div class="lab-tags"><span class="tag">Linear &amp; quadratic</span><span class="tag">Exponential</span><span class="tag">Trigonometric</span><span class="tag">Reciprocal</span></div>
+        <span class="lab-open">Open lab <b>&rarr;</b></span>
       </div>
-      <div class="lab-desc">Plot any function and explore its key features — gradients, intercepts, zeros, and more.</div>
-      <div>
-        <div class="lab-feature">Plot multiple functions simultaneously in different colours</div>
-        <div class="lab-feature">Automatic detection of zeros, y-intercept, and key features</div>
-        <div class="lab-feature">x-value probe: evaluate any function at any point</div>
-      </div>
-      <div class="lab-tags">
-        <span class="lab-tag">Linear & quadratic</span><span class="lab-tag">Exponential</span><span class="lab-tag">Trigonometric</span><span class="lab-tag">Reciprocal</span>
-      </div>
-      <div class="lab-arrow" style="align-self:flex-end;">→</div>
     </a>
 
-    <a href="labs/transformations.html" class="lab-card transform" style="display:flex;flex-direction:column;gap:10px;text-decoration:none;color:inherit;">
-      <div style="display:flex;align-items:center;gap:10px;">
-        <div class="lab-icon">📐</div>
-        <div>
-          <div class="lab-title">Transformation Lab</div>
-          <div style="font-size:11px;color:var(--gray-400);margin-top:1px">Cambridge 0580 · Ch. 23 · Topic 10</div>
-        </div>
+    <a class="lab-card" style="--accent:#059669" href="labs/transformations.html" aria-label="Open Transformation Lab">
+      <img class="lab-photo" src="assets/labs/transformation_photo.png" alt="Transformation Lab illustration" loading="lazy">
+      <div class="lab-body">
+        <h2 class="lab-title">Transformation Lab</h2>
+        <div class="lab-meta">Cambridge 0580 · Ch. 23 · Topic 10</div>
+        <p class="lab-desc">Apply geometric transformations to shapes and watch coordinates update in real time.</p>
+        <ul class="lab-features">
+          <li>Translation by vector, with coordinate display</li>
+          <li>Reflection in standard lines (y=x, y=-x, x=a, y=b)</li>
+          <li>Rotation about any centre, enlargement with negative scale factors</li>
+        </ul>
+        <div class="lab-tags"><span class="tag">Translation</span><span class="tag">Reflection</span><span class="tag">Rotation</span><span class="tag">Enlargement</span></div>
+        <span class="lab-open">Open lab <b>&rarr;</b></span>
       </div>
-      <div class="lab-desc">Apply geometric transformations to shapes and watch coordinates update in real time.</div>
-      <div>
-        <div class="lab-feature">Translation by vector, with coordinate display</div>
-        <div class="lab-feature">Reflection in standard lines (y=x, y=-x, x=a, y=b)</div>
-        <div class="lab-feature">Rotation about any centre, enlargement with negative scale factors</div>
-      </div>
-      <div class="lab-tags">
-        <span class="lab-tag">Translation</span><span class="lab-tag">Reflection</span><span class="lab-tag">Rotation</span><span class="lab-tag">Enlargement</span>
-      </div>
-      <div class="lab-arrow" style="align-self:flex-end;">→</div>
     </a>
 
-    <a href="labs/vectors2d.html" class="lab-card vector" style="display:flex;flex-direction:column;gap:10px;text-decoration:none;color:inherit;">
-      <div style="display:flex;align-items:center;gap:10px;">
-        <div class="lab-icon">➡️</div>
-        <div>
-          <div class="lab-title">Vectors 2D Lab</div>
-          <div style="font-size:11px;color:var(--gray-400);margin-top:1px">Cambridge 0580 · Ch. 23 · Topic 9</div>
-        </div>
+    <a class="lab-card" style="--accent:#B8860B" href="labs/vectors2d.html" aria-label="Open Vectors 2D Lab">
+      <img class="lab-photo" src="assets/labs/vectors_photo.png" alt="Vectors 2D Lab illustration" loading="lazy">
+      <div class="lab-body">
+        <h2 class="lab-title">Vectors 2D Lab</h2>
+        <div class="lab-meta">Cambridge 0580 · Ch. 23 · Topic 9</div>
+        <p class="lab-desc">Visualise column vectors, addition, subtraction and scalar multiplication on a live grid.</p>
+        <ul class="lab-features">
+          <li>Adjustable vectors a and b with instant canvas redraw</li>
+          <li>Vector addition, subtraction, and scalar multiples k·a</li>
+          <li>Magnitude calculation and exam-style quick-check quiz</li>
+        </ul>
+        <div class="lab-tags"><span class="tag">Column vectors</span><span class="tag">Addition</span><span class="tag">Magnitude</span><span class="tag">Scalar multiple</span></div>
+        <span class="lab-open">Open lab <b>&rarr;</b></span>
       </div>
-      <div class="lab-desc">Visualise column vectors, addition, subtraction and scalar multiplication on a live grid.</div>
-      <div>
-        <div class="lab-feature">Adjustable vectors a and b with instant canvas redraw</div>
-        <div class="lab-feature">Vector addition, subtraction, and scalar multiples k·a</div>
-        <div class="lab-feature">Magnitude calculation and exam-style quick-check quiz</div>
-      </div>
-      <div class="lab-tags">
-        <span class="lab-tag">Column vectors</span><span class="lab-tag">Addition</span><span class="lab-tag">Magnitude</span><span class="lab-tag">Scalar multiple</span>
-      </div>
-      <div class="lab-arrow" style="align-self:flex-end;">→</div>
     </a>
 
-    <a href="labs/circle-theorems.html" class="lab-card circle" style="display:flex;flex-direction:column;gap:10px;text-decoration:none;color:inherit;">
-      <div style="display:flex;align-items:center;gap:10px;">
-        <div class="lab-icon">📏</div>
-        <div>
-          <div class="lab-title">Circle Theorems Explorer</div>
-          <div style="font-size:11px;color:var(--gray-400);margin-top:1px">Cambridge 0580 · Ch. 19 · Topic 4</div>
-        </div>
+    <a class="lab-card" style="--accent:#D97706" href="labs/circle-theorems.html" aria-label="Open Circle Theorems Explorer">
+      <img class="lab-photo" src="assets/labs/circle_photo.png" alt="Circle Theorems Explorer illustration" loading="lazy">
+      <div class="lab-body">
+        <h2 class="lab-title">Circle Theorems Explorer</h2>
+        <div class="lab-meta">Cambridge 0580 · Ch. 19 · Topic 4</div>
+        <p class="lab-desc">Drag points around a circle and watch every circle theorem prove itself live, with exact angle measurements.</p>
+        <ul class="lab-features">
+          <li>7 theorems including alternate segment and cyclic quadrilateral</li>
+          <li>Drag-interactive — works on touch screens too</li>
+          <li>Live angle calculations showing the theorem holds for any position</li>
+        </ul>
+        <div class="lab-tags"><span class="tag">Inscribed angle</span><span class="tag">Angle at centre</span><span class="tag">Tangent theorems</span><span class="tag">Cyclic quad</span></div>
+        <span class="lab-open">Open lab <b>&rarr;</b></span>
       </div>
-      <div class="lab-desc">Drag points around a circle and watch every circle theorem prove itself live, with exact angle measurements.</div>
-      <div>
-        <div class="lab-feature">7 theorems including alternate segment and cyclic quadrilateral</div>
-        <div class="lab-feature">Drag-interactive — works on touch screens too</div>
-        <div class="lab-feature">Live angle calculations showing the theorem holds for any position</div>
-      </div>
-      <div class="lab-tags">
-        <span class="lab-tag">Inscribed angle</span><span class="lab-tag">Angle at centre</span><span class="lab-tag">Tangent theorems</span><span class="lab-tag">Cyclic quad</span>
-      </div>
-      <div class="lab-arrow" style="align-self:flex-end;">→</div>
     </a>
 
-    <a href="labs/statistics.html" class="lab-card stats" style="display:flex;flex-direction:column;gap:10px;text-decoration:none;color:inherit;">
-      <div style="display:flex;align-items:center;gap:10px;">
-        <div class="lab-icon">📈</div>
-        <div>
-          <div class="lab-title">Statistics Lab</div>
-          <div style="font-size:11px;color:var(--gray-400);margin-top:1px">Cambridge 0580 · Ch. 4, 12, 20 · Topic 11</div>
-        </div>
+    <a class="lab-card" style="--accent:#DC2626" href="labs/statistics.html" aria-label="Open Statistics Lab">
+      <img class="lab-photo" src="assets/labs/statistics_photo.png" alt="Statistics Lab illustration" loading="lazy">
+      <div class="lab-body">
+        <h2 class="lab-title">Statistics Lab</h2>
+        <div class="lab-meta">Cambridge 0580 · Ch. 4, 12, 20 · Topic 11</div>
+        <p class="lab-desc">Enter your own data or use samples to build histograms, cumulative frequency curves, and box plots.</p>
+        <ul class="lab-features">
+          <li>Calculate mean, median, mode, range, and IQR from your data</li>
+          <li>Histogram with frequency density — not just frequency</li>
+          <li>Cumulative frequency with automatic Q1, median, Q3 markers</li>
+        </ul>
+        <div class="lab-tags"><span class="tag">Averages &amp; spread</span><span class="tag">Histograms</span><span class="tag">Cumulative freq.</span><span class="tag">Box plots</span></div>
+        <span class="lab-open">Open lab <b>&rarr;</b></span>
       </div>
-      <div class="lab-desc">Enter your own data or use samples to build histograms, cumulative frequency curves, and box plots.</div>
-      <div>
-        <div class="lab-feature">Calculate mean, median, mode, range, and IQR from your data</div>
-        <div class="lab-feature">Histogram with frequency density — not just frequency</div>
-        <div class="lab-feature">Cumulative frequency with automatic Q1, median, Q3 markers</div>
-      </div>
-      <div class="lab-tags">
-        <span class="lab-tag">Averages & spread</span><span class="lab-tag">Histograms</span><span class="lab-tag">Cumulative freq.</span><span class="lab-tag">Box plots</span>
-      </div>
-      <div class="lab-arrow" style="align-self:flex-end;">→</div>
     </a>
 
-    <a href="labs/functions.html" class="lab-card func" style="display:flex;flex-direction:column;gap:10px;text-decoration:none;color:inherit;">
-      <div style="display:flex;align-items:center;gap:10px;">
-        <div class="lab-icon">📉</div>
-        <div>
-          <div class="lab-title">Functions Explorer</div>
-          <div style="font-size:11px;color:var(--gray-400);margin-top:1px">Cambridge 0580 · Ch. 22 · Topic 6</div>
-        </div>
+    <a class="lab-card" style="--accent:#7C3AED" href="labs/functions.html" aria-label="Open Functions Explorer">
+      <img class="lab-photo" src="assets/labs/functions_photo.png" alt="Functions Explorer illustration" loading="lazy">
+      <div class="lab-body">
+        <h2 class="lab-title">Functions Explorer</h2>
+        <div class="lab-meta">Cambridge 0580 · Ch. 22 · Topic 6</div>
+        <p class="lab-desc">Define f(x) and g(x), then explore composite functions fg(x), gf(x), transformations and domain &amp; range visually.</p>
+        <ul class="lab-features">
+          <li>Evaluate f(x), g(x), f(g(x)) and g(f(x)) at any x value</li>
+          <li>Tap-to-build keypad and live graph with labelled axes</li>
+          <li>Pre-loaded examples covering all Cambridge function types</li>
+        </ul>
+        <div class="lab-tags"><span class="tag">Composition fg(x)</span><span class="tag">Domain &amp; range</span><span class="tag">Transformations</span><span class="tag">Composite</span></div>
+        <span class="lab-open">Open lab <b>&rarr;</b></span>
       </div>
-      <div class="lab-desc">Define f(x) and g(x), then explore composite functions fg(x), gf(x), and inverse f⁻¹(x) visually.</div>
-      <div>
-        <div class="lab-feature">Evaluate f(x), g(x), fg(x), gf(x) at any x value</div>
-        <div class="lab-feature">Visual inverse shown as reflection in y = x</div>
-        <div class="lab-feature">Pre-loaded examples covering all Cambridge function types</div>
-      </div>
-      <div class="lab-tags">
-        <span class="lab-tag">Composition fg(x)</span><span class="lab-tag">Inverse f⁻¹(x)</span><span class="lab-tag">Domain & range</span><span class="lab-tag">Transformations</span>
-      </div>
-      <div class="lab-arrow" style="align-self:flex-end;">→</div>
     </a>
 
-    <a href="labs/trigonometry.html" class="lab-card trig" style="display:flex;flex-direction:column;gap:10px;text-decoration:none;color:inherit;">
-      <div style="display:flex;align-items:center;gap:10px;">
-        <div class="lab-icon">🔺</div>
-        <div>
-          <div class="lab-title">Trigonometry Unit Circle</div>
-          <div style="font-size:11px;color:var(--gray-400);margin-top:1px">Cambridge 0580 · Ch. 15 · Topic 7</div>
-        </div>
+    <a class="lab-card" style="--accent:#0D9488" href="labs/trigonometry.html" aria-label="Open Trigonometry Unit Circle">
+      <img class="lab-photo" src="assets/labs/trigonometry_photo.png" alt="Trigonometry Unit Circle illustration" loading="lazy">
+      <div class="lab-body">
+        <h2 class="lab-title">Trigonometry Unit Circle</h2>
+        <div class="lab-meta">Cambridge 0580 · Ch. 15 · Topic 7</div>
+        <p class="lab-desc">Spin the unit circle and watch sin, cos, and tan graphs draw themselves — animated or dragged manually.</p>
+        <ul class="lab-features">
+          <li>Animated or manual control from 0° to 360°</li>
+          <li>Shows exact values at key angles (30°, 45°, 60°, 90°…)</li>
+          <li>Simultaneous unit circle + wave graph side by side</li>
+        </ul>
+        <div class="lab-tags"><span class="tag">Unit circle</span><span class="tag">Sin &amp; cos waves</span><span class="tag">Exact values</span><span class="tag">CAST rule</span></div>
+        <span class="lab-open">Open lab <b>&rarr;</b></span>
       </div>
-      <div class="lab-desc">Spin the unit circle and watch sin, cos, and tan graphs draw themselves — animated or dragged manually.</div>
-      <div>
-        <div class="lab-feature">Animated or manual control from 0° to 360°</div>
-        <div class="lab-feature">Shows exact values at key angles (30°, 45°, 60°, 90°…)</div>
-        <div class="lab-feature">Simultaneous unit circle + wave graph side by side</div>
-      </div>
-      <div class="lab-tags">
-        <span class="lab-tag">Unit circle</span><span class="lab-tag">Sin & cos waves</span><span class="lab-tag">Exact values</span><span class="lab-tag">CAST rule</span>
-      </div>
-      <div class="lab-arrow" style="align-self:flex-end;">→</div>
     </a>
 
-    <a href="labs/geometry3d.html" class="lab-card geo3d" style="display:flex;flex-direction:column;gap:10px;text-decoration:none;color:inherit;">
-      <div style="display:flex;align-items:center;gap:10px;">
-        <div class="lab-icon">📦</div>
-        <div>
-          <div class="lab-title">3D Geometry Explorer</div>
-          <div style="font-size:11px;color:var(--gray-400);margin-top:1px">Cambridge 0580 · Ch. 24 · Topic 4</div>
-        </div>
+    <a class="lab-card" style="--accent:#1B4F8A" href="labs/geometry3d.html" aria-label="Open 3D Geometry Explorer">
+      <img class="lab-photo" src="assets/labs/geometry_photo.png" alt="3D Geometry Explorer illustration" loading="lazy">
+      <div class="lab-body">
+        <h2 class="lab-title">3D Geometry Explorer</h2>
+        <div class="lab-meta">Cambridge 0580 · Ch. 24 · Topic 4</div>
+        <p class="lab-desc">Calculate volume and surface area of any 3D shape, and see its net unfold — all with your own dimensions.</p>
+        <ul class="lab-features">
+          <li>6 shapes: cuboid, cylinder, cone, sphere, pyramid, prism</li>
+          <li>Step-by-step formula breakdown with your numbers substituted in</li>
+          <li>Net diagram for each shape (where possible)</li>
+        </ul>
+        <div class="lab-tags"><span class="tag">Volume</span><span class="tag">Surface area</span><span class="tag">Nets</span><span class="tag">All 3D shapes</span></div>
+        <span class="lab-open">Open lab <b>&rarr;</b></span>
       </div>
-      <div class="lab-desc">Calculate volume and surface area of any 3D shape, and see its net unfold — all with your own dimensions.</div>
-      <div>
-        <div class="lab-feature">6 shapes: cuboid, cylinder, cone, sphere, pyramid, prism</div>
-        <div class="lab-feature">Step-by-step formula breakdown with your numbers substituted in</div>
-        <div class="lab-feature">Net diagram for each shape (where possible)</div>
-      </div>
-      <div class="lab-tags">
-        <span class="lab-tag">Volume</span><span class="lab-tag">Surface area</span><span class="lab-tag">Nets</span><span class="lab-tag">All 3D shapes</span>
-      </div>
-      <div class="lab-arrow" style="align-self:flex-end;">→</div>
     </a>
 
-  </div>
+    </div>
 
-  <div class="theorem-box" style="margin-top:2rem;font-size:14px;">
-    <strong>Design principle:</strong> Every lab is mathematically rigorous. The numbers are real, the calculations are exact, and every visual maps directly to Cambridge exam content. Technology supports understanding — it never replaces it.
-  </div>
-</div>
+  <div class="principle"><strong>Design principle:</strong> Every lab is mathematically rigorous. The numbers are real, the calculations are exact, and every visual maps directly to Cambridge exam content. Technology supports understanding — it never replaces it.</div>
+</main>
 
-<footer class="site-footer">
+<footer>
   <strong>SBS Interactive Mathematics</strong> · Cambridge IGCSE 0580 Extended
-  <div style="margin-top:6px;opacity:0.6">SBS International School Chiangmai · An Arthit Ourairat Institution</div>
+  <div>SBS International School Chiangmai · An Arthit Ourairat Institution</div>
 </footer>
+
 </body>
 </html>
