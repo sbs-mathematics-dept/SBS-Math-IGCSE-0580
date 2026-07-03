@@ -5,7 +5,7 @@ A free, open-access interactive mathematics website for students at **SBS Intern
 
 ### 🌐 Live site
 Once pushed to GitHub Pages, this site will be available at:
-`https://[your-username].github.io/sbs-math/`
+
 
 ---
 
