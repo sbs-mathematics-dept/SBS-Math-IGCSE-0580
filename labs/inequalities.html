@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Linear Inequalities & Regions | SBS Mathematics</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--navy:#071a44;--blue:#1B4F8A;--gold:#B8860B;--crimson:#8B1A1A;--teal:#0F766E;--green:#059669;--cream:#FAF8F4;--white:#fff;
+--g50:#F8FAFC;--g100:#F1F5F9;--g200:#E2E8F0;--g400:#94A3B8;--g500:#64748B;--g600:#475569;--g700:#334155;--g900:#0F172A;
+--mono:'JetBrains Mono',ui-monospace,monospace;--shadow:0 4px 16px rgba(7,26,68,.08);}
+body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--navy);}
+a{text-decoration:none;color:inherit;}
+nav{background:var(--white);border-bottom:1px solid var(--g200);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:66px;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,.06);}
+.nav-logo{display:flex;align-items:center;} .nav-logo img{width:auto;display:block;}
+.nav-logo .logo-full{height:50px;} .nav-logo .logo-mark{height:38px;display:none;}
+.nav-links{display:flex;gap:1.8rem;list-style:none;align-items:center;}
+.nav-links a{color:var(--g700);font-size:14px;font-weight:500;} .nav-links a.active,.nav-links a:hover{color:var(--blue);}
+.shell{max-width:1200px;margin:0 auto;padding:1.6rem 1.5rem 3rem;}
+.hero{background:linear-gradient(135deg,var(--teal),#0b3a34);color:#fff;border-radius:20px;padding:1.5rem 1.8rem;margin-bottom:1.2rem;box-shadow:0 14px 40px rgba(7,26,68,.20);}
+.chip{display:inline-flex;gap:.4rem;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);padding:.35rem .8rem;border-radius:999px;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;}
+.hero h1{font-size:clamp(1.7rem,4vw,2.6rem);font-weight:900;margin:.5rem 0 .35rem;}
+.hero p{opacity:.92;max-width:680px;font-size:.96rem;line-height:1.5;}
+.panel{background:var(--white);border:1px solid var(--g200);border-radius:16px;padding:1.1rem;box-shadow:var(--shadow);margin-bottom:1.1rem;}
+.seg{display:inline-flex;border:1px solid var(--g200);border-radius:999px;overflow:hidden;}
+.seg button{border:none;background:var(--white);padding:.5rem 1rem;font-size:.82rem;font-weight:700;cursor:pointer;color:var(--g600);}
+.seg button.on{background:var(--teal);color:#fff;}
+.modebar{display:flex;gap:.7rem;align-items:center;flex-wrap:wrap;margin-bottom:1rem;}
+.btn{font-size:.85rem;font-weight:700;padding:.6rem 1rem;border-radius:10px;cursor:pointer;border:none;transition:.15s;white-space:nowrap;}
+.btn-primary{background:var(--teal);color:#fff;} .btn-primary:hover{background:#0b3a34;}
+.btn-ghost{background:var(--g100);color:var(--g700);border:1px solid var(--g200);} .btn-ghost:hover{background:var(--g200);}
+.btn:disabled{opacity:.45;cursor:default;}
+.ineq-rows{display:flex;flex-direction:column;gap:.5rem;}
+.ineq-row{display:flex;gap:.5rem;align-items:center;}
+.ineq-row .num{width:22px;height:22px;border-radius:50%;background:var(--g100);color:var(--g600);font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none;}
+.ineq-in{flex:1;font-family:var(--mono);font-size:.95rem;padding:.55rem .7rem;border:2px solid var(--g200);border-radius:10px;outline:none;background:var(--g50);}
+.ineq-in:focus{border-color:var(--teal);background:#fff;}
+.ineq-row .del{border:none;background:none;color:var(--g400);font-weight:800;cursor:pointer;font-size:1rem;} .ineq-row .del:hover{color:var(--crimson);}
+.controls{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;margin-top:.8rem;}
+.examples{display:flex;gap:6px;flex-wrap:wrap;margin-top:.7rem;}
+.ex{font-size:.76rem;font-weight:600;padding:.4rem .7rem;border-radius:999px;border:1px solid var(--g200);background:#fff;cursor:pointer;}
+.ex:hover{background:#E7F6F1;border-color:#9FD9C9;color:var(--teal);}
+.toggle{display:flex;align-items:center;gap:.5rem;font-size:.82rem;color:var(--g600);font-weight:600;}
+.hint{font-size:.76rem;color:var(--g500);margin-top:.6rem;line-height:1.5;}
+.err{display:none;margin-top:.6rem;background:#FEF2F2;border:1px solid #FECACA;color:#991B1B;border-radius:10px;padding:.6rem .8rem;font-size:.85rem;}
+.graph-row{display:grid;grid-template-columns:1fr 320px;gap:1.1rem;align-items:start;}
+canvas{width:100%;height:520px;border:1px solid var(--g200);border-radius:14px;background:#fff;display:block;}
+.side h3{font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;color:var(--g500);font-weight:800;margin:.2rem 0 .5rem;}
+.legend{display:flex;flex-direction:column;gap:.4rem;font-size:.82rem;margin-bottom:1rem;}
+.legend .li{display:flex;align-items:center;gap:.5rem;}
+.legend .ln{width:26px;height:0;border-top:3px solid var(--teal);} .legend .ln.dash{border-top-style:dashed;}
+.pt-box{background:var(--g50);border:1px solid var(--g200);border-radius:12px;padding:.8rem;}
+.pt-box .row{display:flex;gap:.5rem;align-items:center;margin-bottom:.6rem;}
+.pt-box input{width:64px;padding:.4rem .5rem;border:1px solid var(--g200);border-radius:8px;font-family:var(--mono);text-align:center;}
+table.tt{width:100%;border-collapse:collapse;font-size:.82rem;margin-top:.4rem;}
+table.tt td,table.tt th{border:1px solid var(--g200);padding:.4rem .5rem;text-align:left;}
+table.tt th{background:var(--g50);font-weight:700;font-size:.72rem;text-transform:uppercase;color:var(--g500);}
+.tt .yes{color:var(--green);font-weight:800;} .tt .no{color:var(--crimson);font-weight:800;}
+.verdict{margin-top:.6rem;font-size:.85rem;font-weight:700;padding:.5rem .7rem;border-radius:9px;}
+.verdict.in{background:#ECFDF5;color:#065F46;border:1px solid #A7F3D0;} .verdict.out{background:#FEF2F2;color:#991B1B;border:1px solid #FECACA;}
+.caption{background:linear-gradient(135deg,#E7F6F1,#F8FAFC);border:1px solid #BFE7DB;border-left:4px solid var(--teal);border-radius:12px;padding:1rem 1.1rem;margin-top:1rem;display:none;}
+.caption.on{display:block;}
+.caption .sn{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--teal);}
+.caption h4{font-size:1.05rem;margin:.15rem 0 .35rem;} .caption p{font-size:.9rem;line-height:1.55;color:var(--g700);}
+.stepbar{display:flex;gap:.5rem;align-items:center;margin-top:.7rem;flex-wrap:wrap;} .stepbar .count{margin-left:auto;font-size:.8rem;color:var(--g500);font-weight:700;}
+footer{background:var(--navy);color:rgba(255,255,255,.6);text-align:center;padding:1.4rem;font-size:13px;margin-top:1.2rem;} footer strong{color:rgba(255,255,255,.85);}
+@media(max-width:900px){.graph-row{grid-template-columns:1fr;}canvas{height:400px;}.nav-links{display:none;}.nav-logo .logo-full{display:none;}.nav-logo .logo-mark{display:block;}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../index.html" class="nav-logo" aria-label="SBS Mathematics — Home">
+    <img class="logo-full" src="../assets/logo-full.png" alt="SBS International School Chiangmai — Mathematics Department">
+    <img class="logo-mark" src="../assets/logo-mark.png" alt="SBS">
+  </a>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li><li><a href="../chapters.html">Chapters</a></li>
+    <li><a class="active" href="../labs.html">Labs</a></li><li><a href="../about.html">About</a></li>
+  </ul>
+</nav>
+
+<main class="shell">
+  <header class="hero">
+    <span class="chip">◆ IGCSE Extended · Topic 2 · Inequalities</span>
+    <h1>Linear Inequalities &amp; Regions</h1>
+    <p>Enter inequalities to draw the region <b>R</b> — solid or dotted boundary lines, with the <b>unwanted</b> sides shaded so R is left clear. Or test a point to check which inequalities it satisfies.</p>
+  </header>
+
+  <section class="panel">
+    <div class="modebar">
+      <div class="seg" id="modeSeg">
+        <button class="on" data-mode="draw">✏️ Draw region</button>
+        <button data-mode="point">📍 Test a point</button>
+      </div>
+      <label class="toggle" id="shadeToggle"><input type="checkbox" id="shadeWanted"> Shade the <b>wanted</b> side instead (R shaded)</label>
+    </div>
+
+    <div class="ineq-rows" id="rows"></div>
+    <div class="controls">
+      <button class="btn btn-ghost" id="addBtn">+ Add inequality</button>
+      <button class="btn btn-primary" id="drawBtn">Draw region</button>
+      <label class="toggle" id="stepToggle"><input type="checkbox" id="stepMode"> Step-by-step</label>
+    </div>
+    <div class="examples">
+      <button class="ex" data-set="y>x | y<=-x+7 | x>=1">Triangle: y&gt;x, y≤−x+7, x≥1</button>
+      <button class="ex" data-set="3x+2y<=12 | y>=2x | x<=3">3x+2y≤12, y≥2x, x≤3</button>
+      <button class="ex" data-set="y<=2x+1 | y>=-1 | x<=4">y≤2x+1, y≥−1, x≤4</button>
+    </div>
+    <p class="hint">Write each inequality with <b>x</b> and/or <b>y</b>, e.g. <b>y &gt;= 2x</b>, <b>3x+2y &lt;= 12</b>, <b>x &lt;= 3</b>, <b>y &gt; x</b>. Use <b>&lt;=</b> / <b>&gt;=</b> for solid lines, <b>&lt;</b> / <b>&gt;</b> for dotted.</p>
+    <div class="err" id="err"></div>
+  </section>
+
+  <section class="panel">
+    <div class="graph-row">
+      <div>
+        <canvas id="cv"></canvas>
+        <div class="caption" id="caption"></div>
+        <div class="stepbar" id="stepbar" style="display:none">
+          <button class="btn btn-ghost" id="backBtn">◀ Back</button>
+          <button class="btn btn-primary" id="nextBtn">Next ▶</button>
+          <button class="btn btn-ghost" id="playBtn">▶ Play all</button>
+          <button class="btn btn-ghost" id="restartBtn">↻ Restart</button>
+          <span class="count" id="stepCount"></span>
+        </div>
+      </div>
+      <div class="side">
+        <h3>Lines</h3>
+        <div class="legend">
+          <div class="li"><span class="ln"></span> solid = ≤ or ≥ (line included)</div>
+          <div class="li"><span class="ln dash"></span> dotted = &lt; or &gt; (line not included)</div>
+        </div>
+        <div class="pt-box" id="ptBox">
+          <h3 style="margin-top:0">Test a point</h3>
+          <div class="row">( x = <input id="px" type="number" value="2"> , y = <input id="py" type="number" value="4"> )
+            <button class="btn btn-ghost" id="testBtn" style="padding:.35rem .6rem">Test</button></div>
+          <div id="ttWrap"></div>
+          <div id="verdict"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer><strong>SBS Mathematics</strong> · Linear Inequalities &amp; Regions · Cambridge IGCSE 0580</footer>
+
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+let mode='draw', ineqs=[], stepOn=false, step=0;
+const B={xmin:-2,xmax:8,ymin:-2,ymax:10};
+
+/* ---------- parse linear inequality ---------- */
+function linear(expr){
+  expr=expr.replace(/\s+/g,'').replace(/\*/g,''); let a=0,b=0,c=0;
+  const terms=expr.replace(/-/g,'+-').split('+').filter(t=>t.length);
+  for(const t of terms){
+    if(t.endsWith('x')){const co=t.slice(0,-1);a+=(co===''||co==='+')?1:co==='-'?-1:parseFloat(co);}
+    else if(t.endsWith('y')){const co=t.slice(0,-1);b+=(co===''||co==='+')?1:co==='-'?-1:parseFloat(co);}
+    else{const v=parseFloat(t);if(!isNaN(v))c+=v;}
+  }
+  return {a,b,c};
+}
+function parseIneq(s){
+  const m=s.match(/(<=|>=|<|>|≤|≥)/); if(!m)throw new Error('need <, >, <= or >=');
+  let op=m[1].replace('≤','<=').replace('≥','>='); const [L,R]=s.split(m[1]);
+  const lo=linear(L),ro=linear(R);
+  let a=lo.a-ro.a,b=lo.b-ro.b,c=lo.c-ro.c;                 // a x + b y + c  op  0
+  if(a===0&&b===0)throw new Error('no x or y');
+  return {a,b,c,op,raw:s.trim()};
+}
+function holds(q,x,y){const v=q.a*x+q.b*y+q.c;const e=1e-9;
+  return q.op==='<'?v<-e:q.op==='<='?v<=e:q.op==='>'?v>e:v>=-e;}
+function eqStr(q){
+  if(q.b===0) return 'x = '+nice(-q.c/q.a);                 // vertical line
+  const m=-q.a/q.b, k=-q.c/q.b;                             // y = m x + k
+  let s='y = ';
+  if(Math.abs(m)>1e-9){ s+=(Math.abs(m-1)<1e-9?'':Math.abs(m+1)<1e-9?'-':nice(m))+'x'; if(k>1e-9)s+=' + '+nice(k); else if(k<-1e-9)s+=' − '+nice(-k); }
+  else s+=nice(k);
+  return s;
+}
+function nice(n){if(Math.abs(n)<1e-9)n=0;return +n.toFixed(2);}
+
+/* ---------- canvas ---------- */
+const cv=$('cv'),ctx=cv.getContext('2d');let W=900,H=520;
+function resize(){const dpr=window.devicePixelRatio||1,r=cv.getBoundingClientRect();W=r.width;H=r.height;cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);draw();}
+const sx=x=>(x-B.xmin)/(B.xmax-B.xmin)*W, sy=y=>H-(y-B.ymin)/(B.ymax-B.ymin)*H;
+function drawAxes(){ctx.clearRect(0,0,W,H);ctx.strokeStyle='#eef2f7';ctx.lineWidth=1;
+  for(let x=Math.ceil(B.xmin);x<=B.xmax;x++){ctx.beginPath();ctx.moveTo(sx(x),0);ctx.lineTo(sx(x),H);ctx.stroke();}
+  for(let y=Math.ceil(B.ymin);y<=B.ymax;y++){ctx.beginPath();ctx.moveTo(0,sy(y));ctx.lineTo(W,sy(y));ctx.stroke();}
+  ctx.strokeStyle='#334155';ctx.lineWidth=1.6;ctx.beginPath();ctx.moveTo(0,sy(0));ctx.lineTo(W,sy(0));ctx.moveTo(sx(0),0);ctx.lineTo(sx(0),H);ctx.stroke();
+  ctx.fillStyle='#64748B';ctx.font='11px "JetBrains Mono",monospace';ctx.textAlign='center';ctx.textBaseline='top';
+  for(let x=Math.ceil(B.xmin);x<=B.xmax;x++){if(x===0)continue;ctx.fillText(x,sx(x),Math.min(sy(0)+4,H-14));}
+  ctx.textAlign='right';ctx.textBaseline='middle';
+  for(let y=Math.ceil(B.ymin);y<=B.ymax;y++){if(y===0)continue;ctx.fillText(y,Math.max(sx(0)-5,16),sy(y));}}
+function boundaryPts(q){const pad=(B.xmax-B.xmin+B.ymax-B.ymin);
+  if(q.b!==0){const x1=B.xmin-pad,x2=B.xmax+pad;return [[x1,-(q.a*x1+q.c)/q.b],[x2,-(q.a*x2+q.c)/q.b]];}
+  const x=-q.c/q.a;return [[x,B.ymin-pad],[x,B.ymax+pad]];}
+function shadeHalf(q,wanted,frac){ // shade unwanted side by default; frac<1 sweeps out from the line
+  frac=(frac==null)?1:frac;
+  const [P1,P2]=boundaryPts(q);const big=(B.xmax-B.xmin+B.ymax-B.ymin)*3;
+  const n=Math.hypot(q.a,q.b);let nx=q.a/n,ny=q.b/n;
+  let dir=(q.op==='<'||q.op==='<=')?1:-1;
+  if(wanted)dir=-dir;
+  const off=[dir*nx*big*frac,dir*ny*big*frac];
+  const quad=[P1,P2,[P2[0]+off[0],P2[1]+off[1]],[P1[0]+off[0],P1[1]+off[1]]];
+  ctx.fillStyle='rgba(15,118,110,0.16)';ctx.beginPath();
+  quad.forEach((p,i)=>{const X=sx(p[0]),Y=sy(p[1]);i?ctx.lineTo(X,Y):ctx.moveTo(X,Y);});ctx.closePath();ctx.fill();}
+function drawBoundary(q,color){const [P1,P2]=boundaryPts(q);const solid=(q.op==='<='||q.op==='>=');
+  ctx.strokeStyle=color||'#0F766E';ctx.lineWidth=2.6;ctx.setLineDash(solid?[]:[7,6]);
+  ctx.beginPath();ctx.moveTo(sx(P1[0]),sy(P1[1]));ctx.lineTo(sx(P2[0]),sy(P2[1]));ctx.stroke();ctx.setLineDash([]);
+  // label near the top of the line
+  const lx=P1[1]>P2[1]?P1:P2;ctx.fillStyle='#8B1A1A';ctx.font='700 12px Inter,sans-serif';ctx.textAlign='left';ctx.textBaseline='bottom';
+  const px=Math.min(Math.max(sx((lx[0])),40),W-90);ctx.fillText(eqStr(q),Math.min(px,W-90),Math.max(sy(lx[1])+2,14));}
+function regionLabel(active){ // centroid of points satisfying all active inequalities
+  let sxSum=0,sySum=0,n=0;
+  for(let gx=0;gx<=60;gx++)for(let gy=0;gy<=60;gy++){const x=B.xmin+(B.xmax-B.xmin)*gx/60,y=B.ymin+(B.ymax-B.ymin)*gy/60;
+    if(active.every(q=>holds(q,x,y))){sxSum+=x;sySum+=y;n++;}}
+  if(!n)return null;return [sxSum/n,sySum/n];}
+
+function drawR(c,a){ctx.save();ctx.globalAlpha=Math.max(0,Math.min(1,a));ctx.fillStyle='#065F46';ctx.font='800 '+(16+6*a)+'px Inter,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('R',sx(c[0]),sy(c[1]));ctx.restore();}
+function drawLinePartial(q,prog){const [P1,P2]=boundaryPts(q);const solid=(q.op==='<='||q.op==='>=');
+  const ex=P1[0]+(P2[0]-P1[0])*prog,ey=P1[1]+(P2[1]-P1[1])*prog;
+  ctx.strokeStyle='#0F766E';ctx.lineWidth=2.6;ctx.setLineDash(solid?[]:[7,6]);
+  ctx.beginPath();ctx.moveTo(sx(P1[0]),sy(P1[1]));ctx.lineTo(sx(ex),sy(ey));ctx.stroke();ctx.setLineDash([]);}
+function drawPoint(x,y,prog){const px=sx(x),py=sy(y);
+  if(prog<1){const rr=6+18*prog;ctx.strokeStyle='rgba(139,26,26,'+(0.55*(1-prog))+')';ctx.lineWidth=2;ctx.beginPath();ctx.arc(px,py,rr,0,7);ctx.stroke();}
+  ctx.fillStyle='#8B1A1A';ctx.beginPath();ctx.arc(px,py,6,0,7);ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+  ctx.fillStyle='#0F172A';ctx.font='700 12px Inter,sans-serif';ctx.textAlign='left';ctx.textBaseline='bottom';ctx.fillText('('+x+', '+y+')',px+9,py-8);}
+function testPoint(q){for(const c of [[0,0],[1,0],[0,1],[1,1],[2,4],[-1,0]]){if(Math.abs(q.a*c[0]+q.b*c[1]+q.c)>1e-6)return c;}return [0,0];}
+
+function fullRender(){drawAxes();if(!ineqs.length)return;const w=$('shadeWanted').checked;
+  ineqs.forEach(q=>shadeHalf(q,w));ineqs.forEach(q=>drawBoundary(q));
+  const c=regionLabel(ineqs);if(c)drawR(c,1);
+  if(mode==='point'){const x=+$('px').value,y=+$('py').value,inAll=ineqs.every(q=>holds(q,x,y));
+    ctx.fillStyle=inAll?'#059669':'#8B1A1A';ctx.beginPath();ctx.arc(sx(x),sy(y),6,0,7);ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle='#0F172A';ctx.font='700 12px Inter,sans-serif';ctx.textAlign='left';ctx.textBaseline='bottom';ctx.fillText('('+x+', '+y+')',sx(x)+9,sy(y)-7);}}
+function baseStatic(count){const w=$('shadeWanted').checked;drawAxes();for(let j=0;j<count;j++)shadeHalf(ineqs[j],w);for(let j=0;j<count;j++)drawBoundary(ineqs[j]);}
+function renderStaticStep(s){const w=$('shadeWanted').checked;const upto=Math.max(0,Math.min(s+1,ineqs.length));baseStatic(upto);
+  if(s>=ineqs.length){const c=regionLabel(ineqs);if(c)drawR(c,1);}}
+function draw(){ if(mode==='draw'&&stepOn) renderStaticStep(step); else fullRender(); }
+
+/* ---------- animation ---------- */
+const REDUCE=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let animToken=0;
+function cancelAnim(){animToken++;}
+function tween(dur,frame){return new Promise(res=>{const tok=animToken,t0=performance.now();
+  (function fr(now){if(tok!==animToken)return;const p=Math.min(1,(now-t0)/dur);frame(p);if(p<1)requestAnimationFrame(fr);else res();})(performance.now());});}
+function wait(ms){return new Promise(res=>{const tok=animToken;setTimeout(()=>{if(tok===animToken)res();},ms);});}
+async function animateStep(i){step=i;stepCaption(i);updateStepButtons();
+  const q=ineqs[i],w=$('shadeWanted').checked,tp=testPoint(q);
+  if(REDUCE){renderStaticStep(i);return;}
+  await tween(600,p=>{baseStatic(i);drawLinePartial(q,p);});
+  await tween(500,p=>{baseStatic(i);drawBoundary(q);drawPoint(tp[0],tp[1],p);});
+  await tween(600,p=>{baseStatic(i);shadeHalf(q,w,p);drawBoundary(q);drawPoint(tp[0],tp[1],1);});
+  renderStaticStep(i);}
+async function animateFinal(){step=ineqs.length;stepCaption(step);updateStepButtons();
+  const c=regionLabel(ineqs);if(REDUCE||!c){renderStaticStep(step);return;}
+  await tween(550,p=>{baseStatic(ineqs.length);drawR(c,p);});renderStaticStep(step);}
+async function playAll(){cancelAnim();const tok=animToken;step=-1;renderStaticStep(-1);stepCaption(-1);updateStepButtons();
+  await wait(400);if(tok!==animToken)return;
+  for(let i=0;i<ineqs.length;i++){await animateStep(i);if(tok!==animToken)return;await wait(650);if(tok!==animToken)return;}
+  await animateFinal();}
+function updateStepButtons(){$('backBtn').disabled=step<=-1;$('nextBtn').disabled=step>=ineqs.length;}
+
+/* ---------- rows ---------- */
+function renderRows(){const r=$('rows');r.innerHTML='';ineqs.forEach((q,i)=>{
+  const d=document.createElement('div');d.className='ineq-row';
+  d.innerHTML='<span class="num">'+(i+1)+'</span><input class="ineq-in" value="'+q.raw.replace(/"/g,'')+'"><button class="del">✕</button>';
+  d.querySelector('.ineq-in').addEventListener('input',e=>{try{ineqs[i]=parseIneq(e.target.value);$('err').style.display='none';}catch(err){}});
+  d.querySelector('.del').onclick=()=>{ineqs.splice(i,1);renderRows();refresh();};
+  r.appendChild(d);});}
+function readRows(){const inputs=document.querySelectorAll('.ineq-in');const out=[];
+  inputs.forEach(inp=>{const v=inp.value.trim();if(!v)return;try{out.push(parseIneq(v));}catch(e){throw new Error('Check: "'+v+'" — '+e.message);}});return out;}
+
+/* ---------- actions ---------- */
+function refresh(){ if(mode==='point'){renderPointTable();} draw(); }
+function enterStep(){cancelAnim();step=-1;$('caption').classList.add('on');$('stepbar').style.display='flex';renderStaticStep(-1);stepCaption(-1);updateStepButtons();}
+function drawRegion(){cancelAnim();try{ineqs=readRows();$('err').style.display='none';}catch(e){$('err').textContent=e.message;$('err').style.display='block';return;}
+  renderRows();if(mode==='draw'&&stepOn){enterStep();}else{$('caption').classList.remove('on');$('stepbar').style.display='none';refresh();}}
+function setMode(m){cancelAnim();mode=m;document.querySelectorAll('#modeSeg button').forEach(b=>b.classList.toggle('on',b.dataset.mode===m));
+  $('ptBox').style.display=m==='point'?'block':'none';
+  $('stepToggle').style.display=m==='draw'?'flex':'none';
+  if(m==='point'){stepOn=false;$('stepMode').checked=false;$('stepbar').style.display='none';$('caption').classList.remove('on');refresh();}
+  else if(stepOn){enterStep();}else{$('caption').classList.remove('on');$('stepbar').style.display='none';refresh();}}
+
+/* ---------- step captions ---------- */
+function stepCaption(i){const cap=$('caption');cap.classList.add('on');
+  if(i<0){cap.innerHTML='<div class="sn">Ready</div><h4>Build the region step by step</h4><p>Press <b>Next</b> to add one line at a time, or <b>Play all</b> to watch the whole region form. Each line: draw it, test a point to find the wanted side, then shade the unwanted side.</p>';$('stepCount').textContent='';return;}
+  if(i>=ineqs.length){const list=ineqs.map(q=>q.raw).join(',&nbsp; ');
+    cap.innerHTML='<div class="sn">The region R</div><h4>R is the clear region left unshaded</h4><p>Every unwanted side is now shaded, so region <b>R</b> is what remains. It satisfies all of them at once:<br><b>'+list+'</b>.</p>';$('stepCount').textContent='Done';return;}
+  const q=ineqs[i],solid=(q.op==='<='||q.op==='>=');const tp=testPoint(q),sat=holds(q,tp[0],tp[1]);
+  cap.innerHTML='<div class="sn">Inequality '+(i+1)+' of '+ineqs.length+'</div><h4>'+q.raw+'</h4>'+
+    '<p><b>1. Draw the line.</b> Replace the sign with = and draw <b>'+eqStr(q)+'</b> as a <b>'+(solid?'solid':'dotted')+'</b> line ('+(solid?'≤ / ≥ — included':'&lt; / &gt; — not included')+').<br>'+
+    '<b>2. Which side?</b> Test <b>('+tp[0]+', '+tp[1]+')</b>: it '+(sat?'<b>satisfies</b> '+q.raw+', so that point is on the <b>wanted</b> side.':'does <b>not</b> satisfy '+q.raw+', so it is on the <b>unwanted</b> side.')+'<br>'+
+    '<b>3. Shade the unwanted side</b>, leaving R clear.</p>';
+  $('stepCount').textContent='Step '+(i+1)+' of '+(ineqs.length+1);}
+
+/* ---------- point test ---------- */
+function renderPointTable(){const x=+$('px').value,y=+$('py').value;
+  if(!ineqs.length){$('ttWrap').innerHTML='<p style="font-size:.82rem;color:var(--g500)">Add inequalities and draw first.</p>';$('verdict').innerHTML='';return;}
+  let rows='';ineqs.forEach(q=>{const h=holds(q,x,y);const v=nice(q.a*x+q.b*y+q.c);
+    rows+='<tr><td>'+q.raw+'</td><td class="'+(h?'yes':'no')+'">'+(h?'✓ true':'✗ false')+'</td></tr>';});
+  $('ttWrap').innerHTML='<table class="tt"><tr><th>Inequality</th><th>at ('+x+', '+y+')</th></tr>'+rows+'</table>';
+  const inAll=ineqs.every(q=>holds(q,x,y));
+  $('verdict').innerHTML='<div class="verdict '+(inAll?'in':'out')+'">('+x+', '+y+') is '+(inAll?'inside region R — it satisfies all of them.':'outside R — it fails at least one.')+'</div>';}
+
+/* ---------- init & wire ---------- */
+function setRows(list){ineqs=list.map(parseIneq);renderRows();}
+$('addBtn').onclick=()=>{const r=$('rows');const d=document.createElement('div');d.className='ineq-row';
+  const i=document.querySelectorAll('.ineq-in').length;
+  d.innerHTML='<span class="num">'+(i+1)+'</span><input class="ineq-in" placeholder="e.g. y <= 2x+1"><button class="del">✕</button>';
+  d.querySelector('.del').onclick=()=>{d.remove();};r.appendChild(d);d.querySelector('.ineq-in').focus();};
+$('drawBtn').onclick=drawRegion;
+document.querySelectorAll('#modeSeg button').forEach(b=>b.onclick=()=>setMode(b.dataset.mode));
+$('shadeWanted').onchange=()=>{cancelAnim();if(mode==='draw'&&stepOn){renderStaticStep(step);}else draw();};
+$('stepMode').onchange=e=>{stepOn=e.target.checked;if(stepOn){enterStep();}else{cancelAnim();$('caption').classList.remove('on');$('stepbar').style.display='none';draw();}};
+$('nextBtn').onclick=()=>{cancelAnim();if(step<ineqs.length){ if(step+1<ineqs.length) animateStep(step+1); else animateFinal(); }};
+$('backBtn').onclick=()=>{cancelAnim();if(step>-1){step--;renderStaticStep(step);stepCaption(step);updateStepButtons();}};
+$('playBtn').onclick=()=>{if(ineqs.length)playAll();};
+$('restartBtn').onclick=()=>{enterStep();};
+$('testBtn').onclick=refresh;$('px').addEventListener('input',refresh);$('py').addEventListener('input',refresh);
+document.querySelectorAll('.ex').forEach(b=>b.onclick=()=>{setRows(b.dataset.set.split('|').map(s=>s.trim()));drawRegion();});
+window.addEventListener('resize',resize);
+setRows(['y>x','y<=-x+7','x>=1']);
+resize();drawRegion();
+</script>
+</body>
+</html>
