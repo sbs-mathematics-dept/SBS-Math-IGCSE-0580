@@ -4,272 +4,557 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Graph Explorer | SBS Mathematics</title>
-<link rel="stylesheet" href="../assets/css/main.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
-.graph-layout { display: grid; grid-template-columns: 280px 1fr; gap: 16px; }
-.graph-panel { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 8px; padding: 1rem; }
-canvas#graph { border: 1px solid var(--gray-200); border-radius: 8px; background: white; display: block; }
-.fn-list { list-style: none; }
-.fn-item { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--gray-100); font-size: 13px; }
-.fn-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
-.fn-eq { flex: 1; font-family: var(--font-mono); color: var(--gray-800); }
-.fn-del { background: none; border: none; cursor: pointer; color: var(--gray-400); font-size: 16px; }
-.fn-del:hover { color: var(--sbs-crimson); }
-.key-stat { font-size: 12px; color: var(--gray-600); padding: 3px 0; }
-.key-stat strong { color: var(--gray-800); }
-@media (max-width:700px) { .graph-layout { grid-template-columns:1fr; } }
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--navy:#071a44;--blue:#1B4F8A;--gold:#B8860B;--crimson:#8B1A1A;--teal:#0F766E;--purple:#7C3AED;--cream:#FAF8F4;--white:#fff;
+--g50:#F8FAFC;--g100:#F1F5F9;--g200:#E2E8F0;--g400:#94A3B8;--g500:#64748B;--g600:#475569;--g700:#334155;--g900:#0F172A;
+--mono:'JetBrains Mono',ui-monospace,monospace;--shadow:0 4px 16px rgba(7,26,68,.08);}
+body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--navy);}
+a{text-decoration:none;color:inherit;}
+
+nav{background:var(--white);border-bottom:1px solid var(--g200);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:66px;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,.06);}
+.nav-logo{display:flex;align-items:center;}
+.nav-logo img{width:auto;display:block;}
+.nav-logo .logo-full{height:50px;} .nav-logo .logo-mark{height:38px;display:none;}
+.nav-links{display:flex;gap:1.8rem;list-style:none;align-items:center;}
+.nav-links a{color:var(--g700);font-size:14px;font-weight:500;}
+.nav-links a.active,.nav-links a:hover{color:var(--blue);}
+
+.shell{max-width:1200px;margin:0 auto;padding:1.6rem 1.5rem 3rem;}
+.hero{background:linear-gradient(135deg,var(--blue),var(--navy));color:#fff;border-radius:20px;padding:1.5rem 1.8rem;margin-bottom:1.2rem;box-shadow:0 14px 40px rgba(7,26,68,.20);}
+.chip{display:inline-flex;gap:.4rem;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);padding:.35rem .8rem;border-radius:999px;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;}
+.hero h1{font-size:clamp(1.8rem,4vw,2.7rem);font-weight:900;margin:.5rem 0 .35rem;}
+.hero p{opacity:.9;max-width:680px;font-size:.96rem;line-height:1.5;}
+
+.panel{background:var(--white);border:1px solid var(--g200);border-radius:16px;padding:1.1rem;box-shadow:var(--shadow);margin-bottom:1.1rem;}
+.entry{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;}
+.fx-input{flex:1;min-width:220px;padding:.7rem .8rem;font-family:var(--mono);font-size:1rem;border:2px solid var(--g200);border-radius:11px;color:var(--navy);outline:none;background:var(--g50);}
+.fx-input:focus{border-color:var(--blue);background:#fff;}
+.btn{font-size:.88rem;font-weight:700;padding:.7rem 1.1rem;border-radius:11px;cursor:pointer;border:none;transition:.15s;white-space:nowrap;}
+.btn-primary{background:var(--blue);color:#fff;} .btn-primary:hover{background:var(--navy);}
+.btn-ghost{background:var(--g100);color:var(--g700);border:1px solid var(--g200);} .btn-ghost:hover{background:var(--g200);}
+.btn:disabled{opacity:.45;cursor:default;}
+select.fx-select{padding:.7rem .8rem;border:2px solid var(--g200);border-radius:11px;font-size:.85rem;background:#fff;color:var(--g700);cursor:pointer;}
+
+.keypad{display:grid;grid-template-columns:repeat(9,1fr);gap:6px;margin-top:.8rem;}
+.key{font-family:var(--mono);font-size:.85rem;font-weight:600;padding:.55rem 0;border:1px solid var(--g200);background:var(--g50);border-radius:9px;cursor:pointer;color:var(--navy);transition:.12s;-webkit-user-select:none;user-select:none;}
+.key:hover{background:#EAF1FB;border-color:#BFD4EE;} .key:active{transform:scale(.94);}
+.keypad-hint{font-size:.74rem;color:var(--g500);margin-top:.5rem;}
+.rangebar{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin-top:.85rem;font-size:.85rem;color:var(--g600);}
+.rangebar input{width:70px;padding:.4rem .5rem;border:1px solid var(--g200);border-radius:8px;font-family:var(--mono);text-align:center;}
+.err{display:none;margin-top:.7rem;background:#FEF2F2;border:1px solid #FECACA;color:#991B1B;border-radius:11px;padding:.65rem .8rem;font-size:.85rem;}
+
+/* mode toggle */
+.modebar{display:flex;gap:.5rem;margin-bottom:.9rem;flex-wrap:wrap;align-items:center;}
+.seg{display:inline-flex;border:1px solid var(--g200);border-radius:999px;overflow:hidden;}
+.seg button{border:none;background:var(--white);padding:.5rem 1rem;font-size:.82rem;font-weight:700;cursor:pointer;color:var(--g600);}
+.seg button.on{background:var(--blue);color:#fff;}
+
+.graph-row{display:grid;grid-template-columns:260px 1fr;gap:1.1rem;align-items:start;}
+.side h3{font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;color:var(--g500);font-weight:800;margin-bottom:.5rem;}
+.fn-list{display:flex;flex-direction:column;gap:6px;margin-bottom:1rem;}
+.fn-item{display:flex;align-items:center;gap:.5rem;background:var(--g50);border:1px solid var(--g200);border-radius:10px;padding:.45rem .6rem;font-family:var(--mono);font-size:.82rem;cursor:pointer;}
+.fn-item.sel{border-color:var(--blue);background:#EAF1FB;}
+.fn-dot{width:14px;height:4px;border-radius:2px;flex:none;}
+.fn-item .rm{margin-left:auto;color:var(--g400);font-weight:800;cursor:pointer;padding:0 .2rem;}
+.fn-item .rm:hover{color:var(--crimson);}
+.probe{background:var(--g50);border:1px solid var(--g200);border-radius:12px;padding:.75rem;}
+.probe label{font-size:.78rem;font-weight:700;color:var(--g600);}
+.probe input{width:80px;padding:.4rem .5rem;border:1px solid var(--g200);border-radius:8px;font-family:var(--mono);margin-left:.4rem;}
+.probe .out{font-family:var(--mono);font-size:.85rem;margin-top:.5rem;color:var(--navy);}
+canvas{width:100%;height:470px;border:1px solid var(--g200);border-radius:14px;background:#fff;display:block;touch-action:none;cursor:crosshair;}
+
+/* teach mode */
+.teach{display:none;}
+.teach.on{display:block;}
+.teach-head{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin-bottom:.9rem;}
+.teach-head .label{font-size:.78rem;font-weight:700;color:var(--g600);}
+.caption{background:linear-gradient(135deg,#EAF1FB,#F8FAFC);border:1px solid #CFE0F5;border-left:4px solid var(--blue);border-radius:12px;padding:1rem 1.1rem;min-height:96px;}
+.caption .step-no{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--blue);}
+.caption h3{font-size:1.1rem;font-weight:800;margin:.15rem 0 .4rem;}
+.caption p{font-size:.92rem;line-height:1.55;color:var(--g700);}
+.caption .subst{font-family:var(--mono);font-size:.86rem;color:var(--navy);background:#fff;border:1px solid var(--g200);border-radius:8px;padding:.5rem .65rem;margin-top:.6rem;display:inline-block;}
+.teach-tbl{overflow-x:auto;margin-top:.8rem;}
+table.vals{border-collapse:collapse;font-family:var(--mono);font-size:.82rem;}
+table.vals th,table.vals td{border:1px solid var(--g200);padding:.35rem .5rem;text-align:center;white-space:nowrap;}
+table.vals tr td:first-child{background:var(--g100);font-weight:700;}
+.stepbar{display:flex;gap:.5rem;align-items:center;margin-top:.9rem;flex-wrap:wrap;}
+.stepbar .count{font-size:.82rem;color:var(--g500);font-weight:700;margin-left:auto;}
+
+/* solve mode */
+.solve{display:none;}
+.solve.on{display:block;}
+.solve-box{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;margin-top:.9rem;}
+.solve-lbl{font-weight:700;color:var(--g600);}
+.solve-fx{font-family:var(--mono);font-weight:700;color:var(--blue);background:#EAF1FB;border:1px solid #CFE0F5;border-radius:8px;padding:.4rem .6rem;}
+.solve-eq{font-weight:800;color:var(--g500);}
+.solve-in{font-family:var(--mono);font-size:.95rem;padding:.55rem .7rem;border:2px solid var(--g200);border-radius:10px;width:130px;outline:none;background:var(--g50);}
+.solve-in.wide{width:170px;}
+.solve-in:focus{border-color:var(--blue);background:#fff;}
+.solve-result{margin-top:.9rem;background:var(--g50);border:1px solid var(--g200);border-radius:12px;padding:.8rem 1rem;font-size:.92rem;line-height:1.55;color:var(--g700);}
+.solve-result b{color:var(--navy);} .solve-result .sol{font-family:var(--mono);color:var(--crimson);font-weight:700;}
+.solve-help{margin-top:.9rem;border:1px solid var(--g200);border-radius:12px;padding:.2rem .3rem;}
+.solve-help summary{cursor:pointer;font-weight:700;font-size:.86rem;color:var(--blue);padding:.55rem .7rem;}
+.solve-help-body{padding:.3rem .7rem .7rem;}
+.solve-help-body p{font-size:.85rem;color:var(--g600);line-height:1.5;margin-bottom:.6rem;}
+.solve-rearr{margin-top:.7rem;font-size:.9rem;line-height:1.6;color:var(--g700);}
+.solve-rearr .box{background:#FFFBEB;border:1px solid #FDE68A;border-radius:10px;padding:.7rem .85rem;font-family:var(--mono);color:var(--navy);margin-top:.4rem;}
+
+footer{background:var(--navy);color:rgba(255,255,255,.6);text-align:center;padding:1.4rem;font-size:13px;margin-top:1.2rem;}
+footer strong{color:rgba(255,255,255,.85);}
+
+@media(max-width:900px){
+  .graph-row{grid-template-columns:1fr;}
+  .keypad{grid-template-columns:repeat(6,1fr);}
+  canvas{height:380px;}
+  .nav-links{display:none;} .nav-logo .logo-full{display:none;} .nav-logo .logo-mark{display:block;}
+}
 </style>
 </head>
 <body>
 
-<nav class="nav">
-  <a href="../index.html" class="nav-logo">
-    <img src="../assets/logo.png" alt="SBS">
-    <div><div class="nav-title">SBS Mathematics</div><div class="nav-subtitle">Cambridge IGCSE 0580</div></div>
+<nav>
+  <a href="../index.html" class="nav-logo" aria-label="SBS Mathematics — Home">
+    <img class="logo-full" src="../assets/logo-full.png" alt="SBS International School Chiangmai — Mathematics Department">
+    <img class="logo-mark" src="../assets/logo-mark.png" alt="SBS">
   </a>
   <ul class="nav-links">
     <li><a href="../index.html">Home</a></li>
-    <li><a href="../labs.html" class="active">Labs</a></li>
+    <li><a href="../chapters.html">Chapters</a></li>
+    <li><a class="active" href="../labs.html">Labs</a></li>
+    <li><a href="../about.html">About</a></li>
   </ul>
 </nav>
 
-<div class="lab-page">
-  <div class="lab-header">
-    <div class="lab-header-icon">📊</div>
-    <div>
-      <div class="lab-header-title">Graph Explorer</div>
-      <div class="lab-header-sub">Cambridge 0580 · Algebra & Graphs — Plot and explore any function</div>
-    </div>
-    <div style="margin-left:auto;"><span class="cambridge-badge">IGCSE Extended</span></div>
-  </div>
+<main class="shell">
+  <header class="hero">
+    <span class="chip">◆ IGCSE Extended · Topic 5</span>
+    <h1>Graph Explorer</h1>
+    <p>Plot a function, then switch to <b>Step-by-step</b> and choose a method — Method 1 (table of values) or Method 2 (key points on an empty grid) — to teach how the graph is drawn, one step at a time.</p>
+  </header>
 
-  <div class="lab-container">
-    <div class="controls">
-      <input type="text" id="fn-input" placeholder="e.g. x^2 - 3x + 2" style="width:200px; font-family:var(--font-mono)">
-      <select id="fn-preset">
+  <section class="panel">
+    <div class="entry">
+      <input id="expr" class="fx-input" placeholder="e.g.  x^2 - 3x + 2" value="x^2-3x+2" autocomplete="off" spellcheck="false">
+      <select id="examples" class="fx-select">
         <option value="">— Quick examples —</option>
-        <optgroup label="Linear">
-          <option value="2*x+1">y = 2x + 1</option>
-          <option value="-0.5*x+3">y = -0.5x + 3</option>
-        </optgroup>
-        <optgroup label="Quadratic">
-          <option value="x^2 - 4">y = x² - 4</option>
-          <option value="x^2 - 3*x + 2">y = x² - 3x + 2</option>
-          <option value="-x^2 + 4*x">y = -x² + 4x</option>
-        </optgroup>
-        <optgroup label="Cubic">
-          <option value="x^3 - 3*x">y = x³ - 3x</option>
-        </optgroup>
-        <optgroup label="Reciprocal">
-          <option value="1/x">y = 1/x</option>
-          <option value="2/x + 1">y = 2/x + 1</option>
-        </optgroup>
-        <optgroup label="Exponential">
-          <option value="2^x">y = 2ˣ</option>
-          <option value="Math.E^x">y = eˣ</option>
-          <option value="2^(-x)">y = 2⁻ˣ</option>
-        </optgroup>
-        <optgroup label="Trigonometric">
-          <option value="Math.sin(x)">y = sin(x)</option>
-          <option value="Math.cos(x)">y = cos(x)</option>
-          <option value="Math.tan(x)">y = tan(x)</option>
-        </optgroup>
-        <optgroup label="Logarithmic">
-          <option value="Math.log(x)">y = ln(x)</option>
-          <option value="Math.log10(x)">y = log₁₀(x)</option>
-        </optgroup>
+        <option value="2x+1">Straight line: 2x+1</option>
+        <option value="x^2-3x+2">Quadratic: x^2-3x+2</option>
+        <option value="x^2-4">Quadratic: x^2-4</option>
+        <option value="-x^2+2x+3">Downward parabola</option>
+        <option value="x^3-4x">Cubic: x^3-4x</option>
+        <option value="1/x">Reciprocal: 1/x</option>
+        <option value="exp(x)">Exponential: e^x</option>
+        <option value="log(x)">Logarithm: log(x)</option>
+        <option value="sin(x)">Trig: sin(x)</option>
       </select>
-      <button class="btn btn-primary" onclick="addFunction()">Plot +</button>
-      <button class="btn btn-secondary" onclick="clearAll()">Clear all</button>
-      <div class="control-group">
-        <span class="control-label">x range</span>
-        <input type="number" id="xmin" value="-10" style="width:60px"> to <input type="number" id="xmax" value="10" style="width:60px">
-        <button class="btn btn-secondary" onclick="redrawAll()">Apply</button>
+      <button class="btn btn-primary" id="plotBtn">Plot +</button>
+      <button class="btn btn-ghost" id="clearBtn">Clear all</button>
+    </div>
+
+    <div class="keypad" id="keypad">
+      <button class="key" data-k="x">x</button>
+      <button class="key" data-k="^2">x²</button>
+      <button class="key" data-k="^">^</button>
+      <button class="key" data-k="(">(</button>
+      <button class="key" data-k=")">)</button>
+      <button class="key" data-k="+">+</button>
+      <button class="key" data-k="-">−</button>
+      <button class="key" data-k="*">×</button>
+      <button class="key" data-k="/">÷</button>
+      <button class="key" data-k="sqrt(" data-close=")">√</button>
+      <button class="key" data-k="sin(" data-close=")">sin</button>
+      <button class="key" data-k="cos(" data-close=")">cos</button>
+      <button class="key" data-k="tan(" data-close=")">tan</button>
+      <button class="key" data-k="exp(" data-close=")">eˣ</button>
+      <button class="key" data-k="log(" data-close=")">log</button>
+      <button class="key" data-k="ln(" data-close=")">ln</button>
+      <button class="key" data-k="pi">π</button>
+      <button class="key" data-k="DEL">⌫</button>
+    </div>
+    <p class="keypad-hint">Type naturally — <b>2x</b>, <b>x^2</b>, <b>3(x+1)</b>, <b>sqrt(x)</b>, <b>1/x</b>, <b>exp(x)</b> for eˣ, <b>log(x)</b> or <b>ln(x)</b> — or tap the buttons.</p>
+
+    <div class="rangebar">
+      <span>x from</span><input id="xmin" type="number" value="-10">
+      <span>to</span><input id="xmax" type="number" value="10">
+      <button class="btn btn-ghost" id="applyRange" style="padding:.45rem .8rem;font-size:.8rem">Apply</button>
+    </div>
+    <div class="err" id="err"></div>
+  </section>
+
+  <section class="panel">
+    <div class="modebar">
+      <div class="seg" id="modeSeg">
+        <button class="on" data-mode="graph">📈 Graph</button>
+        <button data-mode="teach">👣 Step-by-step</button>
+        <button data-mode="solve">🎯 Solve</button>
+      </div>
+      <div class="teach" id="teachControls" style="flex:1">
+        <div class="teach-head">
+          <span class="label">Method:</span>
+          <div class="seg" id="methodSeg">
+            <button class="on" data-method="1">Method 1 · Table</button>
+            <button data-method="2">Method 2 · Key points</button>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="theorem-box">
-      <strong>Tip:</strong> Use <code>x^2</code> for x², <code>Math.sin(x)</code> for sin, <code>Math.sqrt(x)</code> for √x, <code>Math.abs(x)</code> for |x|. You can plot multiple functions at once!
-    </div>
-
-    <div class="graph-layout">
+    <div class="graph-row">
+      <div class="side">
+        <h3>Active functions</h3>
+        <div class="fn-list" id="fnList"><div style="font-size:.85rem;color:var(--g500)">No functions yet — plot one above.</div></div>
+        <div class="probe" id="probeBox">
+          <label>x = <input id="probeX" type="number" value="0" step="0.5"></label>
+          <div class="out" id="probeOut">—</div>
+        </div>
+      </div>
       <div>
-        <div class="graph-panel">
-          <div style="font-size:12px;font-weight:600;color:var(--gray-400);text-transform:uppercase;margin-bottom:8px">Active functions</div>
-          <ul class="fn-list" id="fn-list"></ul>
+        <canvas id="graph"></canvas>
+        <div class="teach" id="teachPanel">
+          <div class="caption" id="caption"></div>
+          <div class="teach-tbl" id="teachTbl"></div>
+          <div class="stepbar">
+            <button class="btn btn-ghost" id="backBtn">◀ Back</button>
+            <button class="btn btn-primary" id="nextBtn">Next ▶</button>
+            <button class="btn btn-ghost" id="restartBtn">↻ Restart</button>
+            <span class="count" id="stepCount"></span>
+          </div>
         </div>
-        <div class="graph-panel" style="margin-top:12px">
-          <div style="font-size:12px;font-weight:600;color:var(--gray-400);text-transform:uppercase;margin-bottom:8px">Key features</div>
-          <div id="key-stats">Plot a function to see key features.</div>
-        </div>
-        <div class="graph-panel" style="margin-top:12px">
-          <div style="font-size:12px;font-weight:600;color:var(--gray-400);text-transform:uppercase;margin-bottom:8px">x-value probe</div>
-          x = <input type="number" id="probe-x" value="0" step="0.5" oninput="probeX()" style="width:70px">
-          <div id="probe-results" style="margin-top:8px; font-size:13px;"></div>
+        <div class="solve" id="solvePanel">
+          <div class="solve-box">
+            <span class="solve-lbl">Solve</span>
+            <span class="solve-fx" id="solveFx">y = —</span>
+            <span class="solve-eq">=</span>
+            <input id="rhs" class="solve-in" placeholder="0, 2, or x+1" value="0">
+            <button class="btn btn-primary" id="solveBtn">Solve</button>
+          </div>
+          <div class="solve-result" id="solveResult">Enter what the function equals — <b>0</b> (roots), a number like <b>2</b> (horizontal line), or a line like <b>x+1</b> — and press Solve.</div>
+          <details class="solve-help">
+            <summary>Rearrange helper — solve a <i>different</i> equation using this graph</summary>
+            <div class="solve-help-body">
+              <p>Type the equation you want to solve and the graph you already have. The helper rearranges it so one side is your graph, then tells you which line to draw.</p>
+              <div class="solve-box">
+                <span>Solve</span><input id="target" class="solve-in wide" placeholder="e.g. x^2-3x-5=0">
+                <span>using&nbsp; y =</span><input id="given" class="solve-in wide" placeholder="x^2-3x">
+                <button class="btn btn-ghost" id="rearrBtn">Show line to draw</button>
+              </div>
+              <div class="solve-rearr" id="solveRearr"></div>
+            </div>
+          </details>
         </div>
       </div>
-      <canvas id="graph" width="580" height="480"></canvas>
     </div>
-  </div>
-</div>
+  </section>
+</main>
 
-<footer class="site-footer">
-  <strong>SBS Mathematics</strong> · Graph Explorer · Cambridge IGCSE 0580
-</footer>
+<footer><strong>SBS Mathematics</strong> · Graph Explorer · Cambridge IGCSE 0580</footer>
 
 <script>
-const COLORS = ['#1B4F8A','#8B1A1A','#059669','#D97706','#7C3AED','#0891B2','#DB2777'];
-let functions = [];
+"use strict";
+const $=id=>document.getElementById(id);
+const COLORS=['#1B4F8A','#8B1A1A','#B8860B','#0F766E','#7C3AED'];
+let fns=[],sel=0,lastInput=$('expr');
+let mode='graph';                 // 'graph' | 'teach'
+let teach={method:1,step:0,steps:[]};
 
-document.getElementById('fn-preset').addEventListener('change', function(){
-  if(this.value){ document.getElementById('fn-input').value=this.value; this.value=''; }
-});
+/* ---------- parser ---------- */
+const FUNCS=['asin','acos','atan','sinh','cosh','tanh','sqrt','cbrt','abs','sin','cos','tan','exp','ln','log'];
+function tokenise(src){const s=src.replace(/\s+/g,'');const o=[];let i=0;while(i<s.length){const c=s[i];
+  if(/[0-9.]/.test(c)){let n=c;i++;while(i<s.length&&/[0-9.]/.test(s[i]))n+=s[i++];o.push({t:'num',v:parseFloat(n)});continue;}
+  if(c==='π'){o.push({t:'num',v:Math.PI});i++;continue;}
+  if('×·'.includes(c)){o.push({t:'op',v:'*'});i++;continue;} if(c==='÷'){o.push({t:'op',v:'/'});i++;continue;}
+  if(c==='−'||c==='–'){o.push({t:'op',v:'-'});i++;continue;}
+  if('+-*/^'.includes(c)){o.push({t:'op',v:c});i++;continue;}
+  if(c==='('){o.push({t:'lp'});i++;continue;} if(c===')'){o.push({t:'rp'});i++;continue;}
+  if(/[a-zA-Z]/.test(c)){let f=null;for(const fn of FUNCS){if(s.startsWith(fn,i)){f=fn;break;}}
+    if(f){o.push({t:'func',v:f});i+=f.length;continue;}
+    if(s.startsWith('pi',i)){o.push({t:'num',v:Math.PI});i+=2;continue;}
+    if(c==='e'){o.push({t:'num',v:Math.E});i++;continue;}
+    if(c==='x'||c==='X'){o.push({t:'x'});i++;continue;}
+    throw new Error('bad');}
+  throw new Error('bad');}return o;}
+function implicit(t){const o=[];for(let i=0;i<t.length;i++){o.push(t[i]);const a=t[i],b=t[i+1];if(!b)continue;
+  const ae=a.t==='num'||a.t==='x'||a.t==='rp';const bs=b.t==='num'||b.t==='x'||b.t==='lp'||b.t==='func';
+  if(ae&&bs)o.push({t:'op',v:'*'});}return o;}
+const PREC={'+':2,'-':2,'*':3,'/':3,'neg':4,'^':5,'negH':6},RIGHT={'^':1,'neg':1,'negH':1};
+function toRPN(t){const o=[],ops=[];let p=null;for(const tk of t){
+  if(tk.t==='num'||tk.t==='x'){o.push(tk);p=tk;continue;}
+  if(tk.t==='func'){ops.push(tk);p=tk;continue;} if(tk.t==='lp'){ops.push(tk);p=tk;continue;}
+  if(tk.t==='rp'){while(ops.length&&ops[ops.length-1].t!=='lp')o.push(ops.pop());if(!ops.length)throw new Error('br');ops.pop();if(ops.length&&ops[ops.length-1].t==='func')o.push(ops.pop());p=tk;continue;}
+  if(tk.t==='op'){let x=tk.v;const un=(p===null||p.t==='op'||p.t==='lp');if(x==='+'&&un){p=tk;continue;}if(x==='-'&&un)x=(p&&p.t==='op'&&p.v==='^')?'negH':'neg';const cur={t:'op',v:x};
+    while(ops.length){const top=ops[ops.length-1];if(top.t==='func'){o.push(ops.pop());continue;}if(top.t==='op'){const pt=PREC[top.v],pc=PREC[x];if(pt>pc||(pt===pc&&!RIGHT[x]))o.push(ops.pop());else break;}else break;}
+    ops.push(cur);p=cur;continue;}}
+  while(ops.length){const t2=ops.pop();if(t2.t==='lp')throw new Error('br');o.push(t2);}return o;}
+const FM={sin:Math.sin,cos:Math.cos,tan:Math.tan,asin:Math.asin,acos:Math.acos,atan:Math.atan,sinh:Math.sinh,cosh:Math.cosh,tanh:Math.tanh,sqrt:Math.sqrt,cbrt:Math.cbrt,abs:Math.abs,exp:Math.exp,ln:Math.log,log:x=>Math.log(x)/Math.LN10};
+function evalRPN(r,x){const s=[];for(const tk of r){if(tk.t==='num'){s.push(tk.v);continue;}if(tk.t==='x'){s.push(x);continue;}
+  if(tk.t==='func'){const a=s.pop();const f=FM[tk.v];s.push(f?f(a):NaN);continue;}
+  if(tk.t==='op'){if(tk.v==='neg'||tk.v==='negH'){s.push(-s.pop());continue;}const b=s.pop(),a=s.pop();s.push(tk.v==='+'?a+b:tk.v==='-'?a-b:tk.v==='*'?a*b:tk.v==='/'?a/b:Math.pow(a,b));}}
+  return s.length===1?s[0]:NaN;}
+function compile(expr){if(!expr.trim())throw new Error('empty');
+  expr=expr.replace(/Math\.PI/gi,'pi').replace(/Math\.E\b/g,'e').replace(/Math\./g,'');
+  const rpn=toRPN(implicit(tokenise(expr)));return x=>{const y=evalRPN(rpn,x);return Number.isFinite(y)?y:NaN;};}
+function nice(n,d){if(!Number.isFinite(n))return '—';if(Math.abs(n)<1e-9)n=0;return +n.toFixed(d==null?2:d);}
 
-function safeEval(expr, x) {
-  try {
-    let e=expr.replace(/\^/g,'**');
-    return Function('x','Math','return '+e)(x, Math);
-  } catch(e){ return NaN; }
+/* ---------- analysis ---------- */
+function analyse(fn,xmin,xmax){
+  const N=2000,dx=(xmax-xmin)/N,ys=[],xs=[];
+  for(let i=0;i<=N;i++){const x=xmin+i*dx;xs.push(x);ys.push(fn(x));}
+  const yInt=fn(0),sgn=v=>v>0?1:v<0?-1:0,zeros=[];
+  for(let i=1;i<=N;i++){const a=ys[i-1],b=ys[i];
+    if(Number.isFinite(a)&&Number.isFinite(b)&&sgn(a)!==0&&sgn(b)!==0&&sgn(a)!==sgn(b)){let lo=xs[i-1],hi=xs[i],fl=a;
+      for(let k=0;k<60;k++){const m=(lo+hi)/2,fm=fn(m);if(!Number.isFinite(fm))break;if(sgn(fl)!==sgn(fm))hi=m;else{lo=m;fl=fm;}}
+      const r=(lo+hi)/2;if(Math.abs(fn(r))<1e-4)zeros.push(r);}}
+  for(let i=0;i<=N;i++)if(Number.isFinite(ys[i])&&Math.abs(ys[i])<1e-9)zeros.push(xs[i]);
+  const turns=[];
+  for(let i=1;i<N;i++){const y0=ys[i-1],y1=ys[i],y2=ys[i+1];
+    if(!Number.isFinite(y0)||!Number.isFinite(y1)||!Number.isFinite(y2)||Math.abs(y1)>1e8)continue;
+    let type=null;if(y1<y0&&y1<y2)type='minimum';else if(y1>y0&&y1>y2)type='maximum';
+    if(type){const den=(y2-2*y1+y0);let xv=xs[i];if(Math.abs(den)>1e-12)xv=xs[i]-0.5*dx*(y2-y0)/den;turns.push({x:xv,y:fn(xv),type});}}
+  turns.forEach(t=>{if(Math.abs(t.y)<1e-3)zeros.push(t.x);});
+  const tol=Math.max(1e-3,(xmax-xmin)*2e-3),dz=[],dt=[];
+  zeros.sort((a,b)=>a-b).forEach(v=>{if(!dz.some(u=>Math.abs(u-v)<tol))dz.push(v);});
+  turns.sort((a,b)=>a.x-b.x).forEach(t=>{if(!dt.some(u=>Math.abs(u.x-t.x)<tol))dt.push(t);});
+  let type='curve',extra=null;const sl=[];
+  for(let k=0;k<=12;k++){const x=xmin+(xmax-xmin)*k/12,h=(xmax-xmin)/2000,d=(fn(x+h)-fn(x-h))/(2*h);if(Number.isFinite(d))sl.push(d);}
+  if(sl.length){const mn=Math.min(...sl),mx=Math.max(...sl);
+    if(mx-mn<1e-4*(Math.abs(mx)+Math.abs(mn)+1)){type='line';extra={m:(mn+mx)/2,c:yInt};}else if(dt.length===1)type='parabola';}
+  return {yInt,zeros:dz,turns:dt,type,extra};
 }
 
-function addFunction() {
-  const expr = document.getElementById('fn-input').value.trim();
-  if(!expr) return;
-  const color = COLORS[functions.length % COLORS.length];
-  functions.push({expr, color, id: Date.now()});
-  document.getElementById('fn-input').value = '';
-  renderFnList();
-  redrawAll();
-}
+/* ---------- canvas ---------- */
+const cv=$('graph'),ctx=cv.getContext('2d');let W=900,H=470;
+function resize(){const dpr=window.devicePixelRatio||1,r=cv.getBoundingClientRect();W=r.width;H=r.height;cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);render();}
+function niceStep(span){const raw=span/8,p=Math.pow(10,Math.floor(Math.log10(raw))),n=raw/p;return (n<1.5?1:n<3?2:n<7?5:10)*p;}
+function boundsFor(list){const xmin=+$('xmin').value,xmax=+$('xmax').value;let ymin=Infinity,ymax=-Infinity;
+  list.forEach(f=>{for(let i=0;i<=200;i++){const x=xmin+(xmax-xmin)*i/200,y=f.fn(x);if(Number.isFinite(y)&&Math.abs(y)<1e6){if(y<ymin)ymin=y;if(y>ymax)ymax=y;}}});
+  if(ymin===Infinity){ymin=-10;ymax=10;}const pad=(ymax-ymin)*0.15||1;ymin-=pad;ymax+=pad;if(ymax-ymin<2){const m=(ymin+ymax)/2;ymin=m-1;ymax=m+1;}
+  return {xmin,xmax,ymin,ymax};}
+function mapper(B){return {sx:x=>(x-B.xmin)/(B.xmax-B.xmin)*W,sy:y=>H-(y-B.ymin)/(B.ymax-B.ymin)*H};}
+function drawAxes(B){const {xmin,xmax,ymin,ymax}=B,{sx,sy}=mapper(B);ctx.clearRect(0,0,W,H);
+  const xs=niceStep(xmax-xmin),ys=niceStep(ymax-ymin);
+  ctx.strokeStyle='#eef2f7';ctx.lineWidth=1;
+  for(let x=Math.ceil(xmin/xs)*xs;x<=xmax;x+=xs){ctx.beginPath();ctx.moveTo(sx(x),0);ctx.lineTo(sx(x),H);ctx.stroke();}
+  for(let y=Math.ceil(ymin/ys)*ys;y<=ymax;y+=ys){ctx.beginPath();ctx.moveTo(0,sy(y));ctx.lineTo(W,sy(y));ctx.stroke();}
+  ctx.strokeStyle='#334155';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(0,sy(0));ctx.lineTo(W,sy(0));ctx.moveTo(sx(0),0);ctx.lineTo(sx(0),H);ctx.stroke();
+  ctx.fillStyle='#64748B';ctx.font='11px "JetBrains Mono",monospace';ctx.textAlign='center';ctx.textBaseline='top';
+  for(let x=Math.ceil(xmin/xs)*xs;x<=xmax;x+=xs){if(Math.abs(x)<1e-9)continue;ctx.fillText(+x.toFixed(2),sx(x),Math.min(sy(0)+4,H-14));}
+  ctx.textAlign='right';ctx.textBaseline='middle';
+  for(let y=Math.ceil(ymin/ys)*ys;y<=ymax;y+=ys){if(Math.abs(y)<1e-9)continue;ctx.fillText(+y.toFixed(2),Math.max(sx(0)-5,28),sy(y));}}
+function drawCurve(f,B,color,w){const {sx,sy}=mapper(B);ctx.strokeStyle=color;ctx.lineWidth=w;ctx.beginPath();let on=false;
+  for(let px=0;px<=W;px++){const x=B.xmin+(B.xmax-B.xmin)*px/W,y=f.fn(x);if(!Number.isFinite(y)||y>B.ymax+(B.ymax-B.ymin)||y<B.ymin-(B.ymax-B.ymin)){on=false;continue;}const py=sy(y);if(!on){ctx.moveTo(px,py);on=true;}else ctx.lineTo(px,py);}ctx.stroke();}
+function dot(B,x,y,color,label){const {sx,sy}=mapper(B);if(!Number.isFinite(y))return;const px=sx(x),py=sy(y);
+  ctx.fillStyle=color;ctx.beginPath();ctx.arc(px,py,6,0,7);ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+  if(label){ctx.fillStyle='#0F172A';ctx.font='700 12px Inter,sans-serif';ctx.textAlign='left';ctx.textBaseline='bottom';
+    let lx=px+9,ly=py-7;if(lx>W-70){ctx.textAlign='right';lx=px-9;}ctx.fillText(label,lx,ly);}}
 
-function removeFunction(id) {
-  functions = functions.filter(f => f.id !== id);
-  renderFnList();
-  redrawAll();
-}
+function render(){ if(mode==='graph') renderGraph(); else if(mode==='teach') renderTeach(); else renderSolve(); }
+function renderGraph(){const list=fns.length?fns:[];const B=boundsFor(list.length?list:[{fn:x=>x}]);drawAxes(B);
+  fns.forEach((f,i)=>drawCurve(f,B,f.color,i===sel?3.2:2));}
 
-function clearAll() { functions=[]; renderFnList(); redrawAll(); document.getElementById('key-stats').innerHTML='Plot a function to see key features.'; }
+/* ---------- teach mode ---------- */
+function substStr(expr,xv){return expr.replace(/x/g,'('+(+xv.toFixed(2))+')');}
+function buildSteps(){
+  teach.steps=[]; if(!fns.length)return;
+  const f=fns[sel],xmin=+$('xmin').value,xmax=+$('xmax').value,A=analyse(f.fn,xmin,xmax);
+  // table columns
+  const step=Math.max(1,Math.round((xmax-xmin)/12)),cols=[];
+  for(let x=xmin;x<=xmax+1e-9;x+=step)cols.push(+x.toFixed(2));
+  const pts=cols.map(x=>({x,y:f.fn(x)})).filter(p=>Number.isFinite(p.y));
+  const ex=cols.find(x=>Number.isFinite(f.fn(x)));
+  teach.tableCols=cols; teach.tablePts=pts; teach.analysis=A;
 
-function renderFnList() {
-  const ul = document.getElementById('fn-list');
-  ul.innerHTML = functions.map(f => `
-    <li class="fn-item">
-      <div class="fn-dot" style="background:${f.color}"></div>
-      <span class="fn-eq">y = ${f.expr}</span>
-      <button class="fn-del" onclick="removeFunction(${f.id})">×</button>
-    </li>`).join('');
-}
-
-function redrawAll() {
-  const c = document.getElementById('graph');
-  const ctx = c.getContext('2d');
-  const W=c.width, H=c.height;
-  const xmin=parseFloat(document.getElementById('xmin').value)||(-10);
-  const xmax=parseFloat(document.getElementById('xmax').value)||10;
-  const yPad=1.2;
-
-  ctx.clearRect(0,0,W,H);
-  ctx.fillStyle='white'; ctx.fillRect(0,0,W,H);
-
-  let yVals=[];
-  functions.forEach(f=>{
-    for(let px=0;px<W;px++){
-      const x=xmin+(px/W)*(xmax-xmin);
-      const y=safeEval(f.expr,x);
-      if(isFinite(y)) yVals.push(y);
+  if(teach.method===1){
+    teach.steps=[
+      {no:'Step 1', h:'Set up the table', p:'Choose x-values across the range and draw a table with a row for x and a row for y.', show:{table:'x'}},
+      {no:'Step 2', h:'Work out y for each x', p:'Substitute each x-value into the function to find y.', subst: ex!==undefined?('when x = '+ex+':  y = '+substStr(f.expr,ex)+' = '+nice(f.fn(ex))):null, show:{table:'xy'}},
+      {no:'Step 3', h:'Plot the points', p:'Plot each (x, y) pair from the table onto the grid.', show:{table:'xy',pts:1}},
+      {no:'Final', h:'Join with a smooth curve', p:'Join the points with a smooth curve. Use a ruler only for a straight line.', show:{table:'xy',pts:1,curve:1}},
+    ];
+  } else {
+    const c=A.yInt, s=[];
+    s.push({no:'Step 1', h:'Draw the axes', p:'Start from an empty grid. In this method we plot only the key points, then join them.', show:{}});
+    s.push({no:'Step 2', h:'Plot the y-intercept', p:'Substitute x = 0 into the function.', subst:'y = '+substStr(f.expr,0)+' = '+nice(c)+'   →  mark (0, '+nice(c)+')', show:{yint:1}});
+    if(A.zeros.length){
+      s.push({no:'Step 3', h:'Plot the x-intercept(s) / zeros', p:'Solve  '+f.expr+' = 0.  These are where the curve crosses the x-axis: '+A.zeros.map(z=>'('+nice(z)+', 0)').join(',  ')+'.', show:{yint:1,zeros:1}});
     }
-  });
-
-  let ymin=-10, ymax=10;
-  if(yVals.length>0){
-    ymin=Math.min(...yVals)*yPad;
-    ymax=Math.max(...yVals)*yPad;
-    if(Math.abs(ymax-ymin)<0.1){ymin-=5;ymax+=5;}
-  }
-
-  const toX=(x)=>((x-xmin)/(xmax-xmin))*W;
-  const toY=(y)=>H-((y-ymin)/(ymax-ymin))*H;
-
-  // Grid
-  ctx.strokeStyle='#F1F5F9'; ctx.lineWidth=1;
-  const xStep=niceStep(xmax-xmin,10); const yStep=niceStep(ymax-ymin,8);
-  for(let x=Math.ceil(xmin/xStep)*xStep; x<=xmax; x+=xStep){
-    ctx.beginPath(); ctx.moveTo(toX(x),0); ctx.lineTo(toX(x),H); ctx.stroke();
-    if(Math.abs(x)>0.01){ ctx.fillStyle='#94A3B8'; ctx.font='10px Inter'; ctx.textAlign='center'; ctx.fillText(x.toFixed(x%1?1:0),toX(x),H-4); }
-  }
-  for(let y=Math.ceil(ymin/yStep)*yStep; y<=ymax; y+=yStep){
-    ctx.beginPath(); ctx.moveTo(0,toY(y)); ctx.lineTo(W,toY(y)); ctx.stroke();
-    if(Math.abs(y)>0.01){ ctx.fillStyle='#94A3B8'; ctx.font='10px Inter'; ctx.textAlign='right'; ctx.fillText(y.toFixed(y%1?1:0),38,toY(y)+4); }
-  }
-
-  // Axes
-  ctx.strokeStyle='#475569'; ctx.lineWidth=1.5;
-  if(ymin<0&&ymax>0){ ctx.beginPath(); ctx.moveTo(0,toY(0)); ctx.lineTo(W,toY(0)); ctx.stroke(); }
-  if(xmin<0&&xmax>0){ ctx.beginPath(); ctx.moveTo(toX(0),0); ctx.lineTo(toX(0),H); ctx.stroke(); }
-
-  // Origin label
-  if(xmin<0&&xmax>0&&ymin<0&&ymax>0){
-    ctx.fillStyle='#94A3B8'; ctx.font='10px Inter'; ctx.textAlign='right'; ctx.fillText('O',toX(0)-2,toY(0)-4);
-  }
-
-  // Functions
-  let stats='';
-  functions.forEach(f=>{
-    ctx.strokeStyle=f.color; ctx.lineWidth=2; ctx.beginPath();
-    let started=false; let lastY=null;
-    for(let px=0;px<W;px++){
-      const x=xmin+(px/W)*(xmax-xmin);
-      const y=safeEval(f.expr,x);
-      if(!isFinite(y)||y<ymin*2||y>ymax*2){ started=false; lastY=null; continue; }
-      if(!started||(lastY!==null&&Math.abs(y-lastY)>Math.abs(ymax-ymin)*0.8)){ ctx.moveTo(px,toY(y)); started=true; }
-      else ctx.lineTo(px,toY(y));
-      lastY=y;
+    if(A.turns.length){
+      let p;
+      if(A.type==='parabola'){const v=A.turns[0];p='The vertex (turning point) is at ('+nice(v.x)+', '+nice(v.y)+'). A parabola is symmetrical about its vertical line x = '+nice(v.x)+', so points reflect across it.';}
+      else p='Turning point(s): '+A.turns.map(t=>'('+nice(t.x)+', '+nice(t.y)+') '+t.type).join(',  ')+'.';
+      s.push({no:'Step '+(s.length+1), h:'Plot the turning point(s)', p, show:{yint:1,zeros:1,turns:1}});
     }
-    ctx.stroke();
-
-    // Find zeros
-    const zeros=[];
-    for(let x=xmin;x<xmax;x+=0.01){
-      const y1=safeEval(f.expr,x); const y2=safeEval(f.expr,x+0.01);
-      if(isFinite(y1)&&isFinite(y2)&&Math.sign(y1)!==Math.sign(y2)&&Math.abs(y1-y2)<5){
-        const z=x-y1*(0.01/(y2-y1));
-        zeros.push(Math.round(z*100)/100);
-        ctx.beginPath(); ctx.arc(toX(z),toY(0),4,0,2*Math.PI);
-        ctx.fillStyle=f.color; ctx.fill();
-      }
-    }
-    const yAt0=safeEval(f.expr,0);
-    if(isFinite(yAt0)){
-      ctx.beginPath(); ctx.arc(toX(0),toY(yAt0),4,0,2*Math.PI); ctx.fillStyle=f.color; ctx.fill();
-    }
-    stats+=`<div style="font-size:12px;font-weight:600;color:${f.color};margin-top:8px">y = ${f.expr}</div>`;
-    stats+=`<div class="key-stat">y-intercept: <strong>${isFinite(yAt0)?yAt0.toFixed(3):'—'}</strong></div>`;
-    if(zeros.length) stats+=`<div class="key-stat">x-intercepts (zeros): <strong>${zeros.join(', ')}</strong></div>`;
-    else stats+=`<div class="key-stat">x-intercepts: <strong>none in range</strong></div>`;
-  });
-
-  document.getElementById('key-stats').innerHTML=stats||'Plot a function to see key features.';
-  probeX();
+    s.push({no:'Final', h:'Join with a smooth curve', p:'Join the key points with a smooth curve, following the shape you recognise.', show:{yint:1,zeros:1,turns:1,curve:1}});
+    // renumber
+    s.forEach((st,i)=>{ if(i>0 && i<s.length-1) st.no='Step '+(i+1); });
+    teach.steps=s;
+  }
+  teach.step=Math.min(teach.step,teach.steps.length-1);
+}
+function renderTeach(){
+  if(!fns.length){drawAxes(boundsFor([{fn:x=>x}]));$('caption').innerHTML='<p>Plot a function first, then step through it here.</p>';$('teachTbl').innerHTML='';$('stepCount').textContent='';return;}
+  const f=fns[sel],B=boundsFor([f]),{}=B;const st=teach.steps[teach.step]||{show:{}},sh=st.show;
+  drawAxes(B);
+  // draw table points
+  if(sh.pts) teach.tablePts.forEach(p=>dot(B,p.x,p.y,'#1B4F8A',null));
+  // key points
+  const A=teach.analysis;
+  if(sh.yint) dot(B,0,A.yInt,'#B8860B','y-int (0, '+nice(A.yInt)+')');
+  if(sh.zeros) A.zeros.forEach(z=>dot(B,z,0,'#8B1A1A','('+nice(z)+', 0)'));
+  if(sh.turns) A.turns.forEach(t=>dot(B,t.x,t.y,'#0F766E',(A.type==='parabola'?'vertex ':t.type+' ')+'('+nice(t.x)+', '+nice(t.y)+')'));
+  if(sh.curve) drawCurve(f,B,f.color,3);
+  // axis of symmetry line for parabola on the turns/final steps
+  if((sh.turns||sh.curve)&&A.type==='parabola'&&A.turns[0]){const {sx}=mapper(B);const vx=sx(A.turns[0].x);ctx.strokeStyle='rgba(15,118,110,.5)';ctx.setLineDash([5,4]);ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(vx,0);ctx.lineTo(vx,H);ctx.stroke();ctx.setLineDash([]);}
+  // caption
+  $('caption').innerHTML='<div class="step-no">'+(st.no||'')+'</div><h3>'+(st.h||'')+'</h3><p>'+(st.p||'')+'</p>'+(st.subst?'<div class="subst">'+st.subst+'</div>':'');
+  // table
+  if(sh.table){let xr='<tr><td>x</td>',yr='<tr><td>y</td>';
+    teach.tableCols.forEach(x=>{xr+='<td>'+x+'</td>';const y=f.fn(x);yr+='<td>'+(sh.table==='xy'?(Number.isFinite(y)?nice(y):'—'):'')+'</td>';});
+    $('teachTbl').innerHTML='<table class="vals">'+xr+'</tr>'+yr+'</tr></table>';}
+  else $('teachTbl').innerHTML='';
+  $('stepCount').textContent='Step '+(teach.step+1)+' of '+teach.steps.length;
+  $('backBtn').disabled=teach.step===0; $('nextBtn').disabled=teach.step===teach.steps.length-1;
 }
 
-function probeX() {
-  const x=parseFloat(document.getElementById('probe-x').value);
-  const res=functions.map(f=>{
-    const y=safeEval(f.expr,x);
-    return `<div style="font-size:13px;color:${f.color}"><strong>y = ${f.expr}:</strong> y(${x}) = ${isFinite(y)?y.toFixed(4):'undefined'}</div>`;
-  }).join('');
-  document.getElementById('probe-results').innerHTML=res||'—';
+/* ---------- solve mode ---------- */
+let solveRhs=null;   // {fn, expr}
+function findRoots(h,xmin,xmax){
+  const N=3000,dx=(xmax-xmin)/N,ys=[],xs=[],sgn=v=>v>0?1:v<0?-1:0,roots=[];
+  for(let i=0;i<=N;i++){const x=xmin+i*dx;xs.push(x);ys.push(h(x));}
+  for(let i=1;i<=N;i++){const a=ys[i-1],b=ys[i];
+    if(Number.isFinite(a)&&Number.isFinite(b)&&sgn(a)!==0&&sgn(b)!==0&&sgn(a)!==sgn(b)){let lo=xs[i-1],hi=xs[i],fl=a;
+      for(let k=0;k<60;k++){const m=(lo+hi)/2,fm=h(m);if(!Number.isFinite(fm))break;if(sgn(fl)!==sgn(fm))hi=m;else{lo=m;fl=fm;}}
+      const r=(lo+hi)/2;if(Math.abs(h(r))<1e-4)roots.push(r);}}
+  for(let i=0;i<=N;i++)if(Number.isFinite(ys[i])&&Math.abs(ys[i])<1e-9)roots.push(xs[i]);
+  const tol=Math.max(1e-3,(xmax-xmin)*2e-3),out=[];
+  roots.sort((a,b)=>a-b).forEach(v=>{if(!out.some(u=>Math.abs(u-v)<tol))out.push(v);});
+  return out;
 }
-
-function niceStep(range, steps) {
-  const raw=range/steps;
-  const exp=Math.floor(Math.log10(raw));
-  const m=raw/Math.pow(10,exp);
-  const nice=m<1.5?1:m<3?2:m<7?5:10;
-  return nice*Math.pow(10,exp);
+function updateSolveFx(){$('solveFx').textContent=fns.length?('y = '+fns[sel].expr):'y = —';}
+function renderSolve(){
+  if(!fns.length){drawAxes(boundsFor([{fn:x=>x}]));$('solveResult').innerHTML='Plot a function first, then solve.';return;}
+  const f=fns[sel],xmin=+$('xmin').value,xmax=+$('xmax').value;
+  const list=[f]; if(solveRhs) list.push({fn:solveRhs.fn});
+  const B=boundsFor(list),{sx,sy}=mapper(B);
+  drawAxes(B); drawCurve(f,B,f.color,3);
+  if(!solveRhs){$('solveResult').innerHTML='Enter what the function equals and press Solve.';return;}
+  const isZero=solveRhs.expr.replace(/\s/g,'')==='0';
+  if(!isZero) drawCurve({fn:solveRhs.fn},B,'#0F766E',2.4);
+  // intersections: f(x) = rhs(x)
+  const h=x=>f.fn(x)-solveRhs.fn(x);
+  const roots=findRoots(h,xmin,xmax);
+  roots.forEach(x=>dot(B,x,f.fn(x),'#8B1A1A','x = '+nice(x)));
+  const lineTxt=isZero?'the x-axis (y = 0)':'the line y = '+solveRhs.expr;
+  let msg;
+  if(!roots.length) msg='<b>'+f.expr+' = '+solveRhs.expr+'</b><br>No intersections with '+lineTxt+' in this range. Try widening the x-range.';
+  else{const sols=roots.map(x=>'<span class="sol">x = '+nice(x)+'</span>').join('&nbsp; and &nbsp;');
+    msg='<b>'+f.expr+' = '+solveRhs.expr+'</b><br>The curve meets '+lineTxt+' at '+roots.length+' point'+(roots.length>1?'s':'')+'. Reading down to the x-axis:<br>'+sols+'.';}
+  $('solveResult').innerHTML=msg;
 }
+function doSolve(){
+  if(!fns.length){$('solveResult').innerHTML='Plot a function first.';return;}
+  const s=($('rhs').value.trim()||'0');
+  try{const r=compile(s);solveRhs={fn:r,expr:s};$('err').style.display='none';}
+  catch(e){$('solveResult').innerHTML='Check the right-hand side — e.g. 0, 2, or x+1.';return;}
+  render();
+}
+// linear/constant form of a numeric function, as a tidy string
+function lineForm(fn){
+  const c0=fn(0),c1=fn(1),c2=fn(2);if(![c0,c1,c2].every(Number.isFinite))return null;
+  const m=c1-c0;if(Math.abs((c2-c1)-m)>1e-6)return null;            // not linear
+  if(Math.abs(m)<1e-9)return {str:''+nice(c0),fn};                  // constant
+  const mm=Math.abs(m-1)<1e-9?'':Math.abs(m+1)<1e-9?'-':nice(m);
+  const cc=Math.abs(c0)<1e-9?'':(c0>0?' + '+nice(c0):' − '+nice(-c0));
+  return {str:mm+'x'+cc,fn};
+}
+function rearrange(){
+  if(!fns.length){$('solveRearr').innerHTML='Plot a function first.';return;}
+  const raw=$('target').value.trim();if(!raw){$('solveRearr').innerHTML='Type the equation you want to solve.';return;}
+  let lhs=raw,rhsT='0';if(raw.includes('=')){const p=raw.split('=');lhs=p[0];rhsT=p[1]||'0';}
+  const G=($('given').value.trim()||fns[sel].expr);
+  let Tfn,Gfn;
+  try{Tfn=compile('('+lhs+')-('+rhsT+')');Gfn=compile(G);}
+  catch(e){$('solveRearr').innerHTML='Check the equation or graph you typed.';return;}
+  const Lfn=x=>Gfn(x)-Tfn(x);
+  const lf=lineForm(Lfn);
+  // ensure the graph G is plotted (add if new)
+  if(!fns.some(f=>f.expr===G)){try{fns.push({expr:G,fn:Gfn,color:COLORS[fns.length%COLORS.length]});}catch(e){}}
+  sel=fns.findIndex(f=>f.expr===G);updateSolveFx();renderList();
+  const Lstr=lf?lf.str:'('+G+') − ('+lhs+(rhsT!=='0'?' − ('+rhsT+')':'')+')';
+  solveRhs={fn:Lfn,expr:Lstr};
+  $('rhs').value=Lstr;
+  $('solveRearr').innerHTML='To solve <b>'+raw+'</b> using the graph <b>y = '+G+'</b>:'+
+    '<div class="box">'+G+' = '+Lstr+'</div>'+
+    'So draw the line <b>y = '+Lstr+'</b> on the same axes. The solutions are the x-values where it meets the curve — shown on the graph.';
+  render();
+}
+function renderList(){const l=$('fnList');if(!fns.length){l.innerHTML='<div style="font-size:.85rem;color:var(--g500)">No functions yet — plot one above.</div>';return;}
+  l.innerHTML='';fns.forEach((f,i)=>{const d=document.createElement('div');d.className='fn-item'+(i===sel?' sel':'');
+    d.innerHTML='<span class="fn-dot" style="background:'+f.color+'"></span><span>'+f.expr+'</span><span class="rm" data-i="'+i+'">✕</span>';
+    d.onclick=e=>{if(e.target.classList.contains('rm'))return;sel=i;onSelChange();};
+    d.querySelector('.rm').onclick=e=>{e.stopPropagation();fns.splice(i,1);if(sel>=fns.length)sel=Math.max(0,fns.length-1);onSelChange();};
+    l.appendChild(d);});}
+function probe(){const x=+$('probeX').value;if(!fns.length){$('probeOut').textContent='—';return;}
+  $('probeOut').innerHTML=fns.map(f=>'<span style="color:'+f.color+'">■</span> '+nice(f.fn(x))).join('<br>');}
+function onSelChange(){renderList();if(mode==='teach'){teach.step=0;buildSteps();}if(mode==='solve'){solveRhs=null;updateSolveFx();}render();probe();}
 
-redrawAll();
+/* ---------- actions ---------- */
+function plot(){const e=$('expr').value.trim();if(!e)return;
+  try{const fn=compile(e);$('err').style.display='none';
+    fns.push({expr:e,fn,color:COLORS[fns.length%COLORS.length]});sel=fns.length-1;
+    renderList();if(mode==='teach'){teach.step=0;buildSteps();}if(mode==='solve'){updateSolveFx();}render();probe();
+  }catch(err){$('err').textContent='Check the function — e.g. x^2-3x+2, 2x+1, sin(x), sqrt(x), exp(x).';$('err').style.display='block';}}
+function clearAll(){fns=[];sel=0;renderList();render();probe();}
+
+/* ---------- keypad ---------- */
+function insert(el){const inp=lastInput||$('expr');const foc=document.activeElement===inp;const k=el.dataset.k;
+  let s=foc?(inp.selectionStart??inp.value.length):inp.value.length,en=foc?(inp.selectionEnd??inp.value.length):inp.value.length;const v=inp.value;
+  if(k==='DEL'){if(s!==en){inp.value=v.slice(0,s)+v.slice(en);inp.selectionStart=inp.selectionEnd=s;}else if(s>0){inp.value=v.slice(0,s-1)+v.slice(s);inp.selectionStart=inp.selectionEnd=s-1;}return;}
+  let ins=k,car=null;if(el.dataset.close){ins=k+el.dataset.close;car=s+k.length;}
+  inp.value=v.slice(0,s)+ins+v.slice(en);const pos=car!==null?car:s+ins.length;inp.selectionStart=inp.selectionEnd=pos;}
+
+/* ---------- graph readout ---------- */
+function readout(e){if(mode!=='graph'||!fns.length)return;const B=boundsFor(fns);const r=cv.getBoundingClientRect();const x=B.xmin+(e.clientX-r.left)/r.width*(B.xmax-B.xmin);
+  renderGraph();const {sx,sy}=mapper(B);ctx.strokeStyle='rgba(15,23,42,.3)';ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(sx(x),0);ctx.lineTo(sx(x),H);ctx.stroke();ctx.setLineDash([]);
+  const f=fns[sel],y=f.fn(x);if(Number.isFinite(y)){ctx.fillStyle=f.color;ctx.beginPath();ctx.arc(sx(x),sy(y),5,0,7);ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();}
+  $('probeX').value=+x.toFixed(2);probe();}
+
+/* ---------- mode + method switching ---------- */
+function setMode(m){mode=m;
+  document.querySelectorAll('#modeSeg button').forEach(b=>b.classList.toggle('on',b.dataset.mode===m));
+  const teaching=m==='teach', solving=m==='solve';
+  $('teachControls').classList.toggle('on',teaching);
+  $('teachPanel').classList.toggle('on',teaching);
+  $('solvePanel').classList.toggle('on',solving);
+  $('probeBox').style.display=(teaching||solving)?'none':'block';
+  if(teaching){teach.step=0;buildSteps();}
+  if(solving){updateSolveFx();}
+  render();}
+function setMethod(mth){teach.method=mth;teach.step=0;
+  document.querySelectorAll('#methodSeg button').forEach(b=>b.classList.toggle('on',+b.dataset.method===mth));
+  buildSteps();render();}
+
+/* ---------- wire ---------- */
+$('expr').addEventListener('focus',()=>lastInput=$('expr'));
+$('expr').addEventListener('keydown',e=>{if(e.key==='Enter')plot();});
+$('plotBtn').onclick=plot; $('clearBtn').onclick=clearAll;
+$('applyRange').onclick=()=>{if(mode==='teach'){teach.step=0;buildSteps();}render();};
+$('examples').onchange=e=>{if(e.target.value){$('expr').value=e.target.value;e.target.value='';plot();}};
+$('probeX').addEventListener('input',probe);
+document.querySelectorAll('.key').forEach(k=>{k.addEventListener('mousedown',e=>e.preventDefault());k.addEventListener('click',()=>insert(k));});
+document.querySelectorAll('#modeSeg button').forEach(b=>b.onclick=()=>setMode(b.dataset.mode));
+document.querySelectorAll('#methodSeg button').forEach(b=>b.onclick=()=>setMethod(+b.dataset.method));
+$('nextBtn').onclick=()=>{if(teach.step<teach.steps.length-1){teach.step++;render();}};
+$('backBtn').onclick=()=>{if(teach.step>0){teach.step--;render();}};
+$('restartBtn').onclick=()=>{teach.step=0;render();};
+$('solveBtn').onclick=doSolve;
+$('rhs').addEventListener('keydown',e=>{if(e.key==='Enter')doSolve();});
+$('rearrBtn').onclick=rearrange;
+cv.addEventListener('pointermove',readout);
+cv.addEventListener('pointerleave',()=>{if(mode==='graph')render();});
+window.addEventListener('resize',resize);
+resize();plot();
 </script>
 </body>
 </html>
