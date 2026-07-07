@@ -39,6 +39,15 @@ select:focus,input:focus{border-color:var(--gold);background:#fff;}
 canvas{display:block;width:100%;background:#fff;border:1px solid var(--g200);border-radius:14px;touch-action:none;}
 .hint{font-size:.76rem;color:var(--g500);margin-top:.5rem;}
 .vp-row{display:grid;grid-template-columns:1fr 300px;gap:1.1rem;align-items:start;}
+.lay2{display:grid;grid-template-columns:1fr 340px;gap:1.1rem;align-items:start;}
+.tcard{border:1px solid var(--g200);border-radius:12px;padding:.7rem .8rem;margin-bottom:.7rem;}
+.tcard .h{font-size:.76rem;font-weight:800;text-transform:uppercase;letter-spacing:.03em;color:var(--gold);margin-bottom:.45rem;}
+.rowf{display:flex;gap:.35rem;align-items:center;flex-wrap:wrap;font-size:.82rem;color:var(--g600);}
+.working{background:linear-gradient(135deg,#FEFCE8,#F8FAFC);border:1px solid #FDE68A;border-left:4px solid var(--gold);border-radius:12px;padding:1rem 1.1rem;font-size:.9rem;line-height:1.7;color:var(--g700);}
+.working .l{font-size:.72rem;font-weight:800;text-transform:uppercase;color:var(--gold);}
+.working .step{font-family:var(--mono);margin-top:.35rem;}
+.working .final{font-family:var(--mono);font-weight:800;color:var(--green);font-size:1.1rem;margin-top:.5rem;}
+.working .der{font-family:var(--mono);font-size:.82rem;color:var(--g500);margin-top:.4rem;padding-left:.6rem;border-left:2px solid var(--g200);}
 .caption{background:linear-gradient(135deg,#FEFCE8,#F8FAFC);border:1px solid #FDE68A;border-left:4px solid var(--gold);border-radius:12px;padding:1rem 1.1rem;min-height:100px;}
 .caption .sn{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--gold);}
 .caption h4{font-size:1.02rem;margin:.15rem 0 .4rem;} .caption p{font-size:.92rem;line-height:1.55;color:var(--g700);}
@@ -74,6 +83,8 @@ footer{background:var(--navy);color:rgba(255,255,255,.6);text-align:center;paddi
     <div class="seg" id="modeSeg">
       <button class="on" data-mode="paths">🧭 Vector paths</button>
       <button data-mode="col">➕ Column vectors</button>
+      <button data-mode="ratio">📐 Ratio &amp; position</button>
+      <button data-mode="solve">🟰 Solve ma+nb=c</button>
     </div>
 
     <!-- VECTOR PATHS -->
@@ -130,6 +141,41 @@ footer{background:var(--navy);color:rgba(255,255,255,.6);text-align:center;paddi
         </div>
       </div>
       <p class="hint">Edit a and b, or drag their arrow tips on the grid. A column vector <b>(x, y)</b> means x across and y up. |a| = √(x²+y²).</p>
+    </div>
+
+    <!-- RATIO & POSITION VECTORS -->
+    <div id="ratioPanel" style="display:none">
+      <div class="row">
+        <span class="lbl">Example:</span>
+        <button class="ex" id="rex1">Triangle OPT — find PL, KL</button>
+        <button class="ex" id="rex2">Triangle OCD — find OM</button>
+      </div>
+      <div class="lay2">
+        <div><canvas id="tri" width="600" height="440"></canvas></div>
+        <div>
+          <div class="tcard"><div class="h">Points (in terms of the base vectors)</div><div id="ptList" style="font-family:var(--mono);font-size:.84rem;line-height:1.8;color:var(--g700)"></div></div>
+          <div class="tcard"><div class="h">Add a point on a side</div>
+            <div class="rowf"><input id="pName" placeholder="P" style="width:44px;font-family:var(--mono)"> on <select id="pX"></select> → <select id="pY"></select> ratio <input id="pR" type="number" value="2" style="width:38px">:<input id="pS" type="number" value="1" style="width:38px"><button class="btn btn-primary btn-sm" id="addPt" style="width:auto">Add</button></div>
+          </div>
+          <div class="tcard"><div class="h">Find a vector</div>
+            <div class="rowf">from <select id="qFrom"></select> to <select id="qTo"></select><button class="btn btn-primary btn-sm" id="findBtn" style="width:auto">Find</button></div>
+          </div>
+          <div id="ratioOut"></div>
+        </div>
+      </div>
+      <p class="hint">Set up a triangle with base vectors from O, add points that divide the sides in given ratios, then find the vector between any two points — with the working shown.</p>
+    </div>
+
+    <!-- SOLVE ma + nb = c -->
+    <div id="solvePanel" style="display:none">
+      <div class="challenge" style="background:var(--g50);border:1px solid var(--g200);border-radius:12px;padding:.8rem 1rem;margin-bottom:1rem;font-size:.9rem;color:var(--g700)">Find <b>m</b> and <b>n</b> so that <b>m·a + n·b = c</b>. The tool writes the two simultaneous equations and solves them step by step.</div>
+      <div class="row">
+        <span class="lbl">a = (</span><input id="sax" type="number" value="-3" style="width:56px"><span class="lbl">,</span><input id="say" type="number" value="2" style="width:56px"><span class="lbl">)</span>
+        <span class="lbl" style="margin-left:.5rem">b = (</span><input id="sbx" type="number" value="5" style="width:56px"><span class="lbl">,</span><input id="sby" type="number" value="4" style="width:56px"><span class="lbl">)</span>
+        <span class="lbl" style="margin-left:.5rem">c = (</span><input id="scx" type="number" value="14" style="width:56px"><span class="lbl">,</span><input id="scy" type="number" value="9" style="width:56px"><span class="lbl">)</span>
+        <button class="btn btn-primary btn-sm" id="solveEqBtn" style="width:auto">Solve</button>
+      </div>
+      <div id="solveOut" style="margin-top:1rem"></div>
     </div>
   </section>
 </main>
@@ -237,15 +283,85 @@ window.addEventListener('mouseup',()=>dragT=null);
 ['showApB','showAmB','showK'].forEach(id=>$(id).addEventListener('change',drawPlane));
 $('kval').addEventListener('input',()=>{$('kTxt').textContent=$('kval').value;drawPlane();});
 
-/* ============ wiring ============ */
+/* ============ RATIO & POSITION (fractions) ============ */
+const gcd=(a,b)=>{a=Math.abs(a);b=Math.abs(b);while(b){[a,b]=[b,a%b];}return a||1;};
+const F=(n,d=1)=>{if(d<0){n=-n;d=-d;}const g=gcd(n,d)||1;return [n/g,d/g];};
+const Fadd=(a,b)=>F(a[0]*b[1]+b[0]*a[1],a[1]*b[1]);
+const Fsub=(a,b)=>F(a[0]*b[1]-b[0]*a[1],a[1]*b[1]);
+const Fmul=(a,b)=>F(a[0]*b[0],a[1]*b[1]);
+const Fstr=a=>a[1]===1?''+a[0]:a[0]+'/'+a[1];
+const Fval=a=>a[0]/a[1];
+function termF(f,name){if(f[0]===0)return null;const neg=f[0]<0,mag=[Math.abs(f[0]),f[1]];const coef=(mag[0]===1&&mag[1]===1)?'':Fstr(mag);return {neg,str:coef+name};}
+function fmtVec(u,v){const t=[termF(u,RT.n1),termF(v,RT.n2)].filter(Boolean);if(!t.length)return '0';return t.map((x,i)=>(i===0?(x.neg?'−':''):(x.neg?' − ':' + '))+x.str).join('');}
+let RT={n1:'t',n2:'p',Os:{x:120,y:380},V1s:{x:250,y:110},V2s:{x:520,y:380},pts:{},order:[]};
+const tc=$('tri'),tx=tc.getContext('2d'),TW=tc.width,TH=tc.height;
+function ptScreen(p){const ux=RT.V1s.x-RT.Os.x,uy=RT.V1s.y-RT.Os.y,vx=RT.V2s.x-RT.Os.x,vy=RT.V2s.y-RT.Os.y;const fu=Fval(p.u),fv=Fval(p.v);return {x:RT.Os.x+fu*ux+fv*vx,y:RT.Os.y+fu*uy+fv*vy};}
+function triArrow(A,B,col,w){const ang=Math.atan2(B.y-A.y,B.x-A.x),hl=11;tx.strokeStyle=col;tx.fillStyle=col;tx.lineWidth=w||3;tx.beginPath();tx.moveTo(A.x,A.y);tx.lineTo(B.x,B.y);tx.stroke();tx.beginPath();tx.moveTo(B.x,B.y);tx.lineTo(B.x-hl*Math.cos(ang-0.4),B.y-hl*Math.sin(ang-0.4));tx.lineTo(B.x-hl*Math.cos(ang+0.4),B.y-hl*Math.sin(ang+0.4));tx.closePath();tx.fill();}
+function drawTri(hi){tx.clearRect(0,0,TW,TH);
+  const O=RT.Os,V1=RT.V1s,V2=RT.V2s;
+  tx.strokeStyle='#CBD5E1';tx.lineWidth=1.6;tx.beginPath();tx.moveTo(O.x,O.y);tx.lineTo(V1.x,V1.y);tx.lineTo(V2.x,V2.y);tx.closePath();tx.stroke();
+  // base vectors from O
+  triArrow(O,V1,'#059669',2.4);triArrow(O,V2,'#059669',2.4);
+  tx.fillStyle='#059669';tx.font='800 14px Inter';tx.textAlign='center';
+  tx.fillText(RT.n1,(O.x+V1.x)/2-12,(O.y+V1.y)/2);tx.fillText(RT.n2,(O.x+V2.x)/2+14,(O.y+V2.y)/2);
+  // highlight queried vector
+  if(hi){const A=ptScreen(RT.pts[hi[0]]),B=ptScreen(RT.pts[hi[1]]);triArrow(A,B,'#1B4F8A',3.5);}
+  // points
+  RT.order.forEach(nm=>{const p=RT.pts[nm],s=ptScreen(p);tx.beginPath();tx.arc(s.x,s.y,5,0,7);tx.fillStyle=(hi&&(nm===hi[0]||nm===hi[1]))?'#1B4F8A':'#334155';tx.fill();tx.strokeStyle='#fff';tx.lineWidth=2;tx.stroke();tx.fillStyle='#0F172A';tx.font='800 14px Inter';tx.textAlign='center';tx.fillText(nm,s.x,s.y-11);});}
+function refreshPtUI(){$('ptList').innerHTML=RT.order.map(nm=>{const p=RT.pts[nm];return '<b>O'+nm+'</b> = '+(nm==='O'?'0':fmtVec(p.u,p.v));}).join('<br>');
+  ['pX','pY','qFrom','qTo'].forEach(id=>{const s=$(id);const keep=s.value;s.innerHTML='';RT.order.forEach(nm=>{const o=document.createElement('option');o.value=nm;o.textContent=nm;s.appendChild(o);});if([...s.options].some(o=>o.value===keep))s.value=keep;});}
+function setupTri(cfg){RT.n1=cfg.n1;RT.n2=cfg.n2;RT.Os=cfg.Os;RT.V1s=cfg.V1s;RT.V2s=cfg.V2s;RT.pts={};RT.order=[];
+  const add=(nm,u,v)=>{RT.pts[nm]={u,v};RT.order.push(nm);};
+  add('O',F(0),F(0));add(cfg.v1,F(1),F(0));add(cfg.v2,F(0),F(1));
+  (cfg.ratios||[]).forEach(r=>addRatio(r.name,r.X,r.Y,r.r,r.s,true));
+  $('ratioOut').innerHTML='';refreshPtUI();drawTri(null);
+  if(cfg.qFrom){$('qFrom').value=cfg.qFrom;$('qTo').value=cfg.qTo;doFind();}}
+function addRatio(name,Xn,Yn,r,s,quiet){const X=RT.pts[Xn],Y=RT.pts[Yn];if(!X||!Y)return;const fr=F(r,r+s);
+  const u=Fadd(X.u,Fmul(fr,Fsub(Y.u,X.u))),v=Fadd(X.v,Fmul(fr,Fsub(Y.v,X.v)));
+  RT.pts[name]={u,v,der:'O'+name+' = O'+Xn+' + '+Fstr(fr)+'·'+Xn+Yn+' = O'+Xn+' + '+Fstr(fr)+'(O'+Yn+' − O'+Xn+') = '+fmtVec(u,v)};
+  if(!RT.order.includes(name))RT.order.push(name);if(!quiet){refreshPtUI();drawTri(null);}}
+function doFind(){const fn=$('qFrom').value,tn=$('qTo').value;const X=RT.pts[fn],Y=RT.pts[tn];if(!X||!Y)return;
+  const au=Fsub(Y.u,X.u),av=Fsub(Y.v,X.v);
+  let ders='';[fn,tn].forEach(nm=>{if(RT.pts[nm].der)ders+='<div class="der">'+RT.pts[nm].der+'</div>';});
+  $('ratioOut').innerHTML='<div class="working"><div class="l">Working</div>'+ders+
+    '<div class="step">'+fn+tn+' = O'+tn+' − O'+fn+'</div>'+
+    '<div class="step">= ('+fmtVec(Y.u,Y.v)+') − ('+fmtVec(X.u,X.v)+')</div>'+
+    '<div class="final">'+fn+tn+' = '+fmtVec(au,av)+'</div></div>';
+  drawTri([fn,tn]);}
+const EX1={n1:'t',n2:'p',v1:'T',v2:'P',Os:{x:120,y:390},V1s:{x:250,y:110},V2s:{x:520,y:390},ratios:[{name:'K',X:'O',Y:'T',r:2,s:1},{name:'L',X:'T',Y:'P',r:2,s:1}],qFrom:'P',qTo:'L'};
+const EX2={n1:'c',n2:'d',v1:'C',v2:'D',Os:{x:120,y:390},V1s:{x:520,y:370},V2s:{x:300,y:110},ratios:[{name:'T',X:'O',Y:'D',r:2,s:1},{name:'M',X:'T',Y:'C',r:1,s:1}],qFrom:'O',qTo:'M'};
+
+/* ============ SOLVE ma + nb = c ============ */
+function eqTerm(coef,vn,first){if(coef===0)return first?'0':'';const sign=coef<0?(first?'−':' − '):(first?'':' + ');const mag=Math.abs(coef);return sign+(mag===1?'':mag)+vn;}
+function solveEq(){const ax=+$('sax').value,ay=+$('say').value,bx=+$('sbx').value,by=+$('sby').value,cx=+$('scx').value,cy=+$('scy').value;
+  const det=ax*by-bx*ay;
+  const eq1=eqTerm(ax,'m',true)+eqTerm(bx,'n',false)+' = '+cx;
+  const eq2=eqTerm(ay,'m',true)+eqTerm(by,'n',false)+' = '+cy;
+  let html='<div class="working"><div class="l">Working</div>'+
+    '<div class="step">Compare components of m·a + n·b = c:</div>'+
+    '<div class="step">x:&nbsp; '+eq1+'&nbsp;&nbsp;(i)</div>'+
+    '<div class="step">y:&nbsp; '+eq2+'&nbsp;&nbsp;(ii)</div>';
+  if(det===0){html+='<div class="step" style="color:#8B1A1A">a and b are parallel — no unique solution.</div></div>';$('solveOut').innerHTML=html;return;}
+  const m=F(cx*by-bx*cy,det),n=F(ax*cy-cx*ay,det);
+  html+='<div class="step">Solving (i) and (ii) simultaneously:</div>'+
+    '<div class="final">m = '+Fstr(m)+' &nbsp;&nbsp; n = '+Fstr(n)+'</div></div>';
+  $('solveOut').innerHTML=html;}
+
+
 function setMode(m){cancel();mode=m;document.querySelectorAll('#modeSeg button').forEach(b=>b.classList.toggle('on',b.dataset.mode===m));
   $('pathsPanel').style.display=m==='paths'?'block':'none';$('colPanel').style.display=m==='col'?'block':'none';
-  if(m==='paths')drawGrid();else drawPlane();}
+  $('ratioPanel').style.display=m==='ratio'?'block':'none';$('solvePanel').style.display=m==='solve'?'block':'none';
+  if(m==='paths')drawGrid();else if(m==='col')drawPlane();else if(m==='ratio'){if(!RT.order.length)setupTri(EX1);else drawTri(null);}else if(m==='solve'){if(!$('solveOut').innerHTML)solveEq();}}
+$('rex1').onclick=()=>setupTri(EX1);
+$('rex2').onclick=()=>setupTri(EX2);
+$('addPt').onclick=()=>{const nm=$('pName').value.trim().toUpperCase()||'P';addRatio(nm,$('pX').value,$('pY').value,+$('pR').value,+$('pS').value);};
+$('findBtn').onclick=doFind;
+$('solveEqBtn').onclick=solveEq;
 document.querySelectorAll('#modeSeg button').forEach(b=>b.onclick=()=>setMode(b.dataset.mode));
 $('showBtn').onclick=()=>{startP=$('startSel').value;endP=$('endSel').value;cancel();buildPath();};
 $('startSel').onchange=()=>{startP=$('startSel').value;cancel();buildPath();};
 $('endSel').onchange=()=>{endP=$('endSel').value;cancel();buildPath();};
-document.querySelectorAll('.ex').forEach(b=>b.onclick=()=>{startP=b.dataset.s;endP=b.dataset.e;$('startSel').value=startP;$('endSel').value=endP;cancel();buildPath();});
+document.querySelectorAll('.ex[data-s]').forEach(b=>b.onclick=()=>{startP=b.dataset.s;endP=b.dataset.e;$('startSel').value=startP;$('endSel').value=endP;cancel();buildPath();});
 $('nextBtn').onclick=()=>{cancel();if(PS&&step<2)animStep(step+1);};
 $('backBtn').onclick=()=>{cancel();if(step>-1){step--;if(step<0){buildPath();}else{drawUpTo(PS.steps[step].kind,1);$('caption').innerHTML='<div class="sn">'+PS.steps[step].sn+'</div><h4>'+PS.steps[step].h+'</h4><p>'+PS.steps[step].p+'</p>';$('answer').style.display=step===2?'block':'none';}$('stepCount').textContent=step<0?'':'Step '+(step+1)+' of 3';updateBtns();}};
 $('playBtn').onclick=()=>{if(startP&&endP)play();};
