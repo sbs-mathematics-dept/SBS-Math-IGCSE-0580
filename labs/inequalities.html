@@ -229,15 +229,18 @@ function drawPoint(x,y,prog){const px=sx(x),py=sy(y);
   ctx.fillStyle='#0F172A';ctx.font='700 12px Inter,sans-serif';ctx.textAlign='left';ctx.textBaseline='bottom';ctx.fillText('('+x+', '+y+')',px+9,py-8);}
 function testPoint(q){for(const c of [[0,0],[1,0],[0,1],[1,1],[2,4],[-1,0]]){if(Math.abs(q.a*c[0]+q.b*c[1]+q.c)>1e-6)return c;}return [0,0];}
 
+let testPt=null;
+function plotMarker(x,y,inAll){ctx.fillStyle=inAll?'#059669':'#8B1A1A';ctx.beginPath();ctx.arc(sx(x),sy(y),6,0,7);ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();ctx.fillStyle='#0F172A';ctx.font='700 12px Inter,sans-serif';ctx.textAlign='left';ctx.textBaseline='bottom';ctx.fillText('('+x+', '+y+')',sx(x)+9,sy(y)-7);}
+function drawTestOverlay(){if(mode==='draw'&&testPt&&ineqs.length){plotMarker(testPt.x,testPt.y,ineqs.every(q=>holds(q,testPt.x,testPt.y)));}}
 function fullRender(){drawAxes();if(!ineqs.length)return;const w=$('shadeWanted').checked;
   ineqs.forEach(q=>shadeHalf(q,w));ineqs.forEach(q=>drawBoundary(q));
   const c=regionLabel(ineqs);if(c)drawR(c,1);
-  if(mode==='point'){const x=+$('px').value,y=+$('py').value,inAll=ineqs.every(q=>holds(q,x,y));
-    ctx.fillStyle=inAll?'#059669':'#8B1A1A';ctx.beginPath();ctx.arc(sx(x),sy(y),6,0,7);ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
-    ctx.fillStyle='#0F172A';ctx.font='700 12px Inter,sans-serif';ctx.textAlign='left';ctx.textBaseline='bottom';ctx.fillText('('+x+', '+y+')',sx(x)+9,sy(y)-7);}}
+  if(mode==='point'){const x=+$('px').value,y=+$('py').value;plotMarker(x,y,ineqs.every(q=>holds(q,x,y)));}
+  drawTestOverlay();}
 function baseStatic(count){const w=$('shadeWanted').checked;drawAxes();for(let j=0;j<count;j++)shadeHalf(ineqs[j],w);for(let j=0;j<count;j++)drawBoundary(ineqs[j]);}
 function renderStaticStep(s){const w=$('shadeWanted').checked;const upto=Math.max(0,Math.min(s+1,ineqs.length));baseStatic(upto);
-  if(s>=ineqs.length){const c=regionLabel(ineqs);if(c)drawR(c,1);}}
+  if(s>=ineqs.length){const c=regionLabel(ineqs);if(c)drawR(c,1);}
+  drawTestOverlay();}
 function draw(){ if(mode==='draw'&&stepOn) renderStaticStep(step); else fullRender(); }
 
 /* ---------- animation ---------- */
@@ -279,7 +282,7 @@ function enterStep(){cancelAnim();step=-1;$('caption').classList.add('on');$('st
 function drawRegion(){cancelAnim();try{ineqs=readRows();$('err').style.display='none';}catch(e){$('err').textContent=e.message;$('err').style.display='block';return;}
   renderRows();if(mode==='draw'&&stepOn){enterStep();}else{$('caption').classList.remove('on');$('stepbar').style.display='none';refresh();}}
 function setMode(m){cancelAnim();mode=m;document.querySelectorAll('#modeSeg button').forEach(b=>b.classList.toggle('on',b.dataset.mode===m));
-  $('ptBox').style.display=m==='point'?'block':'none';
+  $('ptBox').style.display='block';$('ttWrap').innerHTML='';$('verdict').innerHTML='';testPt=null;
   $('stepToggle').style.display=m==='draw'?'flex':'none';
   if(m==='point'){stepOn=false;$('stepMode').checked=false;$('stepbar').style.display='none';$('caption').classList.remove('on');refresh();}
   else if(stepOn){enterStep();}else{$('caption').classList.remove('on');$('stepbar').style.display='none';refresh();}}
@@ -319,7 +322,13 @@ $('nextBtn').onclick=()=>{cancelAnim();if(step<ineqs.length){ if(step+1<ineqs.le
 $('backBtn').onclick=()=>{cancelAnim();if(step>-1){step--;renderStaticStep(step);stepCaption(step);updateStepButtons();}};
 $('playBtn').onclick=()=>{if(ineqs.length)playAll();};
 $('restartBtn').onclick=()=>{enterStep();};
-$('testBtn').onclick=refresh;$('px').addEventListener('input',refresh);$('py').addEventListener('input',refresh);
+function testAction(){const x=+$('px').value,y=+$('py').value;
+  if(mode==='point'){renderPointTable();draw();return;}
+  if(!ineqs.length){$('verdict').innerHTML='<div class="hint" style="margin:0">Draw a region first.</div>';return;}
+  testPt={x,y};const inAll=ineqs.every(q=>holds(q,x,y));
+  $('ttWrap').innerHTML='';$('verdict').innerHTML='<div class="verdict '+(inAll?'in':'out')+'">('+x+', '+y+') is '+(inAll?'inside region R':'outside R')+'</div>';
+  draw();}
+$('testBtn').onclick=testAction;$('px').addEventListener('input',testAction);$('py').addEventListener('input',testAction);
 document.querySelectorAll('.ex').forEach(b=>b.onclick=()=>{setRows(b.dataset.set.split('|').map(s=>s.trim()));drawRegion();});
 window.addEventListener('resize',resize);
 setRows(['y>x','y<=-x+7','x>=1']);
