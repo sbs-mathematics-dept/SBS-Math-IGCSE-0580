@@ -3,380 +3,222 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>3D Geometry Explorer | SBS Mathematics</title>
-<link rel="stylesheet" href="../assets/css/main.css">
+<title>3D Geometry | SBS Mathematics</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
-.geo-layout{display:grid;grid-template-columns:300px 1fr;gap:16px;align-items:start;}
-.shape-tabs{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:1.5rem;}
-.shape-tab{padding:8px 14px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--gray-200);border-radius:8px;background:white;color:var(--gray-600);transition:all 0.15s;}
-.shape-tab.active{background:var(--sbs-blue);color:white;border-color:var(--sbs-blue);}
-.result-big{font-size:2rem;font-weight:700;color:var(--sbs-blue);font-family:var(--font-mono);}
-.formula-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:1rem;}
-.dim-input{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
-.dim-input label{font-size:13px;color:var(--gray-700);width:120px;flex-shrink:0;}
-.dim-input input{width:100px;}
-.dim-input span{font-size:12px;color:var(--gray-400);}
-canvas{display:block;border:1px solid var(--gray-200);border-radius:8px;background:#FAFBFD;}
-.net-canvas{display:block;border:1px solid var(--gray-200);border-radius:8px;background:white;margin-top:12px;}
-@media(max-width:700px){.geo-layout{grid-template-columns:1fr;}.formula-grid{grid-template-columns:1fr;}}
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--navy:#071a44;--blue:#1B4F8A;--gold:#B8860B;--crimson:#8B1A1A;--teal:#0F766E;--green:#059669;--cream:#FAF8F4;--white:#fff;
+--g50:#F8FAFC;--g100:#F1F5F9;--g200:#E2E8F0;--g400:#94A3B8;--g500:#64748B;--g600:#475569;--g700:#334155;
+--mono:'JetBrains Mono',ui-monospace,monospace;--shadow:0 4px 16px rgba(7,26,68,.08);}
+body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--navy);}
+a{text-decoration:none;color:inherit;}
+nav{background:var(--white);border-bottom:1px solid var(--g200);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:66px;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,.06);}
+.nav-logo{display:flex;align-items:center;} .nav-logo img{width:auto;display:block;}
+.nav-logo .logo-full{height:50px;} .nav-logo .logo-mark{height:38px;display:none;}
+.nav-links{display:flex;gap:1.8rem;list-style:none;align-items:center;}
+.nav-links a{color:var(--g700);font-size:14px;font-weight:500;} .nav-links a.active,.nav-links a:hover{color:var(--blue);}
+.shell{max-width:1080px;margin:0 auto;padding:1.6rem 1.5rem 3rem;}
+.hero{background:linear-gradient(135deg,var(--blue),var(--navy));color:#fff;border-radius:20px;padding:1.5rem 1.8rem;margin-bottom:1.2rem;box-shadow:0 14px 40px rgba(7,26,68,.20);}
+.chip{display:inline-flex;gap:.4rem;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);padding:.35rem .8rem;border-radius:999px;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;}
+.hero h1{font-size:clamp(1.7rem,4vw,2.6rem);font-weight:900;margin:.5rem 0 .35rem;}
+.hero p{opacity:.94;max-width:680px;font-size:.96rem;line-height:1.5;}
+.panel{background:var(--white);border:1px solid var(--g200);border-radius:16px;padding:1.1rem;box-shadow:var(--shadow);}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1rem;}
+.tab{padding:.5rem .95rem;font-size:.82rem;font-weight:700;border:1px solid var(--g200);border-radius:9px;cursor:pointer;background:#fff;color:var(--g600);}
+.tab.on{background:var(--blue);color:#fff;border-color:var(--blue);}
+.tab:hover:not(.on){background:#EAF1FB;border-color:#BFD4EE;color:var(--blue);}
+.row{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin-bottom:.8rem;}
+.lbl{font-size:.85rem;font-weight:700;color:var(--g600);}
+select,input[type=number]{padding:.5rem .6rem;border:2px solid var(--g200);border-radius:9px;font-size:.9rem;font-family:var(--mono);background:var(--g50);outline:none;}
+select:focus,input:focus{border-color:var(--blue);background:#fff;}
+.fld{display:inline-flex;align-items:center;gap:.3rem;font-size:.85rem;color:var(--g600);} .fld input{width:64px;}
+.btn{font-size:.85rem;font-weight:700;padding:.55rem 1.05rem;border-radius:10px;cursor:pointer;border:none;transition:.15s;}
+.btn-primary{background:var(--blue);color:#fff;} .btn-primary:hover{background:var(--navy);}
+.ex{font-size:.76rem;font-weight:600;padding:.35rem .7rem;border-radius:999px;border:1px solid var(--g200);background:#fff;cursor:pointer;}
+.ex:hover{background:#EAF1FB;border-color:#BFD4EE;color:var(--blue);}
+canvas{display:block;width:100%;background:#fff;border:1px solid var(--g200);border-radius:14px;}
+.two{display:grid;grid-template-columns:1fr 300px;gap:1.1rem;align-items:start;}
+.info{background:linear-gradient(135deg,#EAF1FB,#F8FAFC);border:1px solid #CFE0F5;border-left:4px solid var(--blue);border-radius:12px;padding:1rem 1.1rem;}
+.info .l{font-size:.72rem;font-weight:800;text-transform:uppercase;color:var(--blue);}
+.info .s{font-size:.9rem;line-height:1.6;color:var(--g700);margin-top:.35rem;} .info .s b{color:var(--navy);}
+.info .final{font-family:var(--mono);font-weight:800;color:var(--green);font-size:1.05rem;margin-top:.4rem;}
+table.tbl{border-collapse:collapse;font-size:.86rem;width:100%;margin-top:.5rem;}
+table.tbl th,table.tbl td{border:1px solid var(--g200);padding:.5rem .6rem;text-align:center;}
+table.tbl th{background:var(--g50);font-weight:700;color:var(--g600);}
+table.tbl td:first-child{text-align:left;font-weight:700;color:var(--navy);}
+.hint{font-size:.78rem;color:var(--g500);margin-top:.6rem;line-height:1.5;}
+footer{background:var(--navy);color:rgba(255,255,255,.6);text-align:center;padding:1.4rem;font-size:13px;margin-top:1.2rem;} footer strong{color:rgba(255,255,255,.85);}
+@media(max-width:820px){.two{grid-template-columns:1fr;}.nav-links{display:none;}.nav-logo .logo-full{display:none;}.nav-logo .logo-mark{display:block;}}
 </style>
 </head>
 <body>
-<nav class="nav">
-  <a href="../index.html" class="nav-logo">
-    <img src="../assets/logo.png" alt="SBS">
-    <div><div class="nav-title">SBS Mathematics</div><div class="nav-subtitle">Cambridge IGCSE 0580</div></div>
+<nav>
+  <a href="../index.html" class="nav-logo" aria-label="SBS Mathematics — Home">
+    <img class="logo-full" src="../assets/logo-full.png" alt="SBS International School Chiangmai — Mathematics Department">
+    <img class="logo-mark" src="../assets/logo-mark.png" alt="SBS">
   </a>
   <ul class="nav-links">
-    <li><a href="../index.html">Home</a></li>
-    <li><a href="../labs.html" class="active">Labs</a></li>
+    <li><a href="../index.html">Home</a></li><li><a href="../chapters.html">Chapters</a></li>
+    <li><a class="active" href="../labs.html">Labs</a></li><li><a href="../about.html">About</a></li>
   </ul>
 </nav>
 
-<div class="lab-page">
-  <div class="lab-header">
-    <div class="lab-header-icon">📦</div>
-    <div>
-      <div class="lab-header-title">3D Geometry Explorer</div>
-      <div class="lab-header-sub">Cambridge 0580 · Mensuration — Volume, surface area, and nets of 3D shapes</div>
-    </div>
-    <div style="margin-left:auto;"><span class="cambridge-badge">IGCSE Extended</span></div>
-  </div>
+<main class="shell">
+  <header class="hero">
+    <span class="chip">◆ IGCSE Extended · Topic 4 · Mensuration</span>
+    <h1>3D Geometry</h1>
+    <p>Draw accurate <b>nets</b> to scale on a 1 cm² grid, look up faces / edges / vertices, and calculate <b>volume</b> and <b>surface area</b> with the working shown.</p>
+  </header>
 
-  <div class="lab-container">
-    <div class="shape-tabs">
-      <button class="shape-tab active" onclick="setShape('cuboid')">📦 Cuboid</button>
-      <button class="shape-tab" onclick="setShape('cylinder')">🥫 Cylinder</button>
-      <button class="shape-tab" onclick="setShape('cone')">🍦 Cone</button>
-      <button class="shape-tab" onclick="setShape('sphere')">⚽ Sphere</button>
-      <button class="shape-tab" onclick="setShape('pyramid')">🔺 Square Pyramid</button>
-      <button class="shape-tab" onclick="setShape('prism')">🔷 Triangular Prism</button>
-    </div>
+  <section class="panel">
+    <div class="tabs" id="tabs"></div>
 
-    <div class="geo-layout">
-      <div>
-        <div id="inputs-panel"></div>
-        <div style="margin-top:1rem;">
-          <div style="font-size:11px;font-weight:600;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px">Results</div>
-          <div class="formula-grid">
-            <div class="result-panel" style="text-align:center;">
-              <div style="font-size:11px;color:var(--gray-400);font-weight:600;text-transform:uppercase;margin-bottom:4px">Volume</div>
-              <div class="result-big" id="vol-result">—</div>
-              <div style="font-size:11px;color:var(--gray-400);margin-top:4px">units³</div>
-            </div>
-            <div class="result-panel" style="text-align:center;">
-              <div style="font-size:11px;color:var(--gray-400);font-weight:600;text-transform:uppercase;margin-bottom:4px">Surface area</div>
-              <div class="result-big" id="sa-result">—</div>
-              <div style="font-size:11px;color:var(--gray-400);margin-top:4px">units²</div>
-            </div>
-          </div>
-          <div id="formula-display" class="theorem-box" style="margin-top:12px;font-size:13px;line-height:1.8;"></div>
-          <div id="extra-info" class="result-panel" style="margin-top:8px;font-size:12px;line-height:1.8;"></div>
-        </div>
+    <!-- NET DRAWER -->
+    <div class="tabpane" data-pane="net">
+      <div class="row">
+        <span class="lbl">Solid</span>
+        <select id="netSolid"><option value="cuboid">Cuboid</option><option value="cube">Cube</option><option value="prism">Triangular prism</option><option value="pyramid">Square-based pyramid</option><option value="cylinder">Cylinder</option><option value="cone">Cone</option></select>
+        <span id="netFields"></span>
+        <button class="btn btn-primary" id="netBtn">Draw net</button>
       </div>
-      <div>
-        <canvas id="shape-canvas" width="480" height="380"></canvas>
-        <canvas id="net-canvas" class="net-canvas" width="480" height="200"></canvas>
+      <div class="row"><span class="lbl">Example:</span>
+        <button class="ex" data-net="cuboid" data-dims="6,3,2">Cuboid 6×3×2</button>
+        <button class="ex" data-net="pyramid" data-dims="15,23">Pyramid 15, slant 23</button>
+        <button class="ex" data-net="cone" data-dims="5,13">Cone r5, slant 13</button></div>
+      <div class="two">
+        <div><canvas id="netCanvas" width="600" height="480"></canvas></div>
+        <div id="netInfo"></div>
       </div>
+      <p class="hint">Each grid square = <b>1 cm</b>. The net is drawn to scale — the area of the net equals the total surface area of the solid.</p>
     </div>
-  </div>
-</div>
 
-<footer class="site-footer">
-  <strong>SBS Mathematics</strong> · 3D Geometry Explorer · Cambridge IGCSE 0580
-</footer>
+    <!-- PROPERTIES -->
+    <div class="tabpane" data-pane="prop" style="display:none">
+      <div id="propTable"></div>
+      <p class="hint"><b>Euler's formula</b> for solids with flat faces: Faces + Vertices − Edges = 2. (It does not apply to curved solids like the cylinder, cone or sphere.)</p>
+    </div>
+
+    <!-- VOLUME & SURFACE AREA -->
+    <div class="tabpane" data-pane="calc" style="display:none">
+      <div class="row">
+        <span class="lbl">Solid</span>
+        <select id="calcSolid"><option value="cuboid">Cuboid</option><option value="cube">Cube</option><option value="cylinder">Cylinder</option><option value="prism">Triangular prism</option><option value="pyramid">Square-based pyramid</option><option value="cone">Cone</option><option value="sphere">Sphere</option></select>
+        <span id="calcFields"></span>
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+      </div>
+      <div class="two"><div id="calcVol"></div><div id="calcSA"></div></div>
+    </div>
+  </section>
+</main>
+
+<footer><strong>SBS Mathematics</strong> · 3D Geometry · Cambridge IGCSE 0580</footer>
 
 <script>
+"use strict";
+const $=id=>document.getElementById(id);
+const rnd=(n,d=2)=>{const m=Math.pow(10,d);return Math.round(n*m)/m;};
 const PI=Math.PI;
-let currentShape='cuboid';
-let angle=0;
-let animId=null;
 
-const SHAPES={
-  cuboid:{
-    dims:[{id:'l',label:'Length (l)',default:5},{id:'w',label:'Width (w)',default:3},{id:'h',label:'Height (h)',default:4}],
-    calc(d){const V=d.l*d.w*d.h;const SA=2*(d.l*d.w+d.l*d.h+d.w*d.h);
-      return {V,SA,extra:`Diagonal = ${r2(Math.sqrt(d.l**2+d.w**2+d.h**2))} units\nFace areas: Top/bottom=${d.l*d.w}, Front/back=${d.l*d.h}, Sides=${d.w*d.h}`};},
-    formula:'V = l × w × h\nSA = 2(lw + lh + wh)',
-    draw(ctx,W,H,d){drawCuboid(ctx,W,H,d.l,d.w,d.h);},
-    net(ctx,W,H,d){drawCuboidNet(ctx,W,H,d.l,d.w,d.h);}
-  },
-  cylinder:{
-    dims:[{id:'r',label:'Radius (r)',default:3},{id:'h',label:'Height (h)',default:7}],
-    calc(d){const V=PI*d.r**2*d.h;const SA=2*PI*d.r*(d.r+d.h);
-      return {V,SA,extra:`Base area = π×${d.r}² = ${r2(PI*d.r**2)}\nLateral area = 2π×${d.r}×${d.h} = ${r2(2*PI*d.r*d.h)}`};},
-    formula:'V = πr²h\nSA = 2πr(r + h)',
-    draw(ctx,W,H,d){drawCylinder(ctx,W,H,d.r,d.h);},
-    net(ctx,W,H,d){drawCylinderNet(ctx,W,H,d.r,d.h);}
-  },
-  cone:{
-    dims:[{id:'r',label:'Radius (r)',default:3},{id:'h',label:'Height (h)',default:6}],
-    calc(d){const l=Math.sqrt(d.r**2+d.h**2);const V=PI*d.r**2*d.h/3;const SA=PI*d.r*(d.r+l);
-      return {V,SA,extra:`Slant height l = √(r²+h²) = ${r2(l)}\nBase area = ${r2(PI*d.r**2)}\nLateral area = π×r×l = ${r2(PI*d.r*l)}`};},
-    formula:'V = ⅓πr²h\nSA = πr(r + l), where l = √(r²+h²)',
-    draw(ctx,W,H,d){drawCone(ctx,W,H,d.r,d.h);},
-    net(ctx,W,H,d){drawConeNet(ctx,W,H,d.r,d.h);}
-  },
-  sphere:{
-    dims:[{id:'r',label:'Radius (r)',default:4}],
-    calc(d){const V=4/3*PI*d.r**3;const SA=4*PI*d.r**2;
-      return {V,SA,extra:`Diameter = ${2*d.r}\nV = 4/3 × π × ${d.r}³\nSA = 4 × π × ${d.r}²`};},
-    formula:'V = 4/3 πr³\nSA = 4πr²',
-    draw(ctx,W,H,d){drawSphere(ctx,W,H,d.r);},
-    net(ctx,W,H,d){drawSphereInfo(ctx,W,H);}
-  },
-  pyramid:{
-    dims:[{id:'b',label:'Base side (b)',default:4},{id:'h',label:'Height (h)',default:6}],
-    calc(d){const V=d.b**2*d.h/3;const sl=Math.sqrt((d.b/2)**2+d.h**2);const SA=d.b**2+2*d.b*sl;
-      return {V,SA,extra:`Slant height = ${r2(sl)}\nBase area = ${d.b}² = ${d.b**2}\nLateral face area = ½×${d.b}×${r2(sl)} (×4 faces)`};},
-    formula:'V = ⅓ × b² × h\nSA = b² + 2b×l, where l = slant height',
-    draw(ctx,W,H,d){drawPyramid(ctx,W,H,d.b,d.h);},
-    net(ctx,W,H,d){drawPyramidNet(ctx,W,H,d.b,d.h);}
-  },
-  prism:{
-    dims:[{id:'a',label:'Triangle base (a)',default:4},{id:'htri',label:'Triangle height',default:3},{id:'l',label:'Prism length (l)',default:8}],
-    calc(d){const triA=0.5*d.a*d.htri;const hyp=Math.sqrt(d.a**2+d.htri**2);const V=triA*d.l;
-      const SA=2*triA+(d.a+d.htri+hyp)*d.l;
-      return {V,SA,extra:`Triangle area = ½×${d.a}×${d.htri} = ${triA}\nHypotenuse = ${r2(hyp)}\nLateral SA = perimeter × length = ${r2((d.a+d.htri+hyp)*d.l)}`};},
-    formula:'V = ½ × base × height × length\nSA = 2×(triangle area) + perimeter×length',
-    draw(ctx,W,H,d){drawTriPrism(ctx,W,H,d.a,d.htri,d.l);},
-    net(ctx,W,H,d){}
-  }
+/* ============ NET DRAWER ============ */
+const netCv=$('netCanvas'),nx=netCv.getContext('2d');
+const NET_FIELDS={
+  cuboid:[['l','length',6],['w','width',3],['h','height',2]],
+  cube:[['s','side',4]],
+  prism:[['b','tri base',6],['ht','tri height',4],['L','length',10]],
+  pyramid:[['a','base',15],['slant','slant height',23]],
+  cylinder:[['r','radius',5],['h','height',10]],
+  cone:[['r','radius',5],['slant','slant height',13]],
 };
+function renderNetFields(){const s=$('netSolid').value;$('netFields').innerHTML=NET_FIELDS[s].map(f=>'<span class="fld">'+f[1]+' <input type="number" id="nf_'+f[0]+'" value="'+f[2]+'" step="0.5"></span>').join(' ');}
+function nfv(k){return +($('nf_'+k)||{value:0}).value;}
+function buildNet(){const s=$('netSolid').value;let shapes=[],W,H,sa,saWork;
+  const R=(x,y,w,h,lab)=>({t:'r',x,y,w,h,lab}),T=(pts,lab)=>({t:'t',pts,lab}),C=(cx,cy,r,lab)=>({t:'c',cx,cy,r,lab});
+  if(s==='cuboid'||s==='cube'){let l,w,h;if(s==='cube'){l=w=h=nfv('s');}else{l=nfv('l');w=nfv('w');h=nfv('h');}
+    shapes=[R(w,0,l,w,l+'×'+w),R(w,w,l,h,l+'×'+h),R(w,w+h,l,w,l+'×'+w),R(w,2*w+h,l,h,l+'×'+h),R(0,w,w,h,w+'×'+h),R(w+l,w,w,h,w+'×'+h)];
+    W=l+2*w;H=2*w+2*h;sa=2*(l*w+l*h+w*h);saWork='2(lw + lh + wh) = 2('+(l*w)+' + '+(l*h)+' + '+(w*h)+') = <b>'+sa+' cm²</b>';}
+  else if(s==='prism'){const b=nfv('b'),ht=nfv('ht'),L=nfv('L'),sl=Math.sqrt((b/2)**2+ht**2);
+    shapes=[R(sl,ht,b,L,b+'×'+L),R(0,ht,sl,L,rnd(sl)+'×'+L),R(sl+b,ht,sl,L,rnd(sl)+'×'+L),
+      T([[sl,ht],[sl+b,ht],[sl+b/2,0]],'△'),T([[sl,ht+L],[sl+b,ht+L],[sl+b/2,2*ht+L]],'△')];
+    W=2*sl+b;H=2*ht+L;sa=b*ht+(b+2*sl)*L;saWork='2 triangles + 3 rectangles = ('+b*ht+') + ('+rnd((b+2*sl)*L)+') = <b>'+rnd(sa)+' cm²</b>';}
+  else if(s==='pyramid'){const a=nfv('a'),sl=nfv('slant');
+    shapes=[R(sl,sl,a,a,a+'×'+a),T([[sl,sl],[sl+a,sl],[sl+a/2,0]],'slant '+sl),T([[sl,sl+a],[sl+a,sl+a],[sl+a/2,2*sl+a]],''),T([[sl,sl],[sl,sl+a],[0,sl+a/2]],''),T([[sl+a,sl],[sl+a,sl+a],[2*sl+a,sl+a/2]],'')];
+    W=a+2*sl;H=a+2*sl;sa=a*a+2*a*sl;saWork='base + 4 triangles = '+a+'² + 4×½×'+a+'×'+sl+' = '+(a*a)+' + '+(2*a*sl)+' = <b>'+sa+' cm²</b>';}
+  else if(s==='cylinder'){const r=nfv('r'),h=nfv('h');
+    shapes=[R(0,2*r,2*PI*r,h,'2πr × h'),C(r,r,r,'r'),C(r,2*r+h+r,r,'r')];
+    W=2*PI*r;H=4*r+h;sa=2*PI*r*r+2*PI*r*h;saWork='2πr² + 2πrh = '+rnd(2*PI*r*r)+' + '+rnd(2*PI*r*h)+' = <b>'+rnd(sa)+' cm²</b>';}
+  else if(s==='cone'){const r=nfv('r'),l=nfv('slant');const th=(r/l)*2*PI,a0=PI/2-th/2,a1=PI/2+th/2;
+    let xs=[0],ys=[0];for(let a=a0;a<=a1+1e-9;a+=(a1-a0)/48){xs.push(l*Math.cos(a));ys.push(l*Math.sin(a));}
+    const arcBottom=Math.max(...ys),cy=arcBottom+r+0.6;xs.push(-r,r);ys.push(cy-r,cy+r);
+    const minX=Math.min(...xs),minY=Math.min(...ys),dx=-minX,dy=-minY;
+    shapes=[{t:'s',ax:dx,ay:dy,R:l,a0,a1,lab:'slant '+l},C(dx,cy+dy,r,'r')];
+    W=Math.max(...xs)-minX;H=Math.max(...ys)-minY;
+    sa=PI*r*r+PI*r*l;saWork='πr² + πrl = '+rnd(PI*r*r)+' + '+rnd(PI*r*l)+' = <b>'+rnd(sa)+' cm²</b> &nbsp;(sector angle = '+rnd((r/l)*360)+'°)';}
+  drawNet(shapes,W,H);
+  $('netInfo').innerHTML='<div class="info"><div class="l">The net</div>'+
+    '<div class="s">Bounding size: <b>'+rnd(W,1)+' cm × '+rnd(H,1)+' cm</b></div>'+
+    '<div class="s">Faces shown: '+shapes.length+'</div>'+
+    '<div class="s" style="margin-top:.5rem"><b>Net area = total surface area</b><br>'+saWork+'</div></div>';}
+function drawNet(shapes,W,H){const CW=netCv.width,CH=netCv.height,m=28;
+  const sc=Math.min((CW-2*m)/W,(CH-2*m)/H);const ox=(CW-W*sc)/2,oy=(CH-H*sc)/2;
+  const X=x=>ox+x*sc,Y=y=>oy+y*sc;
+  nx.clearRect(0,0,CW,CH);
+  // 1cm grid across the net bounding area
+  nx.strokeStyle='#EEF2F7';nx.lineWidth=1;
+  for(let g=0;g<=Math.ceil(W)+0.001;g++){nx.beginPath();nx.moveTo(X(g),Y(0));nx.lineTo(X(g),Y(H));nx.stroke();}
+  for(let g=0;g<=Math.ceil(H)+0.001;g++){nx.beginPath();nx.moveTo(X(0),Y(g));nx.lineTo(X(W),Y(g));nx.stroke();}
+  shapes.forEach(s=>{nx.fillStyle='rgba(27,79,138,.10)';nx.strokeStyle='#1B4F8A';nx.lineWidth=2;
+    if(s.t==='r'){nx.beginPath();nx.rect(X(s.x),Y(s.y),s.w*sc,s.h*sc);nx.fill();nx.stroke();
+      if(s.lab){nx.fillStyle='#334155';nx.font='700 '+Math.max(9,Math.min(13,sc*.7))+'px Inter';nx.textAlign='center';nx.textBaseline='middle';nx.fillText(s.lab,X(s.x+s.w/2),Y(s.y+s.h/2));}}
+    else if(s.t==='t'){nx.beginPath();s.pts.forEach((p,i)=>{i?nx.lineTo(X(p[0]),Y(p[1])):nx.moveTo(X(p[0]),Y(p[1]));});nx.closePath();nx.fill();nx.stroke();
+      if(s.lab){const cx=(s.pts[0][0]+s.pts[1][0]+s.pts[2][0])/3,cy=(s.pts[0][1]+s.pts[1][1]+s.pts[2][1])/3;nx.fillStyle='#334155';nx.font='700 11px Inter';nx.textAlign='center';nx.textBaseline='middle';nx.fillText(s.lab,X(cx),Y(cy));}}
+    else if(s.t==='c'){nx.beginPath();nx.arc(X(s.cx),Y(s.cy),s.r*sc,0,7);nx.fill();nx.stroke();
+      nx.fillStyle='#334155';nx.font='700 11px Inter';nx.textAlign='center';nx.textBaseline='middle';nx.fillText(s.lab,X(s.cx),Y(s.cy));}
+    else if(s.t==='s'){nx.beginPath();nx.moveTo(X(s.ax),Y(s.ay));nx.arc(X(s.ax),Y(s.ay),s.R*sc,s.a0,s.a1);nx.closePath();nx.fill();nx.stroke();
+      const mid=(s.a0+s.a1)/2,lx=s.ax+s.R*0.55*Math.cos(mid),ly=s.ay+s.R*0.55*Math.sin(mid);
+      nx.fillStyle='#334155';nx.font='700 11px Inter';nx.textAlign='center';nx.textBaseline='middle';nx.fillText(s.lab,X(lx),Y(ly));}});
+  nx.fillStyle='#94A3B8';nx.font='700 11px Inter';nx.textAlign='left';nx.textBaseline='top';nx.fillText('1 square = 1 cm',6,6);}
 
-function r2(n){return Math.round(n*100)/100;}
+/* ============ PROPERTIES ============ */
+const PROPS=[['Cube',6,12,8],['Cuboid',6,12,8],['Cylinder',3,2,0],['Triangular prism',5,9,6],['Square-based pyramid',5,8,5],['Tetrahedron',4,6,4],['Cone',2,1,1],['Sphere',1,0,0]];
+function renderProps(){let h='<table class="tbl"><tr><th>Solid</th><th>Faces</th><th>Edges</th><th>Vertices</th><th>F + V − E</th></tr>';
+  PROPS.forEach(p=>{const euler=p[1]+p[3]-p[2];h+='<tr><td>'+p[0]+'</td><td>'+p[1]+'</td><td>'+p[2]+'</td><td>'+p[3]+'</td><td>'+euler+'</td></tr>';});h+='</table>';$('propTable').innerHTML=h;}
 
-function setShape(s){
-  currentShape=s;
-  document.querySelectorAll('.shape-tab').forEach(t=>t.classList.toggle('active',t.textContent.includes(s[0].toUpperCase())||t.onclick.toString().includes(`'${s}'`)));
-  document.querySelectorAll('.shape-tab').forEach(t=>t.classList.remove('active'));
-  event.target.classList.add('active');
-  renderInputs();
-  compute();
-}
+/* ============ VOLUME & SURFACE AREA ============ */
+const CALC_FIELDS={
+  cuboid:[['l','length',6],['w','width',4],['h','height',3]],
+  cube:[['s','side',5]],
+  cylinder:[['r','radius',5],['h','height',10]],
+  prism:[['b','tri base',6],['ht','tri height',4],['L','length',10]],
+  pyramid:[['a','base',15],['H','vertical height',20],['slant','slant height',23]],
+  cone:[['r','radius',5],['h','height',12],['slant','slant height',13]],
+  sphere:[['r','radius',6]],
+};
+function renderCalcFields(){const s=$('calcSolid').value;$('calcFields').innerHTML=CALC_FIELDS[s].map(f=>'<span class="fld">'+f[1]+' <input type="number" id="cf_'+f[0]+'" value="'+f[2]+'" step="0.5"></span>').join(' ');}
+function cfv(k){return +($('cf_'+k)||{value:0}).value;}
+function calc(){const s=$('calcSolid').value;let V,SA,vW,sW;
+  if(s==='cuboid'){const l=cfv('l'),w=cfv('w'),h=cfv('h');V=l*w*h;SA=2*(l*w+l*h+w*h);vW='V = l×w×h = '+l+'×'+w+'×'+h+' = <b>'+rnd(V)+' cm³</b>';sW='SA = 2(lw+lh+wh) = <b>'+rnd(SA)+' cm²</b>';}
+  else if(s==='cube'){const a=cfv('s');V=a**3;SA=6*a*a;vW='V = s³ = '+a+'³ = <b>'+rnd(V)+' cm³</b>';sW='SA = 6s² = 6×'+a+'² = <b>'+rnd(SA)+' cm²</b>';}
+  else if(s==='cylinder'){const r=cfv('r'),h=cfv('h');V=PI*r*r*h;SA=2*PI*r*r+2*PI*r*h;vW='V = πr²h = π×'+r+'²×'+h+' = <b>'+rnd(V)+' cm³</b>';sW='SA = 2πr² + 2πrh = <b>'+rnd(SA)+' cm²</b>';}
+  else if(s==='prism'){const b=cfv('b'),ht=cfv('ht'),L=cfv('L'),sl=Math.sqrt((b/2)**2+ht**2);V=0.5*b*ht*L;SA=b*ht+(b+2*sl)*L;vW='V = (½×b×ht)×L = '+(0.5*b*ht)+'×'+L+' = <b>'+rnd(V)+' cm³</b>';sW='SA = 2 triangles + 3 rectangles = <b>'+rnd(SA)+' cm²</b>';}
+  else if(s==='pyramid'){const a=cfv('a'),H=cfv('H'),sl=cfv('slant');V=a*a*H/3;SA=a*a+2*a*sl;vW='V = ⅓×base×height = ⅓×'+a+'²×'+H+' = <b>'+rnd(V)+' cm³</b>';sW='SA = a² + 2×a×slant = '+(a*a)+' + '+(2*a*sl)+' = <b>'+rnd(SA)+' cm²</b>';}
+  else if(s==='cone'){const r=cfv('r'),h=cfv('h'),sl=cfv('slant');V=PI*r*r*h/3;SA=PI*r*r+PI*r*sl;vW='V = ⅓πr²h = ⅓π×'+r+'²×'+h+' = <b>'+rnd(V)+' cm³</b>';sW='SA = πr² + πrl = <b>'+rnd(SA)+' cm²</b>';}
+  else if(s==='sphere'){const r=cfv('r');V=4/3*PI*r**3;SA=4*PI*r*r;vW='V = 4/3 πr³ = 4/3 π×'+r+'³ = <b>'+rnd(V)+' cm³</b>';sW='SA = 4πr² = 4π×'+r+'² = <b>'+rnd(SA)+' cm²</b>';}
+  $('calcVol').innerHTML='<div class="info"><div class="l">Volume</div><div class="s">'+vW+'</div></div>';
+  $('calcSA').innerHTML='<div class="info"><div class="l">Surface area</div><div class="s">'+sW+'</div></div>';}
 
-function renderInputs(){
-  const sh=SHAPES[currentShape];
-  let html=`<div style="font-size:11px;font-weight:600;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px">Dimensions</div>`;
-  sh.dims.forEach(d=>{
-    html+=`<div class="dim-input">
-      <label>${d.label}</label>
-      <input type="number" id="dim-${d.id}" value="${d.default}" min="0.1" step="0.5" oninput="compute()" style="width:80px">
-      <span>units</span>
-    </div>`;
-  });
-  document.getElementById('inputs-panel').innerHTML=html;
-}
-
-function getDims(){
-  const sh=SHAPES[currentShape];const d={};
-  sh.dims.forEach(dim=>{d[dim.id]=parseFloat(document.getElementById('dim-'+dim.id).value)||dim.default;});
-  return d;
-}
-
-function compute(){
-  const sh=SHAPES[currentShape];const d=getDims();
-  const {V,SA,extra}=sh.calc(d);
-  document.getElementById('vol-result').textContent=r2(V);
-  document.getElementById('sa-result').textContent=r2(SA);
-  document.getElementById('formula-display').innerHTML=`<strong>Formulae:</strong><br>${sh.formula.replace(/\n/g,'<br>')}`;
-  document.getElementById('extra-info').innerHTML=extra.replace(/\n/g,'<br>');
-  drawShape();
-  drawNet();
-}
-
-function drawShape(){
-  const c=document.getElementById('shape-canvas');
-  const ctx=c.getContext('2d');
-  const W=c.width,H=c.height;
-  ctx.clearRect(0,0,W,H);
-  const sh=SHAPES[currentShape];
-  sh.draw(ctx,W,H,getDims());
-}
-
-function drawNet(){
-  const c=document.getElementById('net-canvas');
-  const ctx=c.getContext('2d');
-  const W=c.width,H=c.height;
-  ctx.clearRect(0,0,W,H);
-  ctx.fillStyle='white';ctx.fillRect(0,0,W,H);
-  const sh=SHAPES[currentShape];
-  sh.net(ctx,W,H,getDims());
-}
-
-// ─── DRAW FUNCTIONS ──────────────────────────────────────────────────────────
-function iso(x,y,z,W,H,scale){
-  const ox=W/2,oy=H*0.55;
-  const ix=(x-z)*Math.cos(Math.PI/6)*scale;
-  const iy=(x+z)*Math.sin(Math.PI/6)*scale-y*scale;
-  return {x:ox+ix,y:oy+iy};
-}
-
-function drawCuboid(ctx,W,H,l,w,h){
-  const s=Math.min(W,H)/(Math.max(l,w,h)*3.5);
-  const face=(pts,fill,stroke)=>{
-    ctx.beginPath();pts.forEach(([x,y,z],i)=>{const p=iso(x,y,z,W,H,s);i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});
-    ctx.closePath();ctx.fillStyle=fill;ctx.fill();ctx.strokeStyle=stroke;ctx.lineWidth=1.5;ctx.stroke();
-  };
-  face([[0,0,0],[l,0,0],[l,h,0],[0,h,0]],'rgba(27,79,138,0.4)','#1B4F8A');
-  face([[0,0,0],[0,0,w],[l,0,w],[l,0,0]],'rgba(27,79,138,0.2)','#1B4F8A');
-  face([[l,0,0],[l,0,w],[l,h,w],[l,h,0]],'rgba(27,79,138,0.3)','#1B4F8A');
-  // Labels
-  const label=(x,y,z,t)=>{const p=iso(x,y,z,W,H,s);ctx.fillStyle='#475569';ctx.font='bold 13px Inter';ctx.textAlign='center';ctx.fillText(t,p.x,p.y);};
-  label(l/2,0,w/2,'w='+w);label(l,-0.8,w/2,'h='+h);label(l/2,-0.5,0,'l='+l);
-}
-
-function drawCylinder(ctx,W,H,r,h){
-  const s=Math.min(W/(r*4),H/(h*1.6+r));
-  const cx=W/2,cy=H*0.6,rX=r*s*1.2,rY=r*s*0.4,hs=h*s;
-  ctx.fillStyle='rgba(139,26,26,0.2)';ctx.beginPath();ctx.ellipse(cx,cy,rX,rY,0,0,2*Math.PI);ctx.fill();
-  ctx.strokeStyle='#8B1A1A';ctx.lineWidth=1.5;
-  ctx.beginPath();ctx.moveTo(cx-rX,cy);ctx.lineTo(cx-rX,cy-hs);ctx.stroke();
-  ctx.beginPath();ctx.moveTo(cx+rX,cy);ctx.lineTo(cx+rX,cy-hs);ctx.stroke();
-  ctx.beginPath();ctx.ellipse(cx,cy,rX,rY,0,Math.PI,2*Math.PI);ctx.strokeStyle='#8B1A1A';ctx.stroke();
-  ctx.beginPath();ctx.ellipse(cx,cy,rX,rY,0,0,Math.PI);ctx.setLineDash([4,3]);ctx.stroke();ctx.setLineDash([]);
-  ctx.fillStyle='rgba(139,26,26,0.3)';ctx.beginPath();ctx.ellipse(cx,cy-hs,rX,rY,0,0,2*Math.PI);ctx.fill();
-  ctx.strokeStyle='#8B1A1A';ctx.stroke();
-  // Labels
-  ctx.strokeStyle='#475569';ctx.lineWidth=1;ctx.setLineDash([3,2]);
-  ctx.beginPath();ctx.moveTo(cx,cy-hs);ctx.lineTo(cx+rX,cy-hs);ctx.stroke();ctx.setLineDash([]);
-  ctx.fillStyle='#475569';ctx.font='bold 13px Inter';ctx.textAlign='left';
-  ctx.fillText('r = '+r,cx+rX+4,cy-hs);
-  ctx.textAlign='right';ctx.fillText('h = '+h,cx-rX-4,(cy+cy-hs)/2);
-}
-
-function drawCone(ctx,W,H,r,h){
-  const s=Math.min(W/(r*4),H/(h*1.4+r));
-  const cx=W/2,cy=H*0.65,rX=r*s*1.2,rY=r*s*0.4,hs=h*s;
-  const tip={x:cx,y:cy-hs};
-  ctx.fillStyle='rgba(5,150,105,0.2)';
-  ctx.beginPath();ctx.moveTo(tip.x,tip.y);ctx.lineTo(cx-rX,cy);ctx.lineTo(cx+rX,cy);ctx.closePath();ctx.fill();
-  ctx.strokeStyle='#059669';ctx.lineWidth=1.5;
-  ctx.beginPath();ctx.moveTo(tip.x,tip.y);ctx.lineTo(cx-rX,cy);ctx.stroke();
-  ctx.beginPath();ctx.moveTo(tip.x,tip.y);ctx.lineTo(cx+rX,cy);ctx.stroke();
-  ctx.beginPath();ctx.ellipse(cx,cy,rX,rY,0,0,2*Math.PI);ctx.fillStyle='rgba(5,150,105,0.15)';ctx.fill();ctx.stroke();
-  // Height line
-  ctx.strokeStyle='#475569';ctx.setLineDash([3,2]);
-  ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx,cy-hs);ctx.stroke();ctx.setLineDash([]);
-  ctx.fillStyle='#475569';ctx.font='bold 13px Inter';ctx.textAlign='left';
-  ctx.fillText('h='+h,cx+4,(cy+cy-hs)/2);
-  ctx.fillText('r='+r,cx+rX/2+4,cy+14);
-  const l=Math.sqrt(r**2+h**2);
-  ctx.fillStyle='#059669';ctx.textAlign='right';ctx.fillText('l='+r2(l),cx-4,cy-hs/2);
-}
-
-function drawSphere(ctx,W,H,r){
-  const s=Math.min((W-40),(H-40))/(r*2.4);
-  const cx=W/2,cy=H/2,rs=r*s;
-  const grad=ctx.createRadialGradient(cx-rs*0.3,cy-rs*0.3,rs*0.1,cx,cy,rs);
-  grad.addColorStop(0,'rgba(37,99,235,0.5)');grad.addColorStop(1,'rgba(27,79,138,0.2)');
-  ctx.beginPath();ctx.arc(cx,cy,rs,0,2*Math.PI);ctx.fillStyle=grad;ctx.fill();
-  ctx.strokeStyle='#1B4F8A';ctx.lineWidth=1.5;ctx.stroke();
-  ctx.beginPath();ctx.ellipse(cx,cy,rs,rs*0.35,0,0,2*Math.PI);ctx.setLineDash([4,3]);ctx.stroke();ctx.setLineDash([]);
-  ctx.strokeStyle='#475569';ctx.lineWidth=1;
-  ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+rs,cy);ctx.stroke();
-  ctx.fillStyle='#475569';ctx.font='bold 13px Inter';ctx.textAlign='left';ctx.fillText('r = '+r,cx+rs+4,cy-4);
-}
-
-function drawPyramid(ctx,W,H,b,h){
-  const s=Math.min(W,H)/(Math.max(b,h)*3);
-  const tip=iso(b/2,h,b/2,W,H,s);
-  const c1=iso(0,0,0,W,H,s),c2=iso(b,0,0,W,H,s),c3=iso(b,0,b,W,H,s),c4=iso(0,0,b,W,H,s);
-  // Base
-  ctx.beginPath();[c1,c2,c3,c4].forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));
-  ctx.closePath();ctx.fillStyle='rgba(217,119,6,0.2)';ctx.fill();ctx.strokeStyle='#D97706';ctx.lineWidth=1.5;ctx.stroke();
-  // Faces
-  [[c1,c2],[c2,c3],[c3,c4],[c4,c1]].forEach(([a,b2],i)=>{
-    ctx.beginPath();ctx.moveTo(tip.x,tip.y);ctx.lineTo(a.x,a.y);ctx.lineTo(b2.x,b2.y);ctx.closePath();
-    ctx.fillStyle=`rgba(217,119,6,${0.15+i*0.05})`;ctx.fill();ctx.strokeStyle='#D97706';ctx.stroke();
-  });
-  ctx.fillStyle='#475569';ctx.font='bold 12px Inter';ctx.textAlign='center';
-  ctx.fillText('b='+b,c2.x+10,c2.y+10);ctx.fillText('h='+h,tip.x+20,tip.y);
-}
-
-function drawTriPrism(ctx,W,H,a,ht,l){
-  const s=Math.min(W,H)/(Math.max(a,ht,l)*3);
-  const face=(pts,fill)=>{
-    ctx.beginPath();pts.forEach(([x,y,z],i)=>{const p=iso(x,y,z,W,H,s);i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});
-    ctx.closePath();ctx.fillStyle=fill;ctx.fill();ctx.strokeStyle='#7C3AED';ctx.lineWidth=1.5;ctx.stroke();
-  };
-  face([[0,0,0],[a,0,0],[0,ht,0]],'rgba(124,58,237,0.2)');
-  face([[0,0,l],[a,0,l],[0,ht,l]],'rgba(124,58,237,0.15)');
-  face([[0,0,0],[a,0,0],[a,0,l],[0,0,l]],'rgba(124,58,237,0.1)');
-  face([[0,0,0],[0,ht,0],[0,ht,l],[0,0,l]],'rgba(124,58,237,0.2)');
-  face([[a,0,0],[0,ht,0],[0,ht,l],[a,0,l]],'rgba(124,58,237,0.25)');
-}
-
-function drawCuboidNet(ctx,W,H,l,w,h){
-  const s=Math.min(W/(2*l+2*w),H/(2*h+w))*0.8;
-  const ox=W/2-l*s,oy=10;
-  const rect=(x,y,ww,hh,fill)=>{
-    ctx.fillStyle=fill;ctx.fillRect(x,y,ww,hh);
-    ctx.strokeStyle='#1B4F8A';ctx.lineWidth=1;ctx.strokeRect(x,y,ww,hh);
-    ctx.fillStyle='#475569';ctx.font='10px Inter';ctx.textAlign='center';
-    ctx.fillText(`${ww/s}×${hh/s}`,x+ww/2,y+hh/2+4);
-  };
-  rect(ox,oy,l*s,h*s,'rgba(27,79,138,0.15)');
-  rect(ox,oy+h*s,l*s,w*s,'rgba(27,79,138,0.25)');
-  rect(ox,oy+h*s+w*s,l*s,h*s,'rgba(27,79,138,0.15)');
-  rect(ox-w*s,oy+h*s,w*s,w*s,'rgba(27,79,138,0.1)');
-  rect(ox+l*s,oy+h*s,w*s,w*s,'rgba(27,79,138,0.1)');
-  ctx.fillStyle='#475569';ctx.font='bold 11px Inter';ctx.textAlign='center';ctx.fillText('Net of cuboid (fold to make 3D)',W/2,H-8);
-}
-
-function drawCylinderNet(ctx,W,H,r,h){
-  const s=Math.min(W/(2*PI*r+r*2+20),H/(h+r*2+20));
-  const circ=2*PI*r*s*0.7,rs=r*s*0.7,hs=h*s*0.7;
-  const ox=W/2,oy=10;
-  // Rectangle (lateral)
-  ctx.fillStyle='rgba(139,26,26,0.15)';ctx.fillRect(ox-circ/2,oy+rs,circ,hs);
-  ctx.strokeStyle='#8B1A1A';ctx.lineWidth=1.5;ctx.strokeRect(ox-circ/2,oy+rs,circ,hs);
-  ctx.fillStyle='#475569';ctx.font='11px Inter';ctx.textAlign='center';
-  ctx.fillText('2πr × h',ox,oy+rs+hs/2+4);
-  // Circles
-  ctx.beginPath();ctx.arc(ox,oy+rs-rs,rs,0,2*Math.PI);ctx.fillStyle='rgba(139,26,26,0.2)';ctx.fill();ctx.strokeStyle='#8B1A1A';ctx.stroke();
-  ctx.beginPath();ctx.arc(ox,oy+rs+hs+rs,rs,0,2*Math.PI);ctx.fillStyle='rgba(139,26,26,0.2)';ctx.fill();ctx.stroke();
-  ctx.fillStyle='#475569';ctx.textAlign='center';ctx.fillText('Net of cylinder',W/2,H-8);
-}
-
-function drawConeNet(ctx,W,H,r,h){
-  const l=Math.sqrt(r**2+h**2);
-  const s=Math.min(W,H)/(l*2.4);
-  const cx=W*0.35,cy=H/2+l*s*0.2;
-  const theta=(r/l);const ang=2*Math.PI*theta;
-  ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,l*s,-Math.PI/2-ang/2,-Math.PI/2+ang/2);ctx.closePath();
-  ctx.fillStyle='rgba(5,150,105,0.2)';ctx.fill();ctx.strokeStyle='#059669';ctx.lineWidth=1.5;ctx.stroke();
-  ctx.fillStyle='#475569';ctx.font='11px Inter';ctx.textAlign='center';ctx.fillText(`sector radius = l = ${r2(l)}`,cx,H-8);
-  // Base circle
-  const bx=W*0.75,by=H/2;
-  ctx.beginPath();ctx.arc(bx,by,r*s,0,2*Math.PI);
-  ctx.fillStyle='rgba(5,150,105,0.15)';ctx.fill();ctx.strokeStyle='#059669';ctx.stroke();
-  ctx.fillStyle='#475569';ctx.textAlign='center';ctx.fillText(`r = ${r}`,bx,by+r*s+14);
-}
-
-function drawSphereInfo(ctx,W,H){
-  ctx.fillStyle='#475569';ctx.font='13px Inter';ctx.textAlign='center';
-  ctx.fillText('A sphere has no flat net — it cannot be unfolded.',W/2,H/2-10);
-  ctx.fillText('(Like trying to flatten an orange peel perfectly!)',W/2,H/2+14);
-}
-
-function drawPyramidNet(ctx,W,H,b,h){
-  const l=Math.sqrt((b/2)**2+h**2);
-  const s=Math.min(W/(b*3),H/(l*2+b))*0.8;
-  const cx=W/2,cy=H/2;
-  const rect2=(x,y,w,h2,fill)=>{ctx.fillStyle=fill;ctx.fillRect(x,y,w,h2);ctx.strokeStyle='#D97706';ctx.lineWidth=1;ctx.strokeRect(x,y,w,h2);};
-  // Square base
-  rect2(cx-b*s/2,cy-b*s/2,b*s,b*s,'rgba(217,119,6,0.2)');
-  // Triangular faces (simplified as triangles around square)
-  [[cx-b*s/2,cy-b*s/2,-1,0],[cx+b*s/2,cy-b*s/2,0,-1],[cx+b*s/2,cy+b*s/2,1,0],[cx-b*s/2,cy+b*s/2,0,1]].forEach(([tx,ty,dx,dy])=>{
-    ctx.beginPath();ctx.moveTo(tx,ty);ctx.lineTo(tx+dx*l*s,ty+dy*l*s);ctx.lineTo(tx,ty+(b*s*(dy===0?1:0)));
-    ctx.closePath();ctx.fillStyle='rgba(217,119,6,0.15)';ctx.fill();ctx.strokeStyle='#D97706';ctx.stroke();
-  });
-  ctx.fillStyle='#475569';ctx.font='11px Inter';ctx.textAlign='center';ctx.fillText('Net of square pyramid',W/2,H-8);
-}
-
-renderInputs();
-compute();
+/* ============ tabs & wiring ============ */
+const PANES=[['net','Net drawer'],['prop','Faces, edges, vertices'],['calc','Volume & surface area']];
+const tabsEl=$('tabs');
+PANES.forEach((p,i)=>{const b=document.createElement('button');b.className='tab'+(i===0?' on':'');b.textContent=p[1];b.onclick=()=>{
+  document.querySelectorAll('.tab').forEach((t,j)=>t.classList.toggle('on',j===i));
+  document.querySelectorAll('.tabpane').forEach(pane=>pane.style.display=pane.dataset.pane===p[0]?'block':'none');
+  if(p[0]==='prop')renderProps();};tabsEl.appendChild(b);});
+$('netSolid').onchange=()=>{renderNetFields();buildNet();};
+$('netBtn').onclick=buildNet;
+document.querySelectorAll('[data-net]').forEach(b=>b.onclick=()=>{$('netSolid').value=b.dataset.net;renderNetFields();const d=b.dataset.dims.split(',');NET_FIELDS[b.dataset.net].forEach((f,i)=>{$('nf_'+f[0]).value=d[i];});buildNet();});
+$('calcSolid').onchange=()=>{renderCalcFields();calc();};
+$('calcBtn').onclick=calc;
+renderNetFields();renderCalcFields();renderProps();buildNet();calc();
 </script>
 </body>
 </html>
