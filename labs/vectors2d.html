@@ -3,285 +3,257 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vectors 2D Lab | SBS Mathematics</title>
-<link rel="stylesheet" href="../assets/css/main.css">
+<title>Vectors | SBS Mathematics</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
-.vec-layout { display: grid; grid-template-columns: 280px 1fr; gap: 16px; }
-canvas { display:block; border:1px solid var(--gray-200); border-radius:8px; background:white; }
-.v-section { border-bottom:1px solid var(--gray-200); padding:12px 0; }
-.v-section:last-child { border:none; }
-.v-label { font-size:11px;font-weight:600;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px; }
-.vec-row { display:flex; gap:8px; align-items:center; margin-bottom:6px; }
-.vec-row label { font-family:var(--font-mono); font-size:13px; width:60px; color:var(--gray-600); }
-.vec-row input[type=number] { width:64px; padding:4px 6px; border:1px solid var(--gray-200); border-radius:6px; font-family:var(--font-mono); font-size:13px; }
-.vec-pill { display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:999px; font-family:var(--font-mono); font-size:12px; font-weight:600; }
-.pill-a { background:var(--sbs-blue-pale); color:var(--sbs-blue); }
-.pill-b { background:var(--sbs-crimson-pale); color:var(--sbs-crimson); }
-.pill-r { background:#FEF9C3; color:#854D0E; }
-.result-box { font-family:var(--font-mono); font-size:14px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; padding:10px 12px; margin-top:8px; line-height:1.8; }
-.op-btn { padding:6px 10px; border:1px solid var(--gray-200); border-radius:6px; background:white; font-size:12px; cursor:pointer; margin-right:6px; margin-bottom:6px; }
-.op-btn.active { background:var(--sbs-blue); color:white; border-color:var(--sbs-blue); }
-.quiz-box { background:var(--sbs-blue-pale); border:1px solid #BFDBFE; border-radius:10px; padding:16px; margin-top:16px; }
-.quiz-q { font-weight:600; color:var(--sbs-blue); margin-bottom:10px; font-size:14px; }
-.quiz-opt { display:block; width:100%; text-align:left; padding:8px 12px; margin-bottom:6px; border:1px solid var(--gray-200); border-radius:6px; background:white; cursor:pointer; font-family:var(--font-mono); font-size:13px; }
-.quiz-opt:hover { border-color:var(--sbs-blue); }
-.quiz-opt.correct { background:#DCFCE7; border-color:#16A34A; }
-.quiz-opt.wrong { background:#FEE2E2; border-color:#DC2626; }
-.quiz-feedback { font-size:13px; margin-top:8px; font-weight:600; }
-.score-pill { font-family:var(--font-mono); font-size:12px; background:var(--sbs-gold); color:white; padding:3px 10px; border-radius:999px; }
-@media(max-width:700px){.vec-layout{grid-template-columns:1fr;}}
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--navy:#071a44;--blue:#1B4F8A;--gold:#B8860B;--crimson:#8B1A1A;--teal:#0F766E;--green:#059669;--cream:#FAF8F4;--white:#fff;
+--g50:#F8FAFC;--g100:#F1F5F9;--g200:#E2E8F0;--g400:#94A3B8;--g500:#64748B;--g600:#475569;--g700:#334155;
+--mono:'JetBrains Mono',ui-monospace,monospace;--shadow:0 4px 16px rgba(7,26,68,.08);}
+body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--navy);}
+a{text-decoration:none;color:inherit;}
+nav{background:var(--white);border-bottom:1px solid var(--g200);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:66px;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,.06);}
+.nav-logo{display:flex;align-items:center;} .nav-logo img{width:auto;display:block;}
+.nav-logo .logo-full{height:50px;} .nav-logo .logo-mark{height:38px;display:none;}
+.nav-links{display:flex;gap:1.8rem;list-style:none;align-items:center;}
+.nav-links a{color:var(--g700);font-size:14px;font-weight:500;} .nav-links a.active,.nav-links a:hover{color:var(--blue);}
+.shell{max-width:1120px;margin:0 auto;padding:1.6rem 1.5rem 3rem;}
+.hero{background:linear-gradient(135deg,var(--gold),#7a5906);color:#fff;border-radius:20px;padding:1.5rem 1.8rem;margin-bottom:1.2rem;box-shadow:0 14px 40px rgba(7,26,68,.20);}
+.chip{display:inline-flex;gap:.4rem;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);padding:.35rem .8rem;border-radius:999px;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;}
+.hero h1{font-size:clamp(1.7rem,4vw,2.6rem);font-weight:900;margin:.5rem 0 .35rem;}
+.hero p{opacity:.94;max-width:680px;font-size:.96rem;line-height:1.5;}
+.panel{background:var(--white);border:1px solid var(--g200);border-radius:16px;padding:1.1rem;box-shadow:var(--shadow);}
+.seg{display:inline-flex;border:1px solid var(--g200);border-radius:999px;overflow:hidden;margin-bottom:1rem;}
+.seg button{border:none;background:var(--white);padding:.5rem 1rem;font-size:.82rem;font-weight:700;cursor:pointer;color:var(--g600);}
+.seg button.on{background:var(--gold);color:#fff;}
+.row{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;margin-bottom:.7rem;}
+.lbl{font-size:.85rem;font-weight:700;color:var(--g600);}
+select,input[type=number]{padding:.5rem .6rem;border:2px solid var(--g200);border-radius:9px;font-size:.9rem;font-family:var(--mono);background:var(--g50);outline:none;}
+select:focus,input:focus{border-color:var(--gold);background:#fff;}
+.btn{font-size:.85rem;font-weight:700;padding:.55rem 1rem;border-radius:10px;cursor:pointer;border:none;transition:.15s;}
+.btn-primary{background:var(--gold);color:#fff;} .btn-primary:hover{background:#7a5906;}
+.btn-ghost{background:var(--g100);color:var(--g700);border:1px solid var(--g200);} .btn-ghost:hover{background:var(--g200);}
+.btn:disabled{opacity:.45;cursor:default;}
+.ex{font-size:.76rem;font-weight:600;padding:.35rem .7rem;border-radius:999px;border:1px solid var(--g200);background:#fff;cursor:pointer;}
+.ex:hover{background:#FEFCE8;border-color:#FDE68A;color:var(--gold);}
+canvas{display:block;width:100%;background:#fff;border:1px solid var(--g200);border-radius:14px;touch-action:none;}
+.hint{font-size:.76rem;color:var(--g500);margin-top:.5rem;}
+.vp-row{display:grid;grid-template-columns:1fr 300px;gap:1.1rem;align-items:start;}
+.caption{background:linear-gradient(135deg,#FEFCE8,#F8FAFC);border:1px solid #FDE68A;border-left:4px solid var(--gold);border-radius:12px;padding:1rem 1.1rem;min-height:100px;}
+.caption .sn{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--gold);}
+.caption h4{font-size:1.02rem;margin:.15rem 0 .4rem;} .caption p{font-size:.92rem;line-height:1.55;color:var(--g700);}
+.answer{margin-top:.8rem;background:#ECFDF5;border:1px solid #A7F3D0;border-radius:10px;padding:.7rem .85rem;color:#065F46;font-size:.95rem;}
+.answer .big{font-family:var(--mono);font-weight:800;font-size:1.2rem;}
+.stepbar{display:flex;gap:.5rem;align-items:center;margin-top:.8rem;flex-wrap:wrap;} .stepbar .count{margin-left:auto;font-size:.8rem;color:var(--g500);font-weight:700;}
+.cv-controls .chk{display:flex;gap:.4rem;align-items:center;font-size:.85rem;color:var(--g700);font-weight:600;}
+.colvec{font-family:var(--mono);font-size:.9rem;color:var(--g700);margin-top:.5rem;line-height:1.7;}
+footer{background:var(--navy);color:rgba(255,255,255,.6);text-align:center;padding:1.4rem;font-size:13px;margin-top:1.2rem;} footer strong{color:rgba(255,255,255,.85);}
+@media(max-width:860px){.vp-row{grid-template-columns:1fr;}.nav-links{display:none;}.nav-logo .logo-full{display:none;}.nav-logo .logo-mark{display:block;}}
 </style>
 </head>
 <body>
-
-<nav class="nav">
-  <a href="../index.html" class="nav-logo">
-    <img src="../assets/logo.png" alt="SBS">
-    <div><div class="nav-title">SBS Mathematics</div><div class="nav-subtitle">Cambridge IGCSE 0580</div></div>
+<nav>
+  <a href="../index.html" class="nav-logo" aria-label="SBS Mathematics — Home">
+    <img class="logo-full" src="../assets/logo-full.png" alt="SBS International School Chiangmai — Mathematics Department">
+    <img class="logo-mark" src="../assets/logo-mark.png" alt="SBS">
   </a>
   <ul class="nav-links">
-    <li><a href="../index.html">Home</a></li>
-    <li><a href="../labs.html" class="active">Labs</a></li>
+    <li><a href="../index.html">Home</a></li><li><a href="../chapters.html">Chapters</a></li>
+    <li><a class="active" href="../labs.html">Labs</a></li><li><a href="../about.html">About</a></li>
   </ul>
 </nav>
 
-<div class="lab-page">
-  <div class="lab-header">
-    <div class="lab-header-icon">➡️</div>
-    <div>
-      <div class="lab-header-title">Vectors 2D Lab</div>
-      <div class="lab-header-sub">Cambridge 0580 · Vectors — column vectors, addition, scalar multiplication, magnitude, and geometric vector problems</div>
-    </div>
-    <div style="margin-left:auto;"><span class="cambridge-badge">IGCSE Extended</span></div>
-  </div>
+<main class="shell">
+  <header class="hero">
+    <span class="chip">◆ IGCSE Extended · Topic 9 · Vectors</span>
+    <h1>Vectors</h1>
+    <p>Find vector paths across a grid of parallelograms — count the <b>a</b>'s and <b>b</b>'s with an animated walkthrough — or build and combine column vectors on a coordinate grid.</p>
+  </header>
 
-  <div class="lab-container">
-    <div class="controls">
-
-      <div class="v-section">
-        <div class="v-label">Vector a <span class="vec-pill pill-a">a</span></div>
-        <div class="vec-row"><label>a₁ (x)</label><input type="number" id="ax" value="3" oninput="render()"></div>
-        <div class="vec-row"><label>a₂ (y)</label><input type="number" id="ay" value="2" oninput="render()"></div>
-      </div>
-
-      <div class="v-section">
-        <div class="v-label">Vector b <span class="vec-pill pill-b">b</span></div>
-        <div class="vec-row"><label>b₁ (x)</label><input type="number" id="bx" value="-1" oninput="render()"></div>
-        <div class="vec-row"><label>b₂ (y)</label><input type="number" id="by" value="4" oninput="render()"></div>
-      </div>
-
-      <div class="v-section">
-        <div class="v-label">Operation</div>
-        <button class="op-btn active" data-op="add" onclick="setOp('add')">a + b</button>
-        <button class="op-btn" data-op="sub" onclick="setOp('sub')">a − b</button>
-        <button class="op-btn" data-op="scaleA" onclick="setOp('scaleA')">k·a</button>
-        <button class="op-btn" data-op="scaleB" onclick="setOp('scaleB')">k·b</button>
-        <div class="vec-row" style="margin-top:8px;"><label>k =</label><input type="number" id="kval" value="2" step="0.5" oninput="render()"></div>
-      </div>
-
-      <div class="v-section">
-        <div class="v-label">Result <span class="vec-pill pill-r">r</span></div>
-        <div class="result-box" id="result-box">—</div>
-      </div>
-
-      <div class="v-section">
-        <button class="op-btn" style="width:100%;text-align:center;" onclick="newQuizQuestion()">↻ New exam-style question</button>
-      </div>
+  <section class="panel">
+    <div class="seg" id="modeSeg">
+      <button class="on" data-mode="paths">🧭 Vector paths</button>
+      <button data-mode="col">➕ Column vectors</button>
     </div>
 
-    <div>
-      <canvas id="vec-canvas" width="640" height="500"></canvas>
-
-      <div class="quiz-box">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-          <div style="font-weight:700;color:var(--sbs-blue);font-size:14px;">Exam-style quick check</div>
-          <span class="score-pill" id="score-pill">Score: 0/0</span>
+    <!-- VECTOR PATHS -->
+    <div id="pathsPanel">
+      <div class="row">
+        <span class="lbl">From</span><select id="startSel"></select>
+        <span class="lbl">to</span><select id="endSel"></select>
+        <button class="btn btn-primary" id="showBtn">Show path</button>
+        <span class="hint" style="margin:0">or tap two points on the grid</span>
+      </div>
+      <div class="row" style="margin-bottom:1rem">
+        <span class="lbl">Examples:</span>
+        <button class="ex" data-s="A" data-e="E">A → E</button>
+        <button class="ex" data-s="G" data-e="T">G → T</button>
+        <button class="ex" data-s="E" data-e="K">E → K</button>
+        <button class="ex" data-s="B" data-e="O">B → O</button>
+      </div>
+      <div class="vp-row">
+        <div><canvas id="grid" width="700" height="470"></canvas></div>
+        <div>
+          <div class="caption" id="caption"></div>
+          <div class="answer" id="answer" style="display:none"></div>
+          <div class="stepbar" id="stepbar" style="display:none">
+            <button class="btn btn-ghost" id="backBtn">◀ Back</button>
+            <button class="btn btn-primary" id="nextBtn">Next ▶</button>
+            <button class="btn btn-ghost" id="playBtn">▶ Play</button>
+            <button class="btn btn-ghost" id="restartBtn">↻</button>
+            <span class="count" id="stepCount"></span>
+          </div>
         </div>
-        <div class="quiz-q" id="quiz-q">Loading question...</div>
-        <div id="quiz-opts"></div>
-        <div class="quiz-feedback" id="quiz-feedback"></div>
       </div>
+      <p class="hint"><b>a</b> = one step horizontally right · <b>b</b> = one step diagonally up-right. Going the opposite way makes a term negative (−a is left, −b is down-left).</p>
     </div>
-  </div>
-</div>
+
+    <!-- COLUMN VECTORS -->
+    <div id="colPanel" style="display:none">
+      <div class="row cv-controls">
+        <span class="lbl">a =</span>(<input id="ax" type="number" value="3" style="width:60px">,<input id="ay" type="number" value="1" style="width:60px">)
+        <span class="lbl" style="margin-left:.6rem">b =</span>(<input id="bx" type="number" value="1" style="width:60px">,<input id="by" type="number" value="2" style="width:60px">)
+      </div>
+      <div class="row cv-controls">
+        <label class="chk"><input type="checkbox" id="showApB" checked> a + b</label>
+        <label class="chk"><input type="checkbox" id="showAmB"> a − b</label>
+        <label class="chk"><input type="checkbox" id="showK"> scalar k·a</label>
+        <span class="lbl">k =</span><input id="kval" type="range" min="-3" max="3" step="0.5" value="2" style="accent-color:var(--gold)"><span id="kTxt" class="lbl" style="font-family:var(--mono)">2</span>
+      </div>
+      <div class="vp-row">
+        <div><canvas id="plane" width="700" height="470"></canvas></div>
+        <div>
+          <div class="caption" style="min-height:auto">
+            <div class="sn">Column vectors</div>
+            <div class="colvec" id="colOut"></div>
+          </div>
+        </div>
+      </div>
+      <p class="hint">Edit a and b, or drag their arrow tips on the grid. A column vector <b>(x, y)</b> means x across and y up. |a| = √(x²+y²).</p>
+    </div>
+  </section>
+</main>
+
+<footer><strong>SBS Mathematics</strong> · Vectors · Cambridge IGCSE 0580</footer>
 
 <script>
-const canvas = document.getElementById('vec-canvas');
-const ctx = canvas.getContext('2d');
-const cx = canvas.width/2, cy = canvas.height/2, scale = 36;
-let currentOp = 'add';
+"use strict";
+const $=id=>document.getElementById(id);
+let mode='paths';
+const LET="ABCDEFGHIJKLMNOPQRST";
+const rc=L=>{const i=LET.indexOf(L);return {c:i%5,r:Math.floor(i/5)};};
 
-function setOp(op){
-  currentOp = op;
-  document.querySelectorAll('.op-btn[data-op]').forEach(b=>b.classList.toggle('active', b.dataset.op===op));
-  render();
+/* ============ VECTOR PATHS ============ */
+const gc=$('grid'),gx=gc.getContext('2d'),GW=gc.width,GH=gc.height;
+const AX={x:100,y:0}, BX={x:50,y:-80}, ORG={x:120,y:390};   // a-step, b-step, origin(A)
+const gpos=(c,r)=>({x:ORG.x+c*AX.x+r*BX.x, y:ORG.y+c*AX.y+r*BX.y});
+let startP='A', endP='E', PS=null, step=-1;
+
+function fillSel(){[ '#startSel','#endSel'].forEach(id=>{const s=$(id.slice(1));s.innerHTML='';for(const L of LET){const o=document.createElement('option');o.value=L;o.textContent=L;s.appendChild(o);}});$('startSel').value=startP;$('endSel').value=endP;}
+function arrow(ctx,A,B,col,w){const ang=Math.atan2(B.y-A.y,B.x-A.x),hl=10;ctx.strokeStyle=col;ctx.fillStyle=col;ctx.lineWidth=w||3;
+  ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(B.x,B.y);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(B.x,B.y);ctx.lineTo(B.x-hl*Math.cos(ang-0.4),B.y-hl*Math.sin(ang-0.4));ctx.lineTo(B.x-hl*Math.cos(ang+0.4),B.y-hl*Math.sin(ang+0.4));ctx.closePath();ctx.fill();}
+function drawGrid(){gx.clearRect(0,0,GW,GH);
+  // parallelogram edges
+  gx.strokeStyle='#D7DEE8';gx.lineWidth=1.4;
+  for(let r=0;r<4;r++){for(let c=0;c<5;c++){const p=gpos(c,r);
+    if(c<4){const q=gpos(c+1,r);gx.beginPath();gx.moveTo(p.x,p.y);gx.lineTo(q.x,q.y);gx.stroke();}
+    if(r<3){const q=gpos(c,r+1);gx.beginPath();gx.moveTo(p.x,p.y);gx.lineTo(q.x,q.y);gx.stroke();}}}
+  // labels + points
+  for(let r=0;r<4;r++)for(let c=0;c<5;c++){const p=gpos(c,r),L=LET[r*5+c];
+    const sel=(L===startP||L===endP);
+    gx.beginPath();gx.arc(p.x,p.y,sel?6:3.5,0,7);gx.fillStyle=L===startP?'#059669':L===endP?'#8B1A1A':'#94A3B8';gx.fill();
+    gx.fillStyle='#334155';gx.font='800 14px Inter';gx.textAlign='center';gx.fillText(L,p.x,p.y-12);}
+  // a,b reference key (bottom-left near A)
+  const A=gpos(0,0);
+  arrow(gx,A,{x:A.x+AX.x*0.5,y:A.y},'#059669',3);gx.fillStyle='#059669';gx.font='800 13px Inter';gx.fillText('a',A.x+AX.x*0.28,A.y+18);
+  arrow(gx,A,{x:A.x+BX.x*0.5,y:A.y+BX.y*0.5},'#059669',3);gx.fillText('b',A.x+BX.x*0.28-10,A.y+BX.y*0.28);
+}
+function term(n,sym){const m=Math.abs(n);return (m===1?'':m)+sym;}
+function answerStr(dc,dr){const t=[];if(dc!==0)t.push({n:dc,s:'a'});if(dr!==0)t.push({n:dr,s:'b'});if(!t.length)return '0';
+  return t.map((x,i)=>(i===0?(x.n<0?'−':''):(x.n<0?' − ':' + '))+term(x.n,x.s)).join('');}
+function buildPath(){const s=rc(startP),e=rc(endP),dc=e.c-s.c,dr=e.r-s.r;
+  const mid=gpos(e.c,s.r); // horizontal first
+  PS={s,e,dc,dr,pStart:gpos(s.c,s.r),pMid:mid,pEnd:gpos(e.c,e.r),
+    steps:[
+      {sn:'Step 1',h:'Count the horizontal steps',p: dc===0?'No horizontal movement needed here (0 a\u2019s).':'From '+startP+', go <b>'+Math.abs(dc)+'</b> step'+(Math.abs(dc)>1?'s':'')+' '+(dc>0?'right':'left')+' → <b>'+answerStr(dc,0)+'</b>.',kind:'h'},
+      {sn:'Step 2',h:'Count the diagonal steps',p: dr===0?'No diagonal movement needed here (0 b\u2019s).':'Then go <b>'+Math.abs(dr)+'</b> step'+(Math.abs(dr)>1?'s':'')+' '+(dr>0?'up-right':'down-left')+' → <b>'+answerStr(0,dr)+'</b>.',kind:'d'},
+      {sn:'Answer',h:'Add them together',p:'The vector from '+startP+' to '+endP+' is the sum of the horizontal and diagonal parts.',kind:'r'},
+    ]};
+  step=-1;$('answer').style.display='none';$('caption').innerHTML='<div class="sn">Ready</div><h4>Path from '+startP+' to '+endP+'</h4><p>Press <b>Next</b> to count the a\u2019s and b\u2019s one step at a time, or <b>Play</b> to watch it, then read off the answer.</p>';
+  $('stepbar').style.display='flex';$('stepCount').textContent='';updateBtns();drawGrid();
+}
+const REDUCE=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let tok=0;const cancel=()=>tok++;
+function tween(dur,fr){return new Promise(res=>{const t=tok,t0=performance.now();(function f(now){if(t!==tok)return;const p=Math.min(1,(now-t0)/dur);fr(p);if(p<1)requestAnimationFrame(f);else res();})(performance.now());});}
+function wait(ms){return new Promise(res=>{const t=tok;setTimeout(()=>{if(t===tok)res();},ms);});}
+function lerp(A,B,t){return {x:A.x+(B.x-A.x)*t,y:A.y+(B.y-A.y)*t};}
+function drawUpTo(kind,frac){drawGrid();
+  if(PS.dc!==0&&(kind==='h'||kind==='d'||kind==='r')){const f=kind==='h'?frac:1;arrow(gx,PS.pStart,lerp(PS.pStart,PS.pMid,f),'#059669',4);
+    if(f>0.5){const mid=lerp(PS.pStart,PS.pMid,0.5);gx.fillStyle='#059669';gx.font='800 14px Inter';gx.textAlign='center';gx.fillText(answerStr(PS.dc,0),mid.x,mid.y+ (PS.dc>0?24:24));}}
+  if(PS.dr!==0&&(kind==='d'||kind==='r')){const f=kind==='d'?frac:1;arrow(gx,PS.pMid,lerp(PS.pMid,PS.pEnd,f),'#B8860B',4);
+    if(f>0.5){const mid=lerp(PS.pMid,PS.pEnd,0.5);gx.fillStyle='#B8860B';gx.font='800 14px Inter';gx.textAlign='left';gx.fillText(answerStr(0,PS.dr),mid.x+10,mid.y);}}
+  if(kind==='r'){const f=frac;arrow(gx,PS.pStart,lerp(PS.pStart,PS.pEnd,f),'#1B4F8A',3.5);}
+}
+async function animStep(i){step=i;const st=PS.steps[i];$('caption').innerHTML='<div class="sn">'+st.sn+'</div><h4>'+st.h+'</h4><p>'+st.p+'</p>';$('stepCount').textContent='Step '+(i+1)+' of 3';updateBtns();
+  if(i===2){$('answer').style.display='block';$('answer').innerHTML=startP+endP+' = <span class="big">'+answerStr(PS.dc,PS.dr)+'</span>';}else $('answer').style.display='none';
+  if(REDUCE){drawUpTo(st.kind,1);return;}
+  await tween(650,p=>drawUpTo(st.kind,p));}
+async function play(){cancel();const t=tok;step=-1;buildPath();await wait(300);if(t!==tok)return;for(let i=0;i<3;i++){await animStep(i);if(t!==tok)return;await wait(650);if(t!==tok)return;}}
+function updateBtns(){$('backBtn').disabled=step<=-1;$('nextBtn').disabled=step>=2;}
+function selectPoint(L){if(!PS||step>=2||startP&&endP&&(step===-1)){/*allow reselect when idle*/}
+  // simple: first tap sets start, second sets end
+  if(!window.__pick||window.__pick==='end'){startP=L;window.__pick='start2';endP=null;}
+  else{endP=L;window.__pick='end';}
+  if(endP){$('startSel').value=startP;$('endSel').value=endP;cancel();buildPath();}else{drawGrid();}
 }
 
-function toPx(x,y){ return [cx + x*scale, cy - y*scale]; }
+/* ============ COLUMN VECTORS ============ */
+const pc=$('plane'),px=pc.getContext('2d'),PW=pc.width,PH=pc.height;
+const Ppos={x:PW/2,y:PH/2},U=38; // origin & unit
+const toPx=(x,y)=>({x:Ppos.x+x*U,y:Ppos.y-y*U});
+let A={x:3,y:1},B={x:1,y:2},dragT=null;
+function planeGrid(){px.clearRect(0,0,PW,PH);px.strokeStyle='#EEF2F7';px.lineWidth=1;
+  for(let x=Ppos.x%U;x<PW;x+=U){px.beginPath();px.moveTo(x,0);px.lineTo(x,PH);px.stroke();}
+  for(let y=Ppos.y%U;y<PH;y+=U){px.beginPath();px.moveTo(0,y);px.lineTo(PW,y);px.stroke();}
+  px.strokeStyle='#CBD5E1';px.lineWidth=1.4;px.beginPath();px.moveTo(0,Ppos.y);px.lineTo(PW,Ppos.y);px.moveTo(Ppos.x,0);px.lineTo(Ppos.x,PH);px.stroke();}
+function pArrow(x,y,col,label,w){const A0=toPx(0,0),B0=toPx(x,y);arrow(px,A0,B0,col,w||3.5);
+  px.fillStyle=col;px.font='800 14px Inter';px.textAlign='left';px.fillText(label,B0.x+6,B0.y-6);}
+function drawPlane(){planeGrid();
+  if($('showApB').checked){px.setLineDash([5,4]);const a=toPx(A.x,A.y),ab=toPx(A.x+B.x,A.y+B.y);arrow(px,a,ab,'#94A3B8',2);px.setLineDash([]);pArrow(A.x+B.x,A.y+B.y,'#7C3AED','a+b',3.5);}
+  if($('showAmB').checked){pArrow(A.x-B.x,A.y-B.y,'#0F766E','a−b',3);}
+  if($('showK').checked){const k=+$('kval').value;pArrow(k*A.x,k*A.y,'#D97706',(k)+'a',2.6);}
+  pArrow(A.x,A.y,'#1B4F8A','a',4);pArrow(B.x,B.y,'#8B1A1A','b',4);
+  const mag=v=>Math.sqrt(v.x*v.x+v.y*v.y).toFixed(2);
+  $('colOut').innerHTML='a = ('+A.x+', '+A.y+') &nbsp; |a| = '+mag(A)+'<br>b = ('+B.x+', '+B.y+') &nbsp; |b| = '+mag(B)+'<br>'+
+    ($('showApB').checked?'a + b = ('+(A.x+B.x)+', '+(A.y+B.y)+')<br>':'')+
+    ($('showAmB').checked?'a − b = ('+(A.x-B.x)+', '+(A.y-B.y)+')<br>':'')+
+    ($('showK').checked?(+$('kval').value)+'a = ('+(+$('kval').value*A.x)+', '+(+$('kval').value*A.y)+')':'');}
+function planePos(e){const r=pc.getBoundingClientRect();const cx=(e.touches?e.touches[0].clientX:e.clientX)-r.left,cy=(e.touches?e.touches[0].clientY:e.clientY)-r.top;return {x:(cx*PW/r.width-Ppos.x)/U, y:-(cy*PH/r.height-Ppos.y)/U};}
+pc.addEventListener('mousedown',e=>{const m=planePos(e);if(Math.hypot(m.x-A.x,m.y-A.y)<0.6)dragT='a';else if(Math.hypot(m.x-B.x,m.y-B.y)<0.6)dragT='b';});
+pc.addEventListener('mousemove',e=>{if(!dragT)return;const m=planePos(e);const v={x:Math.round(m.x),y:Math.round(m.y)};if(dragT==='a'){A=v;$('ax').value=A.x;$('ay').value=A.y;}else{B=v;$('bx').value=B.x;$('by').value=B.y;}drawPlane();});
+window.addEventListener('mouseup',()=>dragT=null);
+['ax','ay','bx','by'].forEach(id=>$(id).addEventListener('input',()=>{A={x:+$('ax').value||0,y:+$('ay').value||0};B={x:+$('bx').value||0,y:+$('by').value||0};drawPlane();}));
+['showApB','showAmB','showK'].forEach(id=>$(id).addEventListener('change',drawPlane));
+$('kval').addEventListener('input',()=>{$('kTxt').textContent=$('kval').value;drawPlane();});
 
-function drawGrid(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  ctx.strokeStyle = '#F1F5F9'; ctx.lineWidth = 1;
-  for(let gx=-16; gx<=16; gx++){
-    let [px] = toPx(gx,0);
-    if(px<0||px>canvas.width) continue;
-    ctx.beginPath(); ctx.moveTo(px,0); ctx.lineTo(px,canvas.height); ctx.stroke();
-  }
-  for(let gy=-12; gy<=12; gy++){
-    let [,py] = toPx(0,gy);
-    if(py<0||py>canvas.height) continue;
-    ctx.beginPath(); ctx.moveTo(0,py); ctx.lineTo(canvas.width,py); ctx.stroke();
-  }
-  ctx.strokeStyle = '#CBD5E1'; ctx.lineWidth = 1.5;
-  ctx.beginPath(); ctx.moveTo(0,cy); ctx.lineTo(canvas.width,cy); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(cx,0); ctx.lineTo(cx,canvas.height); ctx.stroke();
-}
+/* ============ wiring ============ */
+function setMode(m){cancel();mode=m;document.querySelectorAll('#modeSeg button').forEach(b=>b.classList.toggle('on',b.dataset.mode===m));
+  $('pathsPanel').style.display=m==='paths'?'block':'none';$('colPanel').style.display=m==='col'?'block':'none';
+  if(m==='paths')drawGrid();else drawPlane();}
+document.querySelectorAll('#modeSeg button').forEach(b=>b.onclick=()=>setMode(b.dataset.mode));
+$('showBtn').onclick=()=>{startP=$('startSel').value;endP=$('endSel').value;cancel();buildPath();};
+$('startSel').onchange=()=>{startP=$('startSel').value;cancel();buildPath();};
+$('endSel').onchange=()=>{endP=$('endSel').value;cancel();buildPath();};
+document.querySelectorAll('.ex').forEach(b=>b.onclick=()=>{startP=b.dataset.s;endP=b.dataset.e;$('startSel').value=startP;$('endSel').value=endP;cancel();buildPath();});
+$('nextBtn').onclick=()=>{cancel();if(PS&&step<2)animStep(step+1);};
+$('backBtn').onclick=()=>{cancel();if(step>-1){step--;if(step<0){buildPath();}else{drawUpTo(PS.steps[step].kind,1);$('caption').innerHTML='<div class="sn">'+PS.steps[step].sn+'</div><h4>'+PS.steps[step].h+'</h4><p>'+PS.steps[step].p+'</p>';$('answer').style.display=step===2?'block':'none';}$('stepCount').textContent=step<0?'':'Step '+(step+1)+' of 3';updateBtns();}};
+$('playBtn').onclick=()=>{if(startP&&endP)play();};
+$('restartBtn').onclick=()=>{cancel();buildPath();};
+gc.addEventListener('click',e=>{const r=gc.getBoundingClientRect();const mx=(e.clientX-r.left)*GW/r.width,my=(e.clientY-r.top)*GH/r.height;
+  let best=null,bd=26;for(let i=0;i<20;i++){const p=gpos(i%5,Math.floor(i/5));const d=Math.hypot(mx-p.x,my-p.y);if(d<bd){bd=d;best=LET[i];}}if(best)selectPoint(best);});
 
-function drawArrow(x1,y1,x2,y2,color,label,offset=14){
-  const [px1,py1] = toPx(x1,y1);
-  const [px2,py2] = toPx(x2,y2);
-  ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = 2.5;
-  ctx.beginPath(); ctx.moveTo(px1,py1); ctx.lineTo(px2,py2); ctx.stroke();
-  const ang = Math.atan2(py2-py1, px2-px1);
-  ctx.beginPath();
-  ctx.moveTo(px2,py2);
-  ctx.lineTo(px2-12*Math.cos(ang-0.4), py2-12*Math.sin(ang-0.4));
-  ctx.lineTo(px2-12*Math.cos(ang+0.4), py2-12*Math.sin(ang+0.4));
-  ctx.closePath(); ctx.fill();
-  ctx.font = '600 14px JetBrains Mono, monospace';
-  ctx.fillText(label, px2+offset*Math.cos(ang), py2+offset*Math.sin(ang));
-}
-
-function fmtVec(x,y){ return `(${x}, ${y})`; }
-function magnitude(x,y){ return Math.sqrt(x*x+y*y); }
-
-function render(){
-  const ax = parseFloat(document.getElementById('ax').value)||0;
-  const ay = parseFloat(document.getElementById('ay').value)||0;
-  const bx = parseFloat(document.getElementById('bx').value)||0;
-  const by = parseFloat(document.getElementById('by').value)||0;
-  const k = parseFloat(document.getElementById('kval').value)||0;
-
-  drawGrid();
-  drawArrow(0,0,ax,ay,'#2563EB','a');
-  drawArrow(0,0,bx,by,'#8B1A1A','b');
-
-  let rx, ry, expr, label;
-  if(currentOp==='add'){ rx=ax+bx; ry=ay+by; expr=`a + b = (${ax}, ${ay}) + (${bx}, ${by})`; label='a + b'; }
-  else if(currentOp==='sub'){ rx=ax-bx; ry=ay-by; expr=`a − b = (${ax}, ${ay}) − (${bx}, ${by})`; label='a − b'; }
-  else if(currentOp==='scaleA'){ rx=k*ax; ry=k*ay; expr=`${k}a = ${k} × (${ax}, ${ay})`; label=`${k}a`; }
-  else { rx=k*bx; ry=k*by; expr=`${k}b = ${k} × (${bx}, ${by})`; label=`${k}b`; }
-
-  drawArrow(0,0,rx,ry,'#B8860B',label, 18);
-
-  const mag = magnitude(rx,ry);
-  document.getElementById('result-box').innerHTML =
-    `${expr}<br><b>r = (${rx.toFixed(2).replace(/\.00$/,'')}, ${ry.toFixed(2).replace(/\.00$/,'')})</b><br>|r| = √(${rx.toFixed(0)}² + ${ry.toFixed(0)}²) = <b>${mag.toFixed(2)}</b>`;
-}
-
-/* ---------- Exam-style quiz ---------- */
-let score = 0, attempts = 0, currentAnswer = null;
-
-function rnd(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
-
-function newQuizQuestion(){
-  const types = ['add','sub','scale','magnitude','column'];
-  const type = types[rnd(0,types.length-1)];
-  const a = [rnd(-6,6), rnd(-6,6)];
-  const b = [rnd(-6,6), rnd(-6,6)];
-  let qText, correct, options;
-
-  if(type==='add'){
-    correct = `(${a[0]+b[0]}, ${a[1]+b[1]})`;
-    qText = `Given a = (${a[0]}, ${a[1]}) and b = (${b[0]}, ${b[1]}), find a + b.`;
-    options = shuffleOptions(correct, [
-      `(${a[0]-b[0]}, ${a[1]-b[1]})`,
-      `(${a[0]+b[1]}, ${a[1]+b[0]})`,
-      `(${a[0]*b[0]}, ${a[1]*b[1]})`
-    ]);
-  } else if(type==='sub'){
-    correct = `(${a[0]-b[0]}, ${a[1]-b[1]})`;
-    qText = `Given a = (${a[0]}, ${a[1]}) and b = (${b[0]}, ${b[1]}), find a − b.`;
-    options = shuffleOptions(correct, [
-      `(${a[0]+b[0]}, ${a[1]+b[1]})`,
-      `(${b[0]-a[0]}, ${b[1]-a[1]})`,
-      `(${a[0]-b[1]}, ${a[1]-b[0]})`
-    ]);
-  } else if(type==='scale'){
-    const k = rnd(2,4);
-    correct = `(${k*a[0]}, ${k*a[1]})`;
-    qText = `Given a = (${a[0]}, ${a[1]}), find ${k}a.`;
-    options = shuffleOptions(correct, [
-      `(${k+a[0]}, ${k+a[1]})`,
-      `(${a[0]}, ${k*a[1]})`,
-      `(${k*a[0]+1}, ${k*a[1]})`
-    ]);
-  } else if(type==='magnitude'){
-    const v = [rnd(-8,8)||3, rnd(-8,8)||4];
-    const m2 = v[0]*v[0]+v[1]*v[1];
-    const perfect = Math.round(Math.sqrt(m2));
-    correct = (perfect*perfect===m2) ? `${perfect}` : `${Math.sqrt(m2).toFixed(2)}`;
-    qText = `Find the magnitude |v| of the vector v = (${v[0]}, ${v[1]}). Give your answer to 2 d.p. where needed.`;
-    options = shuffleOptions(correct, [
-      `${(v[0]+v[1])}`,
-      `${(m2)}`,
-      `${(Math.sqrt(m2)+1).toFixed(2)}`
-    ]);
-  } else {
-    correct = `(${a[0]}, ${a[1]})`;
-    qText = `Points P(0, 0) and Q(${a[0]}, ${a[1]}) are given. Write the column vector PQ→.`;
-    options = shuffleOptions(correct, [
-      `(${-a[0]}, ${-a[1]})`,
-      `(${a[1]}, ${a[0]})`,
-      `(${a[0]+1}, ${a[1]+1})`
-    ]);
-  }
-
-  currentAnswer = correct;
-  document.getElementById('quiz-q').textContent = qText;
-  const optsDiv = document.getElementById('quiz-opts');
-  optsDiv.innerHTML = '';
-  document.getElementById('quiz-feedback').textContent = '';
-  options.forEach(opt=>{
-    const btn = document.createElement('button');
-    btn.className = 'quiz-opt';
-    btn.textContent = opt;
-    btn.onclick = ()=>checkAnswer(btn, opt);
-    optsDiv.appendChild(btn);
-  });
-}
-
-function shuffleOptions(correct, distractors){
-  const all = [correct, ...distractors];
-  for(let i=all.length-1;i>0;i--){
-    const j = Math.floor(Math.random()*(i+1));
-    [all[i],all[j]] = [all[j],all[i]];
-  }
-  return all;
-}
-
-function checkAnswer(btn, val){
-  attempts++;
-  const allBtns = document.querySelectorAll('.quiz-opt');
-  allBtns.forEach(b=>b.onclick=null);
-  if(val===currentAnswer){
-    btn.classList.add('correct');
-    score++;
-    document.getElementById('quiz-feedback').textContent = 'Correct! Well done.';
-    document.getElementById('quiz-feedback').style.color = '#16A34A';
-  } else {
-    btn.classList.add('wrong');
-    allBtns.forEach(b=>{ if(b.textContent===currentAnswer) b.classList.add('correct'); });
-    document.getElementById('quiz-feedback').textContent = `Not quite — the correct answer is ${currentAnswer}.`;
-    document.getElementById('quiz-feedback').style.color = '#DC2626';
-  }
-  document.getElementById('score-pill').textContent = `Score: ${score}/${attempts}`;
-  setTimeout(newQuizQuestion, 1800);
-}
-
-render();
-newQuizQuestion();
+fillSel();buildPath();
 </script>
-
 </body>
 </html>
