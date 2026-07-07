@@ -3,365 +3,218 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Probability Lab | SBS Mathematics</title>
-<link rel="stylesheet" href="../assets/css/main.css">
+<title>Probability | SBS Mathematics</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
-.tab-bar { display: flex; gap: 4px; border-bottom: 1px solid var(--gray-200); margin-bottom: 1.5rem; }
-.tab { padding: 8px 16px; font-size: 13px; font-weight: 500; cursor: pointer; border-radius: 6px 6px 0 0; color: var(--gray-600); background: none; border: none; border-bottom: 2px solid transparent; transition: all 0.15s; }
-.tab.active { color: var(--sbs-blue); border-bottom-color: var(--sbs-blue); background: var(--sbs-blue-pale); }
-.tab-panel { display: none; }
-.tab-panel.active { display: block; }
-.tree-svg { width: 100%; border: 1px solid var(--gray-200); border-radius: 8px; background: var(--gray-50); }
-.prob-result { font-size: 2rem; font-weight: 700; color: var(--sbs-blue); font-family: var(--font-mono); }
-.sim-bar { height: 32px; background: var(--gray-200); border-radius: 4px; overflow: hidden; margin: 8px 0; }
-.sim-bar-fill { height: 100%; background: var(--sbs-blue); border-radius: 4px; transition: width 0.3s; display: flex; align-items: center; padding-left: 8px; color: white; font-size: 12px; font-weight: 600; }
-.venn-svg { width: 100%; max-width: 400px; margin: 0 auto; display: block; }
-.formula-box { background: var(--sbs-blue-pale); border: 1px solid #BFDBFE; border-radius: 8px; padding: 12px 16px; font-family: var(--font-mono); font-size: 14px; color: var(--sbs-blue); margin: 12px 0; }
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--navy:#071a44;--blue:#1B4F8A;--gold:#B8860B;--crimson:#8B1A1A;--teal:#0F766E;--green:#059669;--purple:#7C3AED;--red:#DC2626;--cream:#FAF8F4;--white:#fff;
+--g50:#F8FAFC;--g100:#F1F5F9;--g200:#E2E8F0;--g400:#94A3B8;--g500:#64748B;--g600:#475569;--g700:#334155;
+--mono:'JetBrains Mono',ui-monospace,monospace;--shadow:0 4px 16px rgba(7,26,68,.08);}
+body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--navy);}
+a{text-decoration:none;color:inherit;}
+nav{background:var(--white);border-bottom:1px solid var(--g200);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:66px;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,.06);}
+.nav-logo{display:flex;align-items:center;} .nav-logo img{width:auto;display:block;}
+.nav-logo .logo-full{height:50px;} .nav-logo .logo-mark{height:38px;display:none;}
+.nav-links{display:flex;gap:1.8rem;list-style:none;align-items:center;}
+.nav-links a{color:var(--g700);font-size:14px;font-weight:500;} .nav-links a.active,.nav-links a:hover{color:var(--blue);}
+.shell{max-width:1080px;margin:0 auto;padding:1.6rem 1.5rem 3rem;}
+.hero{background:linear-gradient(135deg,var(--purple),#4c1d95);color:#fff;border-radius:20px;padding:1.5rem 1.8rem;margin-bottom:1.2rem;box-shadow:0 14px 40px rgba(7,26,68,.20);}
+.chip{display:inline-flex;gap:.4rem;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);padding:.35rem .8rem;border-radius:999px;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;}
+.hero h1{font-size:clamp(1.7rem,4vw,2.6rem);font-weight:900;margin:.5rem 0 .35rem;}
+.hero p{opacity:.94;max-width:700px;font-size:.96rem;line-height:1.5;}
+.panel{background:var(--white);border:1px solid var(--g200);border-radius:16px;padding:1.1rem;box-shadow:var(--shadow);}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1rem;}
+.tab{padding:.5rem .95rem;font-size:.82rem;font-weight:700;border:1px solid var(--g200);border-radius:9px;cursor:pointer;background:#fff;color:var(--g600);}
+.tab.on{background:var(--purple);color:#fff;border-color:var(--purple);}
+.tab:hover:not(.on){background:#F5F3FF;border-color:#DDD6FE;color:var(--purple);}
+.row{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin-bottom:.8rem;}
+.lbl{font-size:.85rem;font-weight:700;color:var(--g600);}
+input[type=text],input[type=number],select{padding:.5rem .6rem;border:2px solid var(--g200);border-radius:9px;font-size:.9rem;font-family:var(--mono);background:var(--g50);outline:none;}
+input:focus,select:focus{border-color:var(--purple);background:#fff;}
+.btn{font-size:.85rem;font-weight:700;padding:.55rem 1.05rem;border-radius:10px;cursor:pointer;border:none;transition:.15s;}
+.btn-primary{background:var(--purple);color:#fff;} .btn-primary:hover{background:#4c1d95;}
+.seg{display:inline-flex;border:1px solid var(--g200);border-radius:999px;overflow:hidden;}
+.seg button{border:none;background:#fff;padding:.45rem .9rem;font-size:.8rem;font-weight:700;cursor:pointer;color:var(--g600);}
+.seg button.on{background:var(--purple);color:#fff;}
+.ex{font-size:.76rem;font-weight:600;padding:.35rem .7rem;border-radius:999px;border:1px solid var(--g200);background:#fff;cursor:pointer;}
+.ex:hover{background:#F5F3FF;border-color:#DDD6FE;color:var(--purple);}
+canvas{display:block;width:100%;background:#fff;border:1px solid var(--g200);border-radius:14px;}
+.two{display:grid;grid-template-columns:1fr 320px;gap:1.1rem;align-items:start;}
+.info{background:linear-gradient(135deg,#F5F3FF,#F8FAFC);border:1px solid #DDD6FE;border-left:4px solid var(--purple);border-radius:12px;padding:1rem 1.1rem;}
+.info .l{font-size:.72rem;font-weight:800;text-transform:uppercase;color:var(--purple);}
+.info .s{font-size:.9rem;line-height:1.7;color:var(--g700);margin-top:.3rem;} .info .s b{color:var(--navy);}
+.info .mono{font-family:var(--mono);} .info .final{font-family:var(--mono);font-weight:800;color:var(--green);font-size:1.02rem;margin-top:.4rem;}
+.outcomes{font-family:var(--mono);font-size:.84rem;line-height:1.7;color:var(--g700);}
+.pill{display:inline-block;background:var(--g100);border-radius:6px;padding:.05rem .35rem;font-weight:700;}
+.hint{font-size:.78rem;color:var(--g500);margin-top:.6rem;line-height:1.5;}
+footer{background:var(--navy);color:rgba(255,255,255,.6);text-align:center;padding:1.4rem;font-size:13px;margin-top:1.2rem;} footer strong{color:rgba(255,255,255,.85);}
+@media(max-width:840px){.two{grid-template-columns:1fr;}.nav-links{display:none;}.nav-logo .logo-full{display:none;}.nav-logo .logo-mark{display:block;}}
 </style>
 </head>
 <body>
-
-<nav class="nav">
-  <a href="../index.html" class="nav-logo">
-    <img src="../assets/logo.png" alt="SBS">
-    <div><div class="nav-title">SBS Mathematics</div><div class="nav-subtitle">Cambridge IGCSE 0580</div></div>
+<nav>
+  <a href="../index.html" class="nav-logo" aria-label="SBS Mathematics — Home">
+    <img class="logo-full" src="../assets/logo-full.png" alt="SBS International School Chiangmai — Mathematics Department">
+    <img class="logo-mark" src="../assets/logo-mark.png" alt="SBS">
   </a>
   <ul class="nav-links">
-    <li><a href="../index.html">Home</a></li>
-    <li><a href="../labs.html" class="active">Labs</a></li>
+    <li><a href="../index.html">Home</a></li><li><a href="../chapters.html">Chapters</a></li>
+    <li><a class="active" href="../labs.html">Labs</a></li><li><a href="../about.html">About</a></li>
   </ul>
 </nav>
 
-<div class="lab-page">
-  <div class="lab-header">
-    <div class="lab-header-icon">🎲</div>
-    <div>
-      <div class="lab-header-title">Probability Lab</div>
-      <div class="lab-header-sub">Cambridge 0580 · Paper 2 & 4 · Topic 8 — Probability</div>
-    </div>
-    <div style="margin-left:auto;"><span class="cambridge-badge">IGCSE Extended</span></div>
-  </div>
+<main class="shell">
+  <header class="hero">
+    <span class="chip">◆ IGCSE Extended · Topic 8 · Probability</span>
+    <h1>Probability</h1>
+    <p>Build tree diagrams (with or without replacement), work with Venn diagrams, and calculate <b>conditional probabilities</b> — the probability of A given that B has already happened.</p>
+  </header>
 
-  <div class="lab-container">
-    <div class="tab-bar">
-      <button class="tab active" onclick="switchTab('simulate')">🎲 Simulation</button>
-      <button class="tab" onclick="switchTab('tree')">🌳 Tree Diagram</button>
-      <button class="tab" onclick="switchTab('venn')">⭕ Venn Diagrams</button>
-    </div>
+  <section class="panel">
+    <div class="tabs" id="tabs"></div>
 
-    <!-- SIMULATE TAB -->
-    <div id="tab-simulate" class="tab-panel active">
-      <div class="controls">
-        <div class="control-group">
-          <span class="control-label">Experiment</span>
-          <select id="exp-type" onchange="resetSim()">
-            <option value="coin">Fair coin (H/T)</option>
-            <option value="dice">Fair dice (1–6)</option>
-            <option value="biased">Biased coin (P=0.3)</option>
-            <option value="two-dice">Sum of two dice</option>
-          </select>
-        </div>
-        <div class="control-group">
-          <span class="control-label">Trials per click</span>
-          <select id="trial-count">
-            <option value="1">1</option>
-            <option value="10">10</option>
-            <option value="100" selected>100</option>
-            <option value="1000">1000</option>
-          </select>
-        </div>
-        <button class="btn btn-primary" onclick="runTrials()">Run ▶</button>
-        <button class="btn btn-secondary" onclick="resetSim()">Reset</button>
-        <div class="control-group">
-          <span class="control-label">Total trials</span>
-          <span class="control-value" id="total-trials">0</span>
-        </div>
+    <!-- TREE DIAGRAMS -->
+    <div class="tabpane" data-pane="tree">
+      <div class="row">
+        <span class="lbl">Items</span><input id="treeIn" type="text" value="B:3, R:8" style="width:180px">
+        <span class="lbl">Replacement?</span>
+        <div class="seg" id="repSeg"><button class="on" data-rep="0">Without</button><button data-rep="1">With</button></div>
+        <button class="btn btn-primary" id="treeBtn">Draw tree</button>
       </div>
-
-      <div class="theorem-box">
-        <strong>Law of Large Numbers:</strong> As the number of trials increases, the experimental probability gets closer to the theoretical probability.
+      <div class="row"><span class="lbl">Example:</span>
+        <button class="ex" data-tree="B:3, R:8">3 blue, 8 red counters</button>
+        <button class="ex" data-tree="Y:10, B:6, G:4">10 yellow, 6 blue, 4 green</button></div>
+      <div class="two">
+        <div><canvas id="treeCanvas" width="620" height="440"></canvas></div>
+        <div id="treeInfo"></div>
       </div>
-
-      <div id="sim-results"></div>
-      <canvas id="sim-canvas" width="700" height="240" style="border:1px solid var(--gray-200); border-radius:8px; margin-top:1rem;"></canvas>
+      <p class="hint">Format: <span class="pill">Label:count</span>, comma-separated (e.g. <span class="pill">B:3, R:8</span>). <b>Without replacement</b> is where the second-branch probabilities become conditional — the totals change after the first pick.</p>
     </div>
 
-    <!-- TREE DIAGRAM TAB -->
-    <div id="tab-tree" class="tab-panel">
-      <div class="controls">
-        <div class="control-group">
-          <span class="control-label">Scenario</span>
-          <select id="tree-scenario" onchange="drawTree()">
-            <option value="coins">Tossing 2 coins</option>
-            <option value="bag">Drawing 2 balls (with replacement)</option>
-            <option value="noreplace">Drawing 2 balls (without replacement)</option>
-            <option value="weather">Rain / umbrella scenario</option>
-          </select>
-        </div>
+    <!-- VENN -->
+    <div class="tabpane" data-pane="venn" style="display:none">
+      <div class="row">
+        <span class="lbl">Only A</span><input id="vA" type="number" value="3" style="width:64px">
+        <span class="lbl">A ∩ B</span><input id="vAB" type="number" value="2" style="width:64px">
+        <span class="lbl">Only B</span><input id="vB" type="number" value="3" style="width:64px">
+        <span class="lbl">Outside</span><input id="vOut" type="number" value="3" style="width:64px">
+        <button class="btn btn-primary" id="vennBtn">Update</button>
       </div>
-      <svg id="tree-svg" class="tree-svg" height="320" viewBox="0 0 680 320"></svg>
-      <div id="tree-info" class="result-panel"></div>
+      <div class="two">
+        <div><canvas id="vennCanvas" width="620" height="380"></canvas></div>
+        <div id="vennInfo"></div>
+      </div>
     </div>
 
-    <!-- VENN DIAGRAM TAB -->
-    <div id="tab-venn" class="tab-panel">
-      <div class="controls">
-        <div class="control-group">
-          <span class="control-label">P(A)</span>
-          <input type="range" id="pa" min="0" max="100" value="50" oninput="updateVenn()">
-          <span class="control-value" id="pa-val">0.50</span>
-        </div>
-        <div class="control-group">
-          <span class="control-label">P(B)</span>
-          <input type="range" id="pb" min="0" max="100" value="40" oninput="updateVenn()">
-          <span class="control-value" id="pb-val">0.40</span>
-        </div>
-        <div class="control-group">
-          <span class="control-label">P(A∩B)</span>
-          <input type="range" id="pab" min="0" max="40" value="15" oninput="updateVenn()">
-          <span class="control-value" id="pab-val">0.15</span>
-        </div>
+    <!-- CONDITIONAL & MULTI-STAGE -->
+    <div class="tabpane" data-pane="cond" style="display:none">
+      <div class="info" style="margin-bottom:1rem"><div class="l">The idea</div>
+        <div class="s"><b>P(A given B)</b> = (number in <b>both</b> A and B) ÷ (number in <b>B</b>). A conditional probability is always out of a <b>smaller, restricted set</b> — only the outcomes where B has happened, not all outcomes.</div></div>
+      <div class="row">
+        <span class="lbl">Items</span><input id="msIn" type="text" value="Y:10, B:6, G:4" style="width:180px">
+        <span class="lbl">Draws</span><select id="msDraws"><option>2</option><option>3</option></select>
+        <span class="lbl">Find P(</span><select id="msQuery"><option value="same">all same colour</option><option value="diff">all different colours</option></select><span class="lbl">)</span>
+        <button class="btn btn-primary" id="msBtn">Calculate</button>
       </div>
-
-      <svg class="venn-svg" height="220" viewBox="0 0 400 220">
-        <circle id="vA" cx="155" cy="110" r="90" fill="#1B4F8A" fill-opacity="0.2" stroke="#1B4F8A" stroke-width="2"/>
-        <circle id="vB" cx="245" cy="110" r="90" fill="#8B1A1A" fill-opacity="0.2" stroke="#8B1A1A" stroke-width="2"/>
-        <text x="110" y="105" text-anchor="middle" font-size="15" font-weight="700" fill="#1B4F8A">A</text>
-        <text x="290" y="105" text-anchor="middle" font-size="15" font-weight="700" fill="#8B1A1A">B</text>
-        <text id="vA-only" x="110" y="125" text-anchor="middle" font-size="13" fill="#1B4F8A"></text>
-        <text id="vAB" x="200" y="125" text-anchor="middle" font-size="13" fill="#475569"></text>
-        <text id="vB-only" x="290" y="125" text-anchor="middle" font-size="13" fill="#8B1A1A"></text>
-        <text id="vNeither" x="200" y="205" text-anchor="middle" font-size="12" fill="#94A3B8"></text>
-      </svg>
-
-      <div id="venn-formulas" style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:1rem;"></div>
+      <div id="msInfo"></div>
+      <p class="hint">Drawn <b>without replacement</b>: each pick changes the totals for the next, so every stage after the first uses a conditional probability.</p>
     </div>
-  </div>
-</div>
+  </section>
+</main>
 
-<footer class="site-footer">
-  <strong>SBS Mathematics</strong> · Probability Lab · Cambridge IGCSE 0580
-</footer>
+<footer><strong>SBS Mathematics</strong> · Probability · Cambridge IGCSE 0580</footer>
 
 <script>
-let totals = {};
-let history = [];
+"use strict";
+const $=id=>document.getElementById(id);
+const gcd=(a,b)=>{a=Math.abs(Math.round(a));b=Math.abs(Math.round(b));while(b){[a,b]=[b,a%b];}return a||1;};
+const simp=(n,d)=>{const k=gcd(n,d);return (n/k)+'/'+(d/k);};
+const COL={B:'#1B4F8A',R:'#DC2626',G:'#059669',Y:'#B8860B',P:'#7C3AED'};
+function parseItems(s){const items=[];s.split(',').forEach(t=>{const m=t.trim().match(/([A-Za-z]+)\s*[:=]\s*(\d+)/);if(m)items.push({k:m[1].toUpperCase().slice(0,1),name:m[1],c:+m[2]});});return items;}
 
-const scenarios = {
-  coins: {
-    label: "Tossing 2 coins",
-    branches1: [{label:"H", p:0.5},{label:"T", p:0.5}],
-    branches2: [{label:"H",p:0.5},{label:"T",p:0.5}],
-    outcomes: ["HH","HT","TH","TT"],
-    probs: [0.25,0.25,0.25,0.25]
-  },
-  bag: {
-    label: "Bag: 3 Red, 2 Blue (with replacement)",
-    branches1:[{label:"R (3/5)",p:0.6},{label:"B (2/5)",p:0.4}],
-    branches2:[{label:"R",p:0.6},{label:"B",p:0.4}],
-    outcomes:["RR","RB","BR","BB"],
-    probs:[0.36,0.24,0.24,0.16]
-  },
-  noreplace: {
-    label: "Bag: 3 Red, 2 Blue (without replacement)",
-    branches1:[{label:"R (3/5)",p:0.6},{label:"B (2/5)",p:0.4}],
-    branches2r:[{label:"R (2/4)",p:0.5},{label:"B (2/4)",p:0.5}],
-    branches2b:[{label:"R (3/4)",p:0.75},{label:"B (1/4)",p:0.25}],
-    outcomes:["RR","RB","BR","BB"],
-    probs:[0.3,0.3,0.3,0.1],
-    noReplace:true
-  },
-  weather: {
-    label: "Rain / Umbrella",
-    branches1:[{label:"Rain (0.3)",p:0.3},{label:"No rain (0.7)",p:0.7}],
-    branches2:[{label:"Umbrella",p:0.9},{label:"No umbrella",p:0.1}],
-    outcomes:["Rain+Umbrella","Rain+No","NoRain+Umbrella","NoRain+No"],
-    probs:[0.27,0.03,0.63,0.07]
-  }
-};
+/* ============ TREE ============ */
+const tc=$('treeCanvas'),tx=tc.getContext('2d');let treeRep=false;
+function drawTree(){const items=parseItems($('treeIn').value);if(items.length<2){$('treeInfo').innerHTML='<div class="hint">Enter at least two item types.</div>';return;}
+  const n=items.length,N=items.reduce((a,b)=>a+b.c,0),rep=treeRep;
+  const W=tc.width,H=Math.max(300,n*n*46+40);tc.height=H;
+  tx.clearRect(0,0,W,H);
+  const x0=24,x1=180,x2=360;const leaves=n*n;const gap=(H-40)/leaves;
+  const leafY=i=>28+gap*(i+0.5);
+  const stage1Y=j=>{let s=0;for(let k=0;k<n;k++)s+=leafY(j*n+k);return s/n;};
+  function branch(ax,ay,bx,by,label,color){tx.strokeStyle='#94A3B8';tx.lineWidth=1.4;tx.beginPath();tx.moveTo(ax,ay);tx.lineTo(bx,by);tx.stroke();
+    tx.fillStyle=color;tx.font='700 12px "JetBrains Mono"';tx.textAlign='center';tx.textBaseline='bottom';tx.fillText(label,(ax+bx)/2,(ay+by)/2-2);}
+  const rootY=H/2;
+  const out=[];
+  items.forEach((it,j)=>{const s1y=stage1Y(j);
+    branch(x0,rootY,x1,s1y,it.c+'/'+N,COL[it.k]||'#334155');
+    tx.fillStyle=COL[it.k]||'#334155';tx.font='800 14px Inter';tx.textAlign='left';tx.textBaseline='middle';tx.fillText(it.k,x1+6,s1y);
+    items.forEach((it2,k)=>{const ly=leafY(j*n+k);
+      const p2n=rep?it2.c:(j===k?it2.c-1:it2.c),p2d=rep?N:N-1;
+      branch(x1+20,s1y,x2,ly,p2n+'/'+p2d,COL[it2.k]||'#334155');
+      tx.fillStyle=COL[it2.k]||'#334155';tx.font='800 14px Inter';tx.textAlign='left';tx.textBaseline='middle';tx.fillText(it2.k,x2+6,ly);
+      const pn=it.c*p2n,pd=N*p2d;
+      tx.fillStyle='#334155';tx.font='600 12px "JetBrains Mono"';tx.fillText(it.k+it2.k+' = '+pn+'/'+pd,x2+26,ly);
+      out.push({seq:it.k+it2.k,n:pn,d:pd});});});
+  // outcomes + combined
+  const D=N*(rep?N:N-1);
+  let same=0,diff=0;out.forEach(o=>{if(o.seq[0]===o.seq[1])same+=o.n;else diff+=o.n;});
+  let h='<div class="info"><div class="l">Outcomes</div><div class="outcomes">';
+  out.forEach(o=>h+=o.seq+' = '+o.n+'/'+o.d+'<br>');
+  h+='</div><div class="s" style="margin-top:.6rem"><b>Both same colour</b> = '+same+'/'+D+' = <b class="mono">'+simp(same,D)+'</b><br>'+
+     '<b>One of each / different</b> = '+diff+'/'+D+' = <b class="mono">'+simp(diff,D)+'</b></div></div>';
+  $('treeInfo').innerHTML=h;}
 
-function switchTab(name) {
-  document.querySelectorAll('.tab, .tab-panel').forEach(e => e.classList.remove('active'));
-  document.querySelector(`[onclick="switchTab('${name}')"]`).classList.add('active');
-  document.getElementById(`tab-${name}`).classList.add('active');
-  if(name==='tree') drawTree();
-  if(name==='venn') updateVenn();
-}
+/* ============ VENN ============ */
+const vc=$('vennCanvas'),vx=vc.getContext('2d');
+function drawVenn(){const oA=+$('vA').value,ab=+$('vAB').value,oB=+$('vB').value,outv=+$('vOut').value;
+  const A=oA+ab,B=oB+ab,U=oA+ab+oB+outv;
+  const W=vc.width,H=vc.height;vx.clearRect(0,0,W,H);
+  vx.strokeStyle='#334155';vx.lineWidth=2;vx.strokeRect(20,20,W-40,H-40);
+  vx.fillStyle='#64748B';vx.font='800 16px Inter';vx.textAlign='left';vx.fillText('ξ',W-38,40);
+  const cyv=H/2,r=118,cxA=W/2-58,cxB=W/2+58;
+  vx.strokeStyle='#7C3AED';vx.lineWidth=2.4;vx.beginPath();vx.arc(cxA,cyv,r,0,7);vx.stroke();
+  vx.strokeStyle='#DC2626';vx.beginPath();vx.arc(cxB,cyv,r,0,7);vx.stroke();
+  vx.fillStyle='#7C3AED';vx.font='800 18px Inter';vx.fillText('A',cxA-r+6,cyv-r+18);
+  vx.fillStyle='#DC2626';vx.fillText('B',cxB+r-22,cyv-r+18);
+  vx.fillStyle='#0F172A';vx.font='800 22px "JetBrains Mono"';vx.textAlign='center';vx.textBaseline='middle';
+  vx.fillText(oA,cxA-52,cyv);vx.fillText(ab,(cxA+cxB)/2,cyv);vx.fillText(oB,cxB+52,cyv);vx.fillText(outv,W-58,H-52);
+  $('vennInfo').innerHTML='<div class="info"><div class="l">Probabilities (total = '+U+')</div>'+
+    '<div class="s">P(A) = '+A+'/'+U+' = <b class="mono">'+simp(A,U)+'</b><br>'+
+    'P(B) = '+B+'/'+U+' = <b class="mono">'+simp(B,U)+'</b><br>'+
+    'P(A ∪ B) = '+(oA+ab+oB)+'/'+U+' = <b class="mono">'+simp(oA+ab+oB,U)+'</b><br>'+
+    'P(A ∩ B) = '+ab+'/'+U+' = <b class="mono">'+simp(ab,U)+'</b></div>'+
+    '<div class="s" style="margin-top:.5rem"><b>Conditional</b> — out of the restricted set:<br>'+
+    'P(A | B) = '+ab+' of the '+B+' in B = <b class="mono">'+(B?simp(ab,B):'—')+'</b><br>'+
+    'P(B | A) = '+ab+' of the '+A+' in A = <b class="mono">'+(A?simp(ab,A):'—')+'</b></div></div>';}
 
-function getExperiment() {
-  const t = document.getElementById('exp-type').value;
-  if(t==='coin') return {outcomes:['H','T'], probs:[0.5,0.5], theoretical:{'H':0.5,'T':0.5}};
-  if(t==='biased') return {outcomes:['H','T'], probs:[0.3,0.7], theoretical:{'H':0.3,'T':0.7}};
-  if(t==='dice') return {outcomes:['1','2','3','4','5','6'], probs:[1/6,1/6,1/6,1/6,1/6,1/6], theoretical:{'1':1/6,'2':1/6,'3':1/6,'4':1/6,'5':1/6,'6':1/6}};
-  if(t==='two-dice') {
-    let outcomes=[]; let probs=[]; let theoretical={};
-    for(let s=2;s<=12;s++){
-      let count=0;
-      for(let d=1;d<=6;d++) if(d>=1&&d<=6&&s-d>=1&&s-d<=6) count++;
-      outcomes.push(s+''); probs.push(count/36); theoretical[s+'']=count/36;
-    }
-    return {outcomes,probs,theoretical};
-  }
-}
+/* ============ MULTI-STAGE ============ */
+function multiStage(){const items=parseItems($('msIn').value),draws=+$('msDraws').value,q=$('msQuery').value;
+  if(items.length<2){$('msInfo').innerHTML='<div class="hint">Enter at least two item types.</div>';return;}
+  const N=items.reduce((a,b)=>a+b.c,0);
+  const D=(()=>{let p=1;for(let i=0;i<draws;i++)p*=(N-i);return p;})();
+  let cases=[],total=0;
+  if(q==='same'){items.forEach(it=>{if(it.c<draws)return;let num=1,parts=[];for(let i=0;i<draws;i++){num*=(it.c-i);parts.push((it.c-i)+'/'+(N-i));}cases.push({lab:it.k.repeat(draws),parts,num});total+=num;});}
+  else{ // all different: permutations of distinct colours of length=draws
+    const perm=(arr,k)=>k===0?[[]]:arr.flatMap((x,i)=>perm(arr.filter((_,j)=>j!==i),k-1).map(r=>[x,...r]));
+    if(items.length>=draws){perm(items,draws).forEach(seq=>{let num=1,parts=[];seq.forEach((it,i)=>{num*=it.c;parts.push(it.c+'/'+(N-i));});cases.push({lab:seq.map(s=>s.k).join(''),parts,num});total+=num;});}}
+  let h='<div class="info"><div class="l">Working — '+draws+' draws, without replacement</div><div class="outcomes" style="margin-top:.3rem">';
+  cases.forEach(c=>h+='P('+c.lab+') = '+c.parts.join(' × ')+' = '+c.num+'/'+D+'<br>');
+  h+='</div><div class="s" style="margin-top:.5rem">Add the cases: '+cases.map(c=>c.num).join(' + ')+' = '+total+'</div>'+
+     '<div class="final">P('+(q==='same'?'all same colour':'all different')+') = '+total+'/'+D+' = '+simp(total,D)+'</div></div>';
+  $('msInfo').innerHTML=h;}
 
-function resetSim() {
-  totals={}; history=[];
-  document.getElementById('total-trials').textContent='0';
-  document.getElementById('sim-results').innerHTML='';
-  const c=document.getElementById('sim-canvas');
-  const ctx=c.getContext('2d');
-  ctx.clearRect(0,0,c.width,c.height);
-}
-
-function runTrials() {
-  const exp=getExperiment();
-  const n=parseInt(document.getElementById('trial-count').value);
-  for(let i=0;i<n;i++){
-    const r=Math.random();
-    let cum=0;
-    for(let j=0;j<exp.outcomes.length;j++){
-      cum+=exp.probs[j];
-      if(r<cum){ totals[exp.outcomes[j]]=(totals[exp.outcomes[j]]||0)+1; break; }
-    }
-  }
-  const total=Object.values(totals).reduce((a,b)=>a+b,0);
-  history.push({total,...Object.fromEntries(Object.entries(totals).map(([k,v])=>[k,v/total]))});
-  document.getElementById('total-trials').textContent=total;
-  renderSimResults(exp, total);
-  drawHistoryChart(exp, history);
-}
-
-function renderSimResults(exp, total) {
-  let html='';
-  exp.outcomes.forEach(o=>{
-    const count=totals[o]||0;
-    const expP=total>0?count/total:0;
-    const thP=exp.theoretical[o];
-    const pct=Math.round(expP*1000)/10;
-    const thPct=Math.round(thP*1000)/10;
-    html+=`<div style="margin:6px 0">
-      <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:3px">
-        <span><strong>${o}</strong> — ${count} times</span>
-        <span style="color:var(--gray-400)">Exp: <strong style="color:var(--sbs-blue)">${pct}%</strong> | Theory: ${thPct}%</span>
-      </div>
-      <div class="sim-bar"><div class="sim-bar-fill" style="width:${pct}%">${pct>5?pct+'%':''}</div></div>
-    </div>`;
-  });
-  document.getElementById('sim-results').innerHTML=html;
-}
-
-function drawHistoryChart(exp, hist) {
-  const c=document.getElementById('sim-canvas');
-  const ctx=c.getContext('2d');
-  ctx.clearRect(0,0,c.width,c.height);
-  if(hist.length<2) return;
-  const colors=['#1B4F8A','#8B1A1A','#059669','#D97706','#7C3AED','#0891B2'];
-  const pw=c.width-80; const ph=c.height-40;
-  ctx.strokeStyle='#E2E8F0'; ctx.lineWidth=1;
-  [0.25,0.5,0.75,1.0].forEach(y=>{
-    ctx.beginPath(); ctx.moveTo(60,20+ph*(1-y)); ctx.lineTo(60+pw,20+ph*(1-y)); ctx.stroke();
-    ctx.fillStyle='#94A3B8'; ctx.font='11px Inter'; ctx.textAlign='right';
-    ctx.fillText((y*100).toFixed(0)+'%',54,24+ph*(1-y));
-  });
-  exp.outcomes.forEach((o,i)=>{
-    ctx.beginPath(); ctx.strokeStyle=colors[i%colors.length]; ctx.lineWidth=2;
-    hist.forEach((h,j)=>{
-      const x=60+(j/(hist.length-1||1))*pw;
-      const y=20+ph*(1-(h[o]||0));
-      j===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
-    });
-    ctx.stroke();
-    ctx.fillStyle='#1E293B'; ctx.font='11px Inter'; ctx.textAlign='left';
-    ctx.fillText(o,65+i*50,c.height-8);
-    ctx.fillStyle=colors[i%colors.length];
-    ctx.fillRect(60+i*50,c.height-16,10,10);
-  });
-  ctx.fillStyle='#475569'; ctx.font='12px Inter'; ctx.textAlign='center';
-  ctx.fillText('Experimental probability converging to theoretical value',c.width/2,c.height-4);
-}
-
-function drawTree() {
-  const key=document.getElementById('tree-scenario').value;
-  const sc=scenarios[key];
-  const svg=document.getElementById('tree-svg');
-  svg.innerHTML='';
-  const W=680; const H=320;
-  const cx=60; const b1y=[80,240]; const b2y=[40,140,180,280];
-  const colors=['#1B4F8A','#8B1A1A','#059669','#D97706'];
-  function line(x1,y1,x2,y2,c){
-    const el=document.createElementNS('http://www.w3.org/2000/svg','line');
-    el.setAttribute('x1',x1);el.setAttribute('y1',y1);el.setAttribute('x2',x2);el.setAttribute('y2',y2);
-    el.setAttribute('stroke',c||'#94A3B8');el.setAttribute('stroke-width','1.5');
-    svg.appendChild(el);
-  }
-  function circle(x,y,r,fill,stroke){
-    const el=document.createElementNS('http://www.w3.org/2000/svg','circle');
-    el.setAttribute('cx',x);el.setAttribute('cy',y);el.setAttribute('r',r);
-    el.setAttribute('fill',fill||'white');el.setAttribute('stroke',stroke||'#94A3B8');el.setAttribute('stroke-width','1.5');
-    svg.appendChild(el);
-  }
-  function text(x,y,t,size,fill,anchor){
-    const el=document.createElementNS('http://www.w3.org/2000/svg','text');
-    el.setAttribute('x',x);el.setAttribute('y',y);el.setAttribute('font-size',size||13);
-    el.setAttribute('fill',fill||'#1E293B');el.setAttribute('text-anchor',anchor||'middle');
-    el.setAttribute('font-family','Inter,sans-serif');el.setAttribute('font-weight','500');
-    el.textContent=t; svg.appendChild(el);
-  }
-  circle(cx,160,8,'#1B4F8A','#1B4F8A');
-  text(cx,148,'Start',11,'#475569');
-  let outcomes=[];
-  sc.branches1.forEach((b1,i)=>{
-    const y1=b1y[i];
-    line(cx+8,160,200,y1,'#CBD5E1');
-    circle(200,y1,8,colors[i],colors[i]);
-    text(200,y1-14,b1.label,12,colors[i]);
-    text(130,y1+(i===0?-8:12),'p='+b1.p.toFixed(2),10,'#64748B');
-    let b2list=sc.noReplace?(i===0?sc.branches2r:sc.branches2b):sc.branches2;
-    b2list.forEach((b2,j)=>{
-      const y2=b2y[i*2+j];
-      line(208,y1,370,y2,'#CBD5E1');
-      circle(370,y2,8,colors[j],colors[j]);
-      text(370,y2-14,b2.label,12,colors[j]);
-      text(295,y2+(j===0?-8:12),'p='+b2.p.toFixed(2),10,'#64748B');
-      const p=(b1.p*b2.p);
-      const outcome=(sc.outcomes&&sc.outcomes[i*2+j])||'';
-      line(378,y2,500,y2,'#CBD5E1');
-      text(560,y2+5,(outcome?outcome+' ':'')+p.toFixed(3),12,'#475569','start');
-      outcomes.push({outcome,p});
-    });
-  });
-  text(560,20,'Outcome & P',11,'#94A3B8','start');
-  let info=`<strong>Outcomes:</strong><br>`;
-  outcomes.forEach(o=>{ info+=`P(${o.outcome}) = ${o.p.toFixed(4)}&nbsp;&nbsp;`; });
-  info+=`<br><strong>Check:</strong> Sum = ${outcomes.reduce((s,o)=>s+o.p,0).toFixed(4)} (should equal 1.0)`;
-  document.getElementById('tree-info').innerHTML=info;
-}
-
-function updateVenn() {
-  const pa=parseInt(document.getElementById('pa').value)/100;
-  const pb=parseInt(document.getElementById('pb').value)/100;
-  const maxAB=Math.min(pa,pb);
-  document.getElementById('pab').max=Math.round(maxAB*100);
-  const pab=Math.min(parseInt(document.getElementById('pab').value)/100,maxAB);
-  document.getElementById('pa-val').textContent=pa.toFixed(2);
-  document.getElementById('pb-val').textContent=pb.toFixed(2);
-  document.getElementById('pab-val').textContent=pab.toFixed(2);
-  const aOnly=pa-pab; const bOnly=pb-pab; const neither=1-pa-pb+pab;
-  document.getElementById('vA-only').textContent=aOnly.toFixed(2);
-  document.getElementById('vAB').textContent=pab.toFixed(2);
-  document.getElementById('vB-only').textContent=bOnly.toFixed(2);
-  document.getElementById('vNeither').textContent='Neither: '+(neither>0?neither.toFixed(2):'0.00');
-  const pAuB=(pa+pb-pab);
-  document.getElementById('venn-formulas').innerHTML=`
-    <div class="formula-box">P(A∪B) = P(A)+P(B)−P(A∩B)<br>= ${pa.toFixed(2)}+${pb.toFixed(2)}−${pab.toFixed(2)} = <strong>${pAuB.toFixed(2)}</strong></div>
-    <div class="formula-box">P(A|B) = P(A∩B)/P(B)<br>= ${pab.toFixed(2)}/${pb.toFixed(2)} = <strong>${pb>0?(pab/pb).toFixed(3):'—'}</strong></div>
-    <div class="formula-box">A and B independent if:<br>P(A∩B) = P(A)×P(B) = <strong>${(pa*pb).toFixed(3)}</strong></div>
-    <div class="formula-box">Currently: P(A∩B) = ${pab.toFixed(3)}<br>${Math.abs(pab-pa*pb)<0.001?'✅ Independent':'❌ Not independent'}</div>
-  `;
-}
-
-drawTree();
-updateVenn();
+/* ============ tabs & wiring ============ */
+const PANES=[['tree','Tree diagrams'],['venn','Venn diagrams'],['cond','Conditional & multi-stage']];
+const tabsEl=$('tabs');
+PANES.forEach((p,i)=>{const b=document.createElement('button');b.className='tab'+(i===0?' on':'');b.textContent=p[1];b.onclick=()=>{
+  document.querySelectorAll('.tab').forEach((t,j)=>t.classList.toggle('on',j===i));
+  document.querySelectorAll('.tabpane').forEach(pane=>pane.style.display=pane.dataset.pane===p[0]?'block':'none');};tabsEl.appendChild(b);});
+$('treeBtn').onclick=drawTree;
+document.querySelectorAll('#repSeg button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#repSeg button').forEach(x=>x.classList.toggle('on',x===b));treeRep=b.dataset.rep==='1';drawTree();});
+document.querySelectorAll('[data-tree]').forEach(b=>b.onclick=()=>{$('treeIn').value=b.dataset.tree;drawTree();});
+$('vennBtn').onclick=drawVenn;['vA','vAB','vB','vOut'].forEach(id=>$(id).addEventListener('input',drawVenn));
+$('msBtn').onclick=multiStage;
+drawTree();drawVenn();multiStage();
 </script>
 </body>
 </html>
