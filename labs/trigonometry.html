@@ -3,330 +3,323 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Trigonometry Unit Circle | SBS Mathematics</title>
-<link rel="stylesheet" href="../assets/css/main.css">
+<title>Trigonometry | SBS Mathematics</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
-.trig-layout { display: grid; grid-template-columns: 320px 1fr; gap: 16px; align-items: start; }
-.trig-values { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin: 12px 0; }
-.trig-val-card { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 8px; padding: 10px; text-align: center; }
-.trig-val-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
-.trig-val-num { font-size: 1.3rem; font-weight: 700; font-family: var(--font-mono); }
-.angle-display { font-size: 2.5rem; font-weight: 700; font-family: var(--font-mono); color: var(--sbs-blue); text-align: center; padding: 1rem; }
-canvas { display: block; border: 1px solid var(--gray-200); border-radius: 8px; }
-.unit-circle-canvas { background: white; }
-.wave-canvas { background: white; }
-@media (max-width:700px) { .trig-layout { grid-template-columns: 1fr; } }
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--navy:#071a44;--blue:#1B4F8A;--gold:#B8860B;--crimson:#8B1A1A;--teal:#0D9488;--green:#059669;--cream:#FAF8F4;--white:#fff;
+--g50:#F8FAFC;--g100:#F1F5F9;--g200:#E2E8F0;--g400:#94A3B8;--g500:#64748B;--g600:#475569;--g700:#334155;--g900:#0F172A;
+--mono:'JetBrains Mono',ui-monospace,monospace;--shadow:0 4px 16px rgba(7,26,68,.08);}
+body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--navy);}
+a{text-decoration:none;color:inherit;}
+nav{background:var(--white);border-bottom:1px solid var(--g200);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:66px;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,.06);}
+.nav-logo{display:flex;align-items:center;} .nav-logo img{width:auto;display:block;}
+.nav-logo .logo-full{height:50px;} .nav-logo .logo-mark{height:38px;display:none;}
+.nav-links{display:flex;gap:1.8rem;list-style:none;align-items:center;}
+.nav-links a{color:var(--g700);font-size:14px;font-weight:500;} .nav-links a.active,.nav-links a:hover{color:var(--blue);}
+.shell{max-width:1200px;margin:0 auto;padding:1.6rem 1.5rem 3rem;}
+.hero{background:linear-gradient(135deg,var(--teal),#0b3a34);color:#fff;border-radius:20px;padding:1.5rem 1.8rem;margin-bottom:1.2rem;box-shadow:0 14px 40px rgba(7,26,68,.20);}
+.chip{display:inline-flex;gap:.4rem;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);padding:.35rem .8rem;border-radius:999px;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;}
+.hero h1{font-size:clamp(1.7rem,4vw,2.6rem);font-weight:900;margin:.5rem 0 .35rem;}
+.hero p{opacity:.92;max-width:680px;font-size:.96rem;line-height:1.5;}
+.panel{background:var(--white);border:1px solid var(--g200);border-radius:16px;padding:1.1rem;box-shadow:var(--shadow);margin-bottom:1.1rem;}
+.seg{display:inline-flex;border:1px solid var(--g200);border-radius:999px;overflow:hidden;}
+.seg button{border:none;background:var(--white);padding:.5rem 1rem;font-size:.82rem;font-weight:700;cursor:pointer;color:var(--g600);}
+.seg button.on{background:var(--teal);color:#fff;}
+.modebar{display:flex;gap:.7rem;align-items:center;flex-wrap:wrap;margin-bottom:1rem;}
+.btn{font-size:.85rem;font-weight:700;padding:.6rem 1rem;border-radius:10px;cursor:pointer;border:none;transition:.15s;white-space:nowrap;}
+.btn-primary{background:var(--teal);color:#fff;} .btn-primary:hover{background:#0b3a34;}
+.btn-ghost{background:var(--g100);color:var(--g700);border:1px solid var(--g200);} .btn-ghost:hover{background:var(--g200);}
+.btn:disabled{opacity:.45;cursor:default;}
+canvas{display:block;background:#fff;border:1px solid var(--g200);border-radius:14px;}
+
+/* unit circle mode */
+.uc-wrap{display:grid;grid-template-columns:340px 1fr;gap:1.1rem;align-items:start;}
+.controls{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin-bottom:1rem;}
+.controls .lbl{font-size:.78rem;font-weight:700;color:var(--g600);}
+.controls input[type=range]{width:180px;accent-color:var(--teal);}
+.controls select{padding:.45rem .6rem;border:1px solid var(--g200);border-radius:9px;font-size:.85rem;}
+.qbtn{font-size:.78rem;font-weight:700;padding:.4rem .6rem;border-radius:8px;border:1px solid var(--g200);background:#fff;cursor:pointer;}
+.qbtn:hover{background:#E7F6F1;border-color:#9FD9C9;color:var(--teal);}
+.vals{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:1rem;}
+.val{background:var(--g50);border:1px solid var(--g200);border-radius:10px;padding:.7rem;text-align:center;}
+.val .l{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;}
+.val .n{font-size:1.25rem;font-weight:800;font-family:var(--mono);}
+.val .s{font-size:10px;color:var(--g400);margin-top:2px;}
+.note{background:var(--g50);border:1px solid var(--g200);border-left:3px solid var(--teal);border-radius:10px;padding:.7rem .85rem;font-size:.82rem;line-height:1.5;color:var(--g700);margin-top:.8rem;}
+.angle-big{font-family:var(--mono);font-weight:800;font-size:1.6rem;color:var(--teal);text-align:center;margin:.2rem 0 .6rem;}
+
+/* solve mode */
+.solve{display:none;} .solve.on{display:block;}
+.solve-box{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;margin-bottom:.6rem;}
+.solve-box .lbl{font-weight:700;color:var(--g600);font-size:.9rem;}
+.solve-in{font-family:var(--mono);font-size:.95rem;padding:.55rem .7rem;border:2px solid var(--g200);border-radius:10px;outline:none;background:var(--g50);width:150px;}
+.solve-in:focus{border-color:var(--teal);background:#fff;}
+.iv{width:62px;text-align:center;}
+.examples{display:flex;gap:6px;flex-wrap:wrap;margin:.3rem 0 .2rem;}
+.ex{font-size:.76rem;font-weight:600;padding:.4rem .7rem;border-radius:999px;border:1px solid var(--g200);background:#fff;cursor:pointer;}
+.ex:hover{background:#E7F6F1;border-color:#9FD9C9;color:var(--teal);}
+.hint{font-size:.76rem;color:var(--g500);margin-top:.4rem;}
+.err{display:none;margin-top:.6rem;background:#FEF2F2;border:1px solid #FECACA;color:#991B1B;border-radius:10px;padding:.6rem .8rem;font-size:.85rem;}
+.solve-row{display:grid;grid-template-columns:1fr 320px;gap:1.1rem;align-items:start;}
+.caption{background:linear-gradient(135deg,#E7F6F1,#F8FAFC);border:1px solid #BFE7DB;border-left:4px solid var(--teal);border-radius:12px;padding:1rem 1.1rem;min-height:110px;}
+.caption .sn{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--teal);}
+.caption h4{font-size:1.05rem;margin:.15rem 0 .4rem;} .caption p{font-size:.92rem;line-height:1.55;color:var(--g700);}
+.stepbar{display:flex;gap:.5rem;align-items:center;margin-top:.8rem;flex-wrap:wrap;} .stepbar .count{margin-left:auto;font-size:.8rem;color:var(--g500);font-weight:700;}
+.sol-final{margin-top:.8rem;background:#ECFDF5;border:1px solid #A7F3D0;border-radius:10px;padding:.7rem .85rem;font-size:.9rem;color:#065F46;}
+.sol-final .x{font-family:var(--mono);font-weight:800;}
+footer{background:var(--navy);color:rgba(255,255,255,.6);text-align:center;padding:1.4rem;font-size:13px;margin-top:1.2rem;} footer strong{color:rgba(255,255,255,.85);}
+@media(max-width:900px){.uc-wrap,.solve-row{grid-template-columns:1fr;}.nav-links{display:none;}.nav-logo .logo-full{display:none;}.nav-logo .logo-mark{display:block;}}
 </style>
 </head>
 <body>
-
-<nav class="nav">
-  <a href="../index.html" class="nav-logo">
-    <img src="../assets/logo.png" alt="SBS">
-    <div><div class="nav-title">SBS Mathematics</div><div class="nav-subtitle">Cambridge IGCSE 0580</div></div>
+<nav>
+  <a href="../index.html" class="nav-logo" aria-label="SBS Mathematics — Home">
+    <img class="logo-full" src="../assets/logo-full.png" alt="SBS International School Chiangmai — Mathematics Department">
+    <img class="logo-mark" src="../assets/logo-mark.png" alt="SBS">
   </a>
   <ul class="nav-links">
-    <li><a href="../index.html">Home</a></li>
-    <li><a href="../labs.html" class="active">Labs</a></li>
+    <li><a href="../index.html">Home</a></li><li><a href="../chapters.html">Chapters</a></li>
+    <li><a class="active" href="../labs.html">Labs</a></li><li><a href="../about.html">About</a></li>
   </ul>
 </nav>
 
-<div class="lab-page">
-  <div class="lab-header">
-    <div class="lab-header-icon">🔺</div>
-    <div>
-      <div class="lab-header-title">Trigonometry Unit Circle</div>
-      <div class="lab-header-sub">Cambridge 0580 · Trigonometry — Visualise sin, cos and tan from 0° to 360°</div>
-    </div>
-    <div style="margin-left:auto;"><span class="cambridge-badge">IGCSE Extended</span></div>
-  </div>
+<main class="shell">
+  <header class="hero">
+    <span class="chip">◆ IGCSE Extended · Topic 7 · Trigonometry</span>
+    <h1>Trigonometry</h1>
+    <p>Explore sin, cos and tan on the unit circle and their graphs — or switch to <b>Solve equations</b> for an animated, step-by-step walkthrough of finding every solution in a given interval.</p>
+  </header>
 
-  <div class="lab-container">
-    <div class="controls">
-      <div class="control-group">
-        <span class="control-label">Angle (degrees)</span>
-        <input type="range" id="angle-slider" min="0" max="360" value="45" step="1" oninput="updateAngle(this.value)" style="width:200px">
-        <span class="control-value" id="angle-display">45°</span>
-      </div>
-      <div class="control-group">
-        <span class="control-label">Mode</span>
-        <select id="trig-mode" onchange="draw()">
-          <option value="sin">Show sin</option>
-          <option value="cos">Show cos</option>
-          <option value="both">Show sin & cos</option>
-          <option value="tan">Show tan</option>
-        </select>
-      </div>
-      <button class="btn btn-primary" id="anim-btn" onclick="toggleAnim()">▶ Animate</button>
-      <button class="btn btn-secondary" onclick="setAngle(0)">0°</button>
-      <button class="btn btn-secondary" onclick="setAngle(30)">30°</button>
-      <button class="btn btn-secondary" onclick="setAngle(45)">45°</button>
-      <button class="btn btn-secondary" onclick="setAngle(60)">60°</button>
-      <button class="btn btn-secondary" onclick="setAngle(90)">90°</button>
-    </div>
-
-    <div class="trig-values">
-      <div class="trig-val-card">
-        <div class="trig-val-label" style="color:#1B4F8A">sin θ</div>
-        <div class="trig-val-num" style="color:#1B4F8A" id="sin-val">0.707</div>
-        <div style="font-size:11px;color:var(--gray-400);margin-top:4px">= y coordinate</div>
-      </div>
-      <div class="trig-val-card">
-        <div class="trig-val-label" style="color:#8B1A1A">cos θ</div>
-        <div class="trig-val-num" style="color:#8B1A1A" id="cos-val">0.707</div>
-        <div style="font-size:11px;color:var(--gray-400);margin-top:4px">= x coordinate</div>
-      </div>
-      <div class="trig-val-card">
-        <div class="trig-val-label" style="color:#059669">tan θ</div>
-        <div class="trig-val-num" style="color:#059669" id="tan-val">1.000</div>
-        <div style="font-size:11px;color:var(--gray-400);margin-top:4px">= sin/cos</div>
+  <section class="panel">
+    <div class="modebar">
+      <div class="seg" id="modeSeg">
+        <button class="on" data-mode="circle">🔵 Unit circle</button>
+        <button data-mode="solve">🎯 Solve equations</button>
       </div>
     </div>
 
-    <div class="trig-layout">
-      <div>
-        <canvas id="circle-canvas" class="unit-circle-canvas" width="300" height="300"></canvas>
-        <div class="theorem-box" style="margin-top:12px">
-          <strong>Key identity:</strong> sin²θ + cos²θ = 1<br>
-          <strong>CAST rule:</strong> All +ve in Q1, Sin in Q2, Tan in Q3, Cos in Q4
-        </div>
-        <div id="exact-val" class="result-panel" style="margin-top:8px;font-size:13px;"></div>
+    <!-- UNIT CIRCLE MODE -->
+    <div id="circlePanel">
+      <div class="controls">
+        <span class="lbl">Angle</span>
+        <input type="range" id="angle" min="0" max="360" value="45" step="1">
+        <span class="lbl" id="angleTxt" style="font-family:var(--mono);color:var(--teal)">45°</span>
+        <span class="lbl">Show</span>
+        <select id="ucMode"><option value="both">sin &amp; cos</option><option value="sin">sin</option><option value="cos">cos</option><option value="tan">tan</option></select>
+        <button class="btn btn-primary" id="animBtn">▶ Animate</button>
+        <button class="qbtn" data-a="0">0°</button><button class="qbtn" data-a="30">30°</button><button class="qbtn" data-a="45">45°</button><button class="qbtn" data-a="60">60°</button><button class="qbtn" data-a="90">90°</button>
       </div>
-      <div>
-        <canvas id="wave-canvas" class="wave-canvas" width="540" height="300"></canvas>
-        <div style="margin-top:12px; display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-          <div class="theorem-box">
-            <strong>sin θ</strong><br>
-            Period: 360° · Range: [−1, 1]<br>
-            sin(180°−θ) = sin θ<br>
-            sin(−θ) = −sin θ
+      <div class="uc-wrap">
+        <div>
+          <div class="vals">
+            <div class="val"><div class="l" style="color:#1B4F8A">sin θ</div><div class="n" id="sinV" style="color:#1B4F8A">0.707</div><div class="s">= y</div></div>
+            <div class="val"><div class="l" style="color:#8B1A1A">cos θ</div><div class="n" id="cosV" style="color:#8B1A1A">0.707</div><div class="s">= x</div></div>
+            <div class="val"><div class="l" style="color:#059669">tan θ</div><div class="n" id="tanV" style="color:#059669">1.000</div><div class="s">= sin/cos</div></div>
           </div>
-          <div class="theorem-box">
-            <strong>cos θ</strong><br>
-            Period: 360° · Range: [−1, 1]<br>
-            cos(360°−θ) = cos θ<br>
-            cos(−θ) = cos θ
+          <canvas id="circle" width="320" height="320" style="width:100%;max-width:340px;"></canvas>
+          <div class="note" id="exact"></div>
+          <div class="note"><b>CAST:</b> All +ve in Q1, Sin in Q2, Tan in Q3, Cos in Q4. &nbsp; <b>Identity:</b> sin²θ + cos²θ = 1.</div>
+        </div>
+        <div>
+          <canvas id="wave" width="620" height="340" style="width:100%;"></canvas>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:.8rem;">
+            <div class="note"><b>sin θ</b> · period 360°, range [−1, 1]<br>sin(180°−θ) = sin θ</div>
+            <div class="note"><b>cos θ</b> · period 360°, range [−1, 1]<br>cos(360°−θ) = cos θ</div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
 
-<footer class="site-footer">
-  <strong>SBS Mathematics</strong> · Trigonometry Unit Circle · Cambridge IGCSE 0580
-</footer>
+    <!-- SOLVE MODE -->
+    <div class="solve" id="solvePanel">
+      <div class="solve-box">
+        <span class="lbl">Solve</span>
+        <input id="eq" class="solve-in" value="sin x = 0.5" autocomplete="off" spellcheck="false">
+        <span class="lbl">for</span>
+        <input id="lo" class="solve-in iv" type="number" value="0">° ≤ x ≤ <input id="hi" class="solve-in iv" type="number" value="360">°
+        <button class="btn btn-primary" id="solveBtn">Solve</button>
+      </div>
+      <div class="examples">
+        <button class="ex" data-eq="sin x = 0.5">sin x = 0.5</button>
+        <button class="ex" data-eq="cos x = 0.5">cos x = 0.5</button>
+        <button class="ex" data-eq="tan x = 1">tan x = 1</button>
+        <button class="ex" data-eq="2 sin x - 1 = 0">2 sin x − 1 = 0</button>
+        <button class="ex" data-eq="cos x = -0.5">cos x = −0.5</button>
+        <button class="ex" data-eq="sin x = -0.5">sin x = −0.5</button>
+      </div>
+      <p class="hint">Type <b>sin x = …</b>, <b>cos x = …</b> or <b>tan x = …</b> (values from −1 to 1 for sin/cos). Equations like <b>2 sin x − 1 = 0</b> are rearranged automatically.</p>
+      <div class="err" id="err"></div>
+
+      <div class="solve-row" style="margin-top:1rem">
+        <div>
+          <canvas id="solveCv" width="720" height="380" style="width:100%;"></canvas>
+        </div>
+        <div>
+          <div class="caption" id="caption"></div>
+          <div class="stepbar" id="stepbar">
+            <button class="btn btn-ghost" id="backBtn">◀ Back</button>
+            <button class="btn btn-primary" id="nextBtn">Next ▶</button>
+            <button class="btn btn-ghost" id="playBtn">▶ Play all</button>
+            <button class="btn btn-ghost" id="restartBtn">↻ Restart</button>
+            <span class="count" id="stepCount"></span>
+          </div>
+          <div class="sol-final" id="solFinal" style="display:none"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer><strong>SBS Mathematics</strong> · Trigonometry · Cambridge IGCSE 0580</footer>
 
 <script>
-let currentAngle = 45;
-let animating = false;
-let animId = null;
+"use strict";
+const $=id=>document.getElementById(id);
+let mode='circle';
+const DEG=Math.PI/180;
+function round(x){return Math.round(x*100)/100;}
 
-const exactVals = {
-  0: {s:'0', c:'1', t:'0'},
-  30: {s:'½', c:'√3/2', t:'1/√3'},
-  45: {s:'√2/2', c:'√2/2', t:'1'},
-  60: {s:'√3/2', c:'½', t:'√3'},
-  90: {s:'1', c:'0', t:'undefined'},
-  120: {s:'√3/2', c:'-½', t:'-√3'},
-  135: {s:'√2/2', c:'-√2/2', t:'-1'},
-  150: {s:'½', c:'-√3/2', t:'-1/√3'},
-  180: {s:'0', c:'-1', t:'0'},
-  210: {s:'-½', c:'-√3/2', t:'1/√3'},
-  225: {s:'-√2/2', c:'-√2/2', t:'1'},
-  240: {s:'-√3/2', c:'-½', t:'√3'},
-  270: {s:'-1', c:'0', t:'undefined'},
-  300: {s:'-√3/2', c:'½', t:'-√3'},
-  315: {s:'-√2/2', c:'√2/2', t:'-1'},
-  330: {s:'-½', c:'√3/2', t:'-1/√3'},
-  360: {s:'0', c:'1', t:'0'}
-};
+/* ================= UNIT CIRCLE ================= */
+let angle=45, animing=false, animTimer=null;
+const exact={0:['0','1','0'],30:['½','√3/2','1/√3'],45:['√2/2','√2/2','1'],60:['√3/2','½','√3'],90:['1','0','undefined'],120:['√3/2','−½','−√3'],135:['√2/2','−√2/2','−1'],150:['½','−√3/2','−1/√3'],180:['0','−1','0'],210:['−½','−√3/2','1/√3'],225:['−√2/2','−√2/2','1'],240:['−√3/2','−½','√3'],270:['−1','0','undefined'],300:['−√3/2','½','−√3'],315:['−√2/2','√2/2','−1'],330:['−½','√3/2','−1/√3'],360:['0','1','0']};
+function setAngle(a){angle=((a%360)+360)%360;$('angle').value=angle;$('angleTxt').textContent=angle+'°';drawCircleMode();}
+function drawCircle(){const c=$('circle'),x=c.getContext('2d'),W=c.width,H=c.height,cx=W/2,cy=H/2,r=118;
+  x.clearRect(0,0,W,H);const rad=angle*DEG,px=cx+r*Math.cos(rad),py=cy-r*Math.sin(rad),m=$('ucMode').value;
+  x.strokeStyle='#CBD5E1';x.lineWidth=1;x.beginPath();x.moveTo(0,cy);x.lineTo(W,cy);x.moveTo(cx,0);x.lineTo(cx,H);x.stroke();
+  x.beginPath();x.arc(cx,cy,r,0,7);x.strokeStyle='#E2E8F0';x.lineWidth=1.5;x.stroke();
+  x.beginPath();x.arc(cx,cy,28,0,-rad,rad<0);x.strokeStyle='#94A3B8';x.stroke();
+  if(m==='cos'||m==='both'){x.beginPath();x.moveTo(cx,cy);x.lineTo(px,cy);x.strokeStyle='#8B1A1A';x.lineWidth=3;x.stroke();}
+  if(m==='sin'||m==='both'){x.beginPath();x.moveTo(px,cy);x.lineTo(px,py);x.strokeStyle='#1B4F8A';x.lineWidth=3;x.stroke();}
+  if(m==='tan'&&Math.abs(Math.cos(rad))>0.05){const ty=cy-r*Math.tan(rad);x.beginPath();x.moveTo(cx+r,cy);x.lineTo(cx+r,ty);x.strokeStyle='#059669';x.lineWidth=3;x.stroke();x.beginPath();x.moveTo(cx,cy);x.lineTo(cx+r,ty);x.strokeStyle='#94A3B8';x.lineWidth=1;x.stroke();}
+  x.beginPath();x.moveTo(cx,cy);x.lineTo(px,py);x.strokeStyle='#475569';x.lineWidth=2;x.stroke();
+  x.beginPath();x.arc(px,py,5,0,7);x.fillStyle='#0D9488';x.fill();
+  x.fillStyle='#94A3B8';x.font='11px Inter';x.textAlign='left';x.fillText('(1,0)',cx+r+3,cy-4);x.fillText('(0,1)',cx+4,cy-r-4);
+  x.fillStyle='#0D9488';x.font='bold 11px Inter';x.fillText('('+Math.cos(rad).toFixed(2)+', '+Math.sin(rad).toFixed(2)+')',px+8,py-8);}
+function drawWave(){const c=$('wave'),x=c.getContext('2d'),W=c.width,H=c.height,mid=H/2,amp=118,m=$('ucMode').value,L=44;
+  x.clearRect(0,0,W,H);x.strokeStyle='#F1F5F9';x.lineWidth=1;
+  [0.5,1].forEach(f=>{[mid-amp*f,mid+amp*f].forEach(y=>{x.beginPath();x.moveTo(L,y);x.lineTo(W-8,y);x.stroke();});});
+  x.strokeStyle='#CBD5E1';x.beginPath();x.moveTo(L,mid);x.lineTo(W-8,mid);x.stroke();
+  x.fillStyle='#94A3B8';x.font='10px "JetBrains Mono"';x.textAlign='right';x.fillText('1',L-4,mid-amp+4);x.fillText('-1',L-4,mid+amp+4);
+  x.textAlign='center';[0,90,180,270,360].forEach(d=>{const px=L+(d/360)*(W-L-8);x.beginPath();x.moveTo(px,mid-4);x.lineTo(px,mid+4);x.stroke();x.fillText(d+'°',px,mid+16);});
+  const wave=(f,col)=>{x.strokeStyle=col;x.lineWidth=2.4;x.beginPath();let st=false;
+    for(let px=0;px<=W-L-8;px++){const d=(px/(W-L-8))*360,rad=d*DEG;let y;if(f==='sin')y=Math.sin(rad);else if(f==='cos')y=Math.cos(rad);else{const t=Math.tan(rad);if(Math.abs(t)>4){st=false;continue;}y=t/4;}const cy=mid-amp*y;if(!st){x.moveTo(L+px,cy);st=true;}else x.lineTo(L+px,cy);}x.stroke();};
+  if(m==='sin'||m==='both')wave('sin','#1B4F8A');if(m==='cos'||m==='both')wave('cos','#8B1A1A');if(m==='tan')wave('tan','#059669');
+  const px=L+(angle/360)*(W-L-8);x.strokeStyle='#475569';x.setLineDash([4,3]);x.beginPath();x.moveTo(px,0);x.lineTo(px,H);x.stroke();x.setLineDash([]);
+  const rad=angle*DEG;if(m==='sin'||m==='both'){x.beginPath();x.arc(px,mid-amp*Math.sin(rad),5,0,7);x.fillStyle='#1B4F8A';x.fill();}
+  if(m==='cos'||m==='both'){x.beginPath();x.arc(px,mid-amp*Math.cos(rad),5,0,7);x.fillStyle='#8B1A1A';x.fill();}}
+function updateVals(){const rad=angle*DEG,s=Math.sin(rad),co=Math.cos(rad),t=Math.tan(rad);
+  $('sinV').textContent=s.toFixed(3);$('cosV').textContent=co.toFixed(3);$('tanV').textContent=Math.abs(co)<0.001?'undef.':t.toFixed(3);
+  const e=exact[angle];$('exact').innerHTML=e?('<b>Exact values at '+angle+'°:</b>&nbsp; sin = '+e[0]+' &nbsp; cos = '+e[1]+' &nbsp; tan = '+e[2]):('<b>At '+angle+'°:</b> sin²+cos² = '+(s*s+co*co).toFixed(4));}
+function drawCircleMode(){drawCircle();drawWave();updateVals();}
 
-function updateAngle(v) {
-  currentAngle = parseFloat(v);
-  document.getElementById('angle-display').textContent = currentAngle + '°';
-  document.getElementById('angle-slider').value = currentAngle;
-  draw();
+/* ================= SOLVE ================= */
+function parseTrigEq(input){let s=input.toLowerCase().replace(/\s+/g,'').replace(/×/g,'*').replace(/−/g,'-');
+  let fn=null;for(const f of ['sin','cos','tan'])if(s.includes(f)){fn=f;break;}
+  if(!fn)throw new Error('Use sin, cos or tan.');
+  s=s.replace(new RegExp(fn+'\\(x\\)','g'),'T').replace(new RegExp(fn+'x','g'),'T');
+  if(!s.includes('='))throw new Error('Include an = sign.');
+  const [L,R]=s.split('=');
+  const lin=e=>{let a=0,b=0;e=e.replace(/-/g,'+-');for(const t of e.split('+')){if(!t)continue;
+    if(t.includes('T')){let co=t.replace('T','').replace('*','');a+=(co===''||co==='+')?1:co==='-'?-1:parseFloat(co);}
+    else{const v=parseFloat(t);if(!isNaN(v))b+=v;}}return {a,b};};
+  const lo=lin(L),ro=lin(R),A=lo.a-ro.a,Bc=ro.b-lo.b;
+  if(Math.abs(A)<1e-9)throw new Error('No '+fn+' term found.');
+  const k=Bc/A,rearranged=!(Math.abs(lo.a-1)<1e-9&&Math.abs(lo.b)<1e-9&&Math.abs(ro.a)<1e-9);
+  return {fn,k,rearranged};}
+function solveTrig(fn,k,lo,hi){const out=new Set();if(fn!=='tan'&&(k<-1||k>1))return [];
+  let ps=[];if(fn==='sin'){const p=Math.asin(k)/DEG;ps=[p,180-p];}else if(fn==='cos'){const p=Math.acos(k)/DEG;ps=[p,-p];}else ps=[Math.atan(k)/DEG];
+  const per=fn==='tan'?180:360;
+  ps.forEach(p=>{let x=p;while(x<lo-1e-9)x+=per;for(;x<=hi+1e-9;x+=per)if(x>=lo-1e-9)out.add(Math.round(x*1e6)/1e6);
+    x=p;while(x>hi+1e-9)x-=per;for(;x>=lo-1e-9;x-=per)if(x<=hi+1e-9)out.add(Math.round(x*1e6)/1e6);});
+  return [...out].map(Number).sort((a,b)=>a-b);}
+
+let SS=null, step=-1;
+function buildSolve(){
+  let P;try{P=parseTrigEq($('eq').value);$('err').style.display='none';}catch(e){$('err').textContent=e.message;$('err').style.display='block';return false;}
+  const lo=+$('lo').value,hi=+$('hi').value;
+  if(P.fn!=='tan'&&(P.k<-1||P.k>1)){$('err').textContent='For sin/cos, the value must be between −1 and 1 (no solutions otherwise).';$('err').style.display='block';return false;}
+  const sols=solveTrig(P.fn,P.k,lo,hi);
+  let principal;if(P.fn==='sin')principal=Math.asin(P.k)/DEG;else if(P.fn==='cos')principal=Math.acos(P.k)/DEG;else principal=Math.atan(P.k)/DEG;
+  const fnn=P.fn;
+  const steps=[];
+  if(P.rearranged)steps.push({sn:'Step 1',h:'Rearrange',p:'Get the trig term on its own: <b>'+fnn+' x = '+round(P.k)+'</b>. Now solve it like a standard trig equation.',count:0,curve:false});
+  steps.push({sn:'Step '+(steps.length+1),h:'First solution (from the calculator)',p:'Take the inverse: <b>x = '+fnn+'⁻¹('+round(P.k)+') = '+round(principal)+'°</b>. This is the first solution the calculator gives.',count:1,curve:true,grow:true});
+  let rule;
+  if(fnn==='sin')rule='the sine curve is symmetric about 90°, so a second solution is <b>180° − '+round(principal)+'° = '+round(180-principal)+'°</b>.';
+  else if(fnn==='cos')rule='the cosine curve is symmetric about the y-axis, so a second solution is <b>360° − '+round(principal)+'° = '+round(360-principal)+'°</b>.';
+  else rule='the tangent curve repeats every 180°, so another solution is <b>'+round(principal)+'° + 180° = '+round(principal+180)+'°</b>.';
+  steps.push({sn:'Step '+(steps.length+1),h:'Use the graph’s symmetry',p:'Sketch y = '+fnn+' x and the line y = '+round(P.k)+'. Reading off the graph, '+rule,count:2,curve:true});
+  steps.push({sn:'Step '+(steps.length+1),h:'All solutions in the interval',p:'Add or subtract the period ('+(fnn==='tan'?'180°':'360°')+') to land inside '+lo+'° ≤ x ≤ '+hi+'°. Then check each answer in the calculator.',count:sols.length,curve:true});
+  SS={P,lo,hi,sols,principal,fnn,steps};
+  step=-1;$('solFinal').style.display='none';renderSolveStatic(-1);solveCaption(-1);updateSolveButtons();return true;
 }
+/* solve canvas */
+const scv=$('solveCv'),sx=scv.getContext('2d');
+function sbounds(){const lo=SS.lo,hi=SS.hi;let ym=SS.fnn==='tan'?4:1.2;return {lo,hi,ymin:-ym,ymax:ym};}
+function SX(d){const B=sbounds();return 46+(d-B.lo)/(B.hi-B.lo)*(scv.width-60);}
+function SY(v){const B=sbounds();return 20+(B.ymax-v)/(B.ymax-B.ymin)*(scv.height-52);}
+function solveAxes(){const B=sbounds(),W=scv.width,H=scv.height;sx.clearRect(0,0,W,H);
+  sx.strokeStyle='#F1F5F9';sx.lineWidth=1;
+  const stepd=(B.hi-B.lo)<=180?30:(B.hi-B.lo)<=540?90:180;
+  for(let d=Math.ceil(B.lo/stepd)*stepd;d<=B.hi;d+=stepd){sx.beginPath();sx.moveTo(SX(d),16);sx.lineTo(SX(d),H-30);sx.stroke();}
+  sx.strokeStyle='#CBD5E1';sx.lineWidth=1.2;sx.beginPath();sx.moveTo(SX(B.lo),SY(0));sx.lineTo(SX(B.hi),SY(0));sx.stroke();
+  sx.fillStyle='#64748B';sx.font='10px "JetBrains Mono"';sx.textAlign='center';sx.textBaseline='top';
+  for(let d=Math.ceil(B.lo/stepd)*stepd;d<=B.hi;d+=stepd){sx.fillText(d+'°',SX(d),SY(0)+5);}
+  sx.textAlign='right';sx.textBaseline='middle';[B.ymin,0,B.ymax].forEach(v=>{if(v===0)return;sx.fillText(v,42,SY(v));});}
+function solveCurve(frac){frac=frac==null?1:frac;const B=sbounds(),fnn=SS.fnn;sx.strokeStyle='#0D9488';sx.lineWidth=2.6;sx.beginPath();let st=false;
+  const endd=B.lo+(B.hi-B.lo)*frac;
+  for(let d=B.lo;d<=endd;d+=1){const rad=d*DEG;let y;if(fnn==='sin')y=Math.sin(rad);else if(fnn==='cos')y=Math.cos(rad);else{const t=Math.tan(rad);if(Math.abs(t)>B.ymax){st=false;continue;}y=t;}const px=SX(d),py=SY(y);if(!st){sx.moveTo(px,py);st=true;}else sx.lineTo(px,py);}sx.stroke();}
+function solveKLine(frac){frac=frac==null?1:frac;const B=sbounds(),k=SS.P.k;if(k<B.ymin||k>B.ymax)return;const y=SY(k),x2=SX(B.lo)+(SX(B.hi)-SX(B.lo))*frac;
+  sx.strokeStyle='#8B1A1A';sx.lineWidth=2;sx.setLineDash([6,4]);sx.beginPath();sx.moveTo(SX(B.lo),y);sx.lineTo(x2,y);sx.stroke();sx.setLineDash([]);
+  if(frac>0.9){sx.fillStyle='#8B1A1A';sx.font='700 12px Inter';sx.textAlign='left';sx.textBaseline='bottom';sx.fillText('y = '+round(k),SX(B.lo)+4,y-3);}}
+function solvePoint(d,pulse){const fnn=SS.fnn,rad=d*DEG;let y=fnn==='sin'?Math.sin(rad):fnn==='cos'?Math.cos(rad):Math.tan(rad);const px=SX(d),py=SY(y);
+  sx.strokeStyle='rgba(13,148,136,.5)';sx.lineWidth=1.2;sx.setLineDash([3,3]);sx.beginPath();sx.moveTo(px,py);sx.lineTo(px,SY(0));sx.stroke();sx.setLineDash([]);
+  if(pulse!=null&&pulse<1){sx.strokeStyle='rgba(13,148,136,'+(0.5*(1-pulse))+')';sx.lineWidth=2;sx.beginPath();sx.arc(px,py,6+16*pulse,0,7);sx.stroke();}
+  sx.fillStyle='#0D9488';sx.beginPath();sx.arc(px,py,6,0,7);sx.fill();sx.strokeStyle='#fff';sx.lineWidth=2;sx.stroke();
+  sx.fillStyle='#065F46';sx.font='700 12px Inter';sx.textAlign='center';sx.textBaseline='top';sx.fillText(round(d)+'°',px,SY(0)+16);}
+function renderSolveStatic(i){solveAxes();if(i<0){return;}const st=SS.steps[i]||{};if(st.curve){solveCurve(1);solveKLine(1);}
+  const n=Math.min(st.count||0,SS.sols.length);for(let j=0;j<n;j++)solvePoint(SS.sols[j],1);
+  if((st.count||0)>=SS.sols.length&&SS.sols.length){$('solFinal').style.display='block';$('solFinal').innerHTML='Solutions in '+SS.lo+'° ≤ x ≤ '+SS.hi+'°: <span class="x">x = '+SS.sols.map(round).join('°, ')+'°</span>';}
+  else $('solFinal').style.display='none';}
 
-function setAngle(a) { updateAngle(a); }
+/* animation */
+const REDUCE=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let tok=0;function cancelA(){tok++;}
+function tween(dur,fr){return new Promise(res=>{const t=tok,t0=performance.now();(function f(now){if(t!==tok)return;const p=Math.min(1,(now-t0)/dur);fr(p);if(p<1)requestAnimationFrame(f);else res();})(performance.now());});}
+function wait(ms){return new Promise(res=>{const t=tok;setTimeout(()=>{if(t===tok)res();},ms);});}
+async function animStep(i){step=i;solveCaption(i);updateSolveButtons();const st=SS.steps[i];
+  if(REDUCE){renderSolveStatic(i);return;}
+  const prevN=i>0?(SS.steps[i-1].count||0):0, showN=Math.min(st.count||0,SS.sols.length);
+  const drawUpTo=(n,pi,pp)=>{solveAxes();if(st.curve){solveCurve(1);solveKLine(1);}for(let j=0;j<n;j++)solvePoint(SS.sols[j], j===pi?pp:1);};
+  if(st.grow){await tween(600,p=>{solveAxes();solveCurve(p);});await tween(400,p=>{solveAxes();solveCurve(1);solveKLine(p);});}
+  for(let n=prevN;n<showN;n++){await tween(360,p=>drawUpTo(n+1,n,p));}
+  renderSolveStatic(i);}
+async function playAll(){cancelA();const t=tok;step=-1;renderSolveStatic(-1);solveCaption(-1);updateSolveButtons();await wait(400);if(t!==tok)return;
+  for(let i=0;i<SS.steps.length;i++){await animStep(i);if(t!==tok)return;await wait(700);if(t!==tok)return;}}
+function solveCaption(i){const c=$('caption');
+  if(i<0){c.innerHTML='<div class="sn">Ready</div><h4>Solve step by step</h4><p>Press <b>Next</b> to work through it one step at a time, or <b>Play all</b> to watch the whole method. The graph and its symmetry reveal every solution in the interval.</p>';$('stepCount').textContent='';return;}
+  const st=SS.steps[i];c.innerHTML='<div class="sn">'+st.sn+'</div><h4>'+st.h+'</h4><p>'+st.p+'</p>';$('stepCount').textContent='Step '+(i+1)+' of '+SS.steps.length;}
+function updateSolveButtons(){$('backBtn').disabled=step<=-1;$('nextBtn').disabled=!SS||step>=SS.steps.length-1;}
 
-function toggleAnim() {
-  animating = !animating;
-  document.getElementById('anim-btn').textContent = animating ? '⏸ Pause' : '▶ Animate';
-  if(animating) animate();
-  else { clearTimeout(animId); }
-}
-
-function animate() {
-  if(!animating) return;
-  currentAngle = (currentAngle + 1) % 360;
-  updateAngle(currentAngle);
-  animId = setTimeout(animate, 30);
-}
-
-function drawCircle() {
-  const c = document.getElementById('circle-canvas');
-  const ctx = c.getContext('2d');
-  const W=c.width, H=c.height;
-  const cx=W/2, cy=H/2, r=110;
-  ctx.clearRect(0,0,W,H);
-  ctx.fillStyle='white'; ctx.fillRect(0,0,W,H);
-
-  const rad = currentAngle * Math.PI/180;
-  const px = cx + r*Math.cos(rad);
-  const py = cy - r*Math.sin(rad);
-
-  // Grid
-  ctx.strokeStyle='#F1F5F9'; ctx.lineWidth=1;
-  ctx.beginPath(); ctx.moveTo(0,cy); ctx.lineTo(W,cy); ctx.strokeStyle='#CBD5E1'; ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(cx,0); ctx.lineTo(cx,H); ctx.stroke();
-
-  // Circle
-  ctx.beginPath(); ctx.arc(cx,cy,r,0,2*Math.PI); ctx.strokeStyle='#E2E8F0'; ctx.lineWidth=1.5; ctx.stroke();
-
-  // Angle arc
-  ctx.beginPath(); ctx.arc(cx,cy,30,0,-rad,rad<0); ctx.strokeStyle='#94A3B8'; ctx.lineWidth=1; ctx.stroke();
-  ctx.fillStyle='#64748B'; ctx.font='12px Inter'; ctx.textAlign='center';
-  const labelR=44;
-  ctx.fillText(currentAngle+'°', cx+labelR*Math.cos(rad/2), cy-labelR*Math.sin(rad/2));
-
-  const mode = document.getElementById('trig-mode').value;
-
-  // cos line (x)
-  if(mode==='cos'||mode==='both'){
-    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(px,cy); ctx.strokeStyle='#8B1A1A'; ctx.lineWidth=3; ctx.stroke();
-    ctx.fillStyle='#8B1A1A'; ctx.font='bold 12px Inter'; ctx.textAlign='center';
-    ctx.fillText('cos θ',cx+(px-cx)/2,cy+16);
-  }
-
-  // sin line (y)
-  if(mode==='sin'||mode==='both'){
-    ctx.beginPath(); ctx.moveTo(px,cy); ctx.lineTo(px,py); ctx.strokeStyle='#1B4F8A'; ctx.lineWidth=3; ctx.stroke();
-    ctx.fillStyle='#1B4F8A'; ctx.font='bold 12px Inter'; ctx.textAlign='left';
-    ctx.fillText('sin θ',px+6,(cy+py)/2);
-  }
-
-  // tan line
-  if(mode==='tan'&&Math.abs(Math.cos(rad))>0.05){
-    const tanY=cy-r*Math.tan(rad);
-    ctx.beginPath(); ctx.moveTo(cx+r,cy); ctx.lineTo(cx+r,tanY); ctx.strokeStyle='#059669'; ctx.lineWidth=3; ctx.stroke();
-    ctx.fillStyle='#059669'; ctx.font='bold 12px Inter'; ctx.textAlign='left';
-    ctx.fillText('tan θ',cx+r+4,(cy+tanY)/2+4);
-    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx+r,tanY); ctx.strokeStyle='#94A3B8'; ctx.lineWidth=1; ctx.stroke();
-  }
-
-  // Radius line
-  ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(px,py); ctx.strokeStyle='#475569'; ctx.lineWidth=2; ctx.stroke();
-
-  // Point on circle
-  ctx.beginPath(); ctx.arc(px,py,5,0,2*Math.PI); ctx.fillStyle='#1B4F8A'; ctx.fill();
-
-  // Labels
-  ctx.fillStyle='#94A3B8'; ctx.font='11px Inter'; ctx.textAlign='left';
-  ctx.fillText('(1,0)',cx+r+4,cy-4);
-  ctx.fillText('(0,1)',cx+4,cy-r-4);
-  ctx.fillText('(-1,0)',cx-r-36,cy-4);
-  ctx.fillText('(0,-1)',cx+4,cy+r+12);
-
-  // Current point label
-  const s=Math.sin(rad); const co=Math.cos(rad);
-  ctx.fillStyle='#1B4F8A'; ctx.font='bold 11px Inter';
-  ctx.fillText('('+co.toFixed(2)+','+s.toFixed(2)+')',px+8,py-8);
-}
-
-function drawWaves() {
-  const c = document.getElementById('wave-canvas');
-  const ctx = c.getContext('2d');
-  const W=c.width, H=c.height;
-  const mid=H/2; const amp=80; const mode=document.getElementById('trig-mode').value;
-  ctx.clearRect(0,0,W,H); ctx.fillStyle='white'; ctx.fillRect(0,0,W,H);
-
-  // Grid
-  ctx.strokeStyle='#F1F5F9'; ctx.lineWidth=0.5;
-  [0.25,0.5,0.75,1].forEach(f=>{
-    const y=mid-amp*f; const y2=mid+amp*f;
-    ctx.beginPath(); ctx.moveTo(40,y); ctx.lineTo(W-10,y); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(40,y2); ctx.lineTo(W-10,y2); ctx.stroke();
-    ctx.fillStyle='#94A3B8'; ctx.font='10px Inter'; ctx.textAlign='right';
-    ctx.fillText(f.toFixed(2),34,y+4); ctx.fillText('-'+f.toFixed(2),34,y2+4);
-  });
-
-  // Axis
-  ctx.strokeStyle='#CBD5E1'; ctx.lineWidth=1;
-  ctx.beginPath(); ctx.moveTo(40,mid); ctx.lineTo(W-10,mid); ctx.stroke();
-  [0,90,180,270,360].forEach(deg=>{
-    const x=40+(deg/360)*(W-50);
-    ctx.beginPath(); ctx.moveTo(x,mid-5); ctx.lineTo(x,mid+5); ctx.stroke();
-    ctx.fillStyle='#94A3B8'; ctx.font='11px Inter'; ctx.textAlign='center';
-    ctx.fillText(deg+'°',x,mid+18);
-  });
-
-  const wave=(mode2)=>{
-    ctx.beginPath();
-    let started=false;
-    for(let px=0;px<W-50;px++){
-      const deg=(px/(W-50))*360;
-      const rad=deg*Math.PI/180;
-      let y; const co=Math.cos(rad); const si=Math.sin(rad);
-      if(mode2==='sin') y=si;
-      else if(mode2==='cos') y=co;
-      else if(mode2==='tan'){
-        const t=Math.tan(rad);
-        if(Math.abs(t)>3){started=false;continue;}
-        y=t;
-      }
-      const cy=mid-amp*y;
-      if(!started){ctx.moveTo(40+px,cy);started=true;}else ctx.lineTo(40+px,cy);
-    }
-    ctx.lineWidth=2;
-    ctx.stroke();
-  };
-
-  if(mode==='sin'||mode==='both'){ctx.strokeStyle='#1B4F8A';wave('sin');}
-  if(mode==='cos'||mode==='both'){ctx.strokeStyle='#8B1A1A';wave('cos');}
-  if(mode==='tan'){ctx.strokeStyle='#059669';wave('tan');}
-
-  // Current angle marker
-  const rad=currentAngle*Math.PI/180;
-  const curX=40+(currentAngle/360)*(W-50);
-  ctx.strokeStyle='#475569'; ctx.lineWidth=1; ctx.setLineDash([4,3]);
-  ctx.beginPath(); ctx.moveTo(curX,0); ctx.lineTo(curX,H); ctx.stroke();
-  ctx.setLineDash([]);
-
-  if(mode==='sin'||mode==='both'){
-    const sy=mid-amp*Math.sin(rad);
-    ctx.beginPath(); ctx.arc(curX,sy,5,0,2*Math.PI); ctx.fillStyle='#1B4F8A'; ctx.fill();
-  }
-  if(mode==='cos'||mode==='both'){
-    const cosy=mid-amp*Math.cos(rad);
-    ctx.beginPath(); ctx.arc(curX,cosy,5,0,2*Math.PI); ctx.fillStyle='#8B1A1A'; ctx.fill();
-  }
-
-  // Legend
-  if(mode==='both'){
-    ctx.fillStyle='#1B4F8A'; ctx.font='bold 12px Inter'; ctx.textAlign='left'; ctx.fillText('— sin θ',50,20);
-    ctx.fillStyle='#8B1A1A'; ctx.fillText('— cos θ',120,20);
-  }
-}
-
-function updateStats() {
-  const rad = currentAngle*Math.PI/180;
-  const s=Math.sin(rad), co=Math.cos(rad), t=Math.tan(rad);
-  document.getElementById('sin-val').textContent = s.toFixed(4);
-  document.getElementById('cos-val').textContent = co.toFixed(4);
-  document.getElementById('tan-val').textContent = Math.abs(co)<0.001 ? 'undef.' : t.toFixed(4);
-
-  const ev=exactVals[currentAngle];
-  if(ev){
-    document.getElementById('exact-val').innerHTML=`<strong>Exact values at ${currentAngle}°:</strong><br>sin = ${ev.s} &nbsp; cos = ${ev.c} &nbsp; tan = ${ev.t}`;
-  } else {
-    document.getElementById('exact-val').innerHTML=`<strong>Approximate at ${currentAngle}°</strong><br>sin²+cos² = <strong>${(s*s+co*co).toFixed(6)}</strong>`;
-  }
-}
-
-function draw() { drawCircle(); drawWaves(); updateStats(); }
-draw();
+/* ================= mode switching & wiring ================= */
+function setMode(m){cancelA();mode=m;document.querySelectorAll('#modeSeg button').forEach(b=>b.classList.toggle('on',b.dataset.mode===m));
+  $('circlePanel').style.display=m==='circle'?'block':'none';$('solvePanel').classList.toggle('on',m==='solve');
+  if(m==='circle')drawCircleMode();else if(SS)renderSolveStatic(step);}
+$('angle').addEventListener('input',e=>setAngle(+e.target.value));
+$('ucMode').addEventListener('change',drawCircleMode);
+document.querySelectorAll('.qbtn').forEach(b=>b.onclick=()=>setAngle(+b.dataset.a));
+$('animBtn').onclick=()=>{animing=!animing;$('animBtn').textContent=animing?'⏸ Pause':'▶ Animate';const run=()=>{if(!animing)return;setAngle(angle+1);animTimer=setTimeout(run,28);};if(animing)run();else clearTimeout(animTimer);};
+document.querySelectorAll('#modeSeg button').forEach(b=>b.onclick=()=>setMode(b.dataset.mode));
+$('solveBtn').onclick=()=>{if(buildSolve())cancelA();};
+$('eq').addEventListener('keydown',e=>{if(e.key==='Enter')$('solveBtn').click();});
+document.querySelectorAll('.ex').forEach(b=>b.onclick=()=>{$('eq').value=b.dataset.eq;$('solveBtn').click();});
+$('nextBtn').onclick=()=>{cancelA();if(SS&&step<SS.steps.length-1)animStep(step+1);};
+$('backBtn').onclick=()=>{cancelA();if(step>-1){step--;renderSolveStatic(step);solveCaption(step);updateSolveButtons();}};
+$('playBtn').onclick=()=>{if(SS)playAll();};
+$('restartBtn').onclick=()=>{cancelA();step=-1;renderSolveStatic(-1);solveCaption(-1);updateSolveButtons();$('solFinal').style.display='none';};
+/* init */
+setAngle(45);buildSolve();
 </script>
 </body>
 </html>
