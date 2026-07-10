@@ -204,5 +204,162 @@ document.addEventListener('DOMContentLoaded', async function() {
 })();
 </script>
 
+
+<!-- ===================== SBS Annotation Pen (lessons) ===================== -->
+<style>
+#penCanvas{position:fixed;inset:0;z-index:2147483640;pointer-events:none;touch-action:auto;}
+body.pen-draw #penCanvas{pointer-events:auto;touch-action:none;cursor:crosshair;}
+#penBar{
+  position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:2147483646;
+  display:flex;align-items:stretch;gap:5px;padding:5px 7px;border-radius:14px;
+  background:linear-gradient(135deg,rgba(43,70,128,.6),rgba(27,79,138,.5) 45%,rgba(104,78,180,.55));
+  -webkit-backdrop-filter:blur(16px) saturate(165%);backdrop-filter:blur(16px) saturate(165%);
+  border:1px solid rgba(255,255,255,.4);
+  box-shadow:0 6px 26px rgba(48,62,150,.45),0 1px 6px rgba(0,0,0,.25),inset 0 1px 1px rgba(255,255,255,.55);
+  max-width:calc(100vw - 16px);overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;
+  font-family:'Inter',system-ui,sans-serif;
+}
+#penBar::-webkit-scrollbar{display:none;}
+.pen-group{display:flex;align-items:center;gap:4px;flex:0 0 auto;}
+.pen-sep{width:1px;align-self:stretch;flex:0 0 auto;margin:1px;
+  background:linear-gradient(rgba(255,255,255,0),rgba(255,255,255,.55),rgba(255,255,255,0));}
+.pen-btn{
+  appearance:none;-webkit-appearance:none;cursor:pointer;font-family:inherit;
+  flex:0 0 auto;min-width:30px;height:32px;padding:3px 5px;border-radius:8px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
+  color:#fff;font-size:8px;font-weight:700;line-height:1.02;
+  background:linear-gradient(160deg,rgba(255,255,255,.24),rgba(255,255,255,.06));
+  border:1px solid rgba(255,255,255,.28);
+  box-shadow:inset 0 1px 1px rgba(255,255,255,.45),0 1px 3px rgba(0,0,0,.16);
+  transition:transform .12s,box-shadow .12s,background .12s;
+  user-select:none;-webkit-user-select:none;text-shadow:0 1px 1px rgba(0,0,0,.4);
+}
+.pen-btn:active{transform:translateY(0);}
+.pen-btn svg{width:13px;height:13px;stroke:#fff;}
+.pen-btn.active{
+  background:linear-gradient(160deg,rgba(255,255,255,.42),rgba(255,255,255,.18));
+  box-shadow:inset 0 1px 1px rgba(255,255,255,.65),0 0 0 1.5px rgba(255,255,255,.6),0 2px 8px rgba(0,0,0,.28);
+}
+.pen-toggle{min-width:36px;}
+.pen-toggle .st{font-size:9px;font-weight:800;}
+#penStateTxt{color:#ffe08a;}
+.pen-toggle.active #penStateTxt{color:#c6f6d5;}
+.pen-swatch{
+  flex:0 0 auto;min-width:24px;height:32px;border-radius:8px;cursor:pointer;
+  border:1px solid rgba(255,255,255,.4);
+  box-shadow:inset 0 1px 2px rgba(255,255,255,.5),inset 0 -2px 4px rgba(0,0,0,.28),0 1px 3px rgba(0,0,0,.2);
+  transition:transform .12s,box-shadow .12s;
+}
+.pen-swatch.active{transform:translateY(-1px);
+  box-shadow:0 0 0 2px #fff,inset 0 1px 2px rgba(255,255,255,.5),0 2px 8px rgba(0,0,0,.32);}
+@media(max-width:640px){
+  #penBar{bottom:10px;gap:4px;padding:4px 5px;}
+  .pen-btn{min-width:28px;height:30px;} .pen-btn svg{width:12px;height:12px;}
+  .pen-swatch{min-width:22px;height:30px;} .pen-toggle{min-width:34px;}
+}
+@media print{#penBar,#penCanvas{display:none !important;}}
+</style>
+<canvas id="penCanvas" aria-hidden="true"></canvas>
+<div id="penBar" role="toolbar" aria-label="Annotation tools">
+  <div class="pen-group">
+    <button class="pen-btn pen-toggle" id="penToggle" type="button" title="Turn the writing pen on/off">
+      <span class="st">Pen:</span><span class="st" id="penStateTxt">off</span>
+    </button>
+  </div>
+  <div class="pen-sep"></div>
+  <div class="pen-group" id="penSwatches">
+    <div class="pen-swatch" data-color="#E23B3B" title="Red"    style="background:linear-gradient(160deg,#ff6a6a,#c31d1d);"></div>
+    <div class="pen-swatch" data-color="#2D7DF6" title="Blue"   style="background:linear-gradient(160deg,#6aa8ff,#1c5fd6);"></div>
+    <div class="pen-swatch" data-color="#0FB07A" title="Green"  style="background:linear-gradient(160deg,#3fd6a3,#0a8e63);"></div>
+    <div class="pen-swatch" data-color="#F5B301" title="Yellow" style="background:linear-gradient(160deg,#ffd54a,#e09b00);"></div>
+    <div class="pen-swatch" data-color="#17181D" title="Black"  style="background:linear-gradient(160deg,#4a4d57,#111318);"></div>
+  </div>
+  <div class="pen-sep"></div>
+  <div class="pen-group">
+    <button class="pen-btn" id="btnHilite" type="button" title="Highlighter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 11 6-6 4 4-6 6"/><path d="M9 11l-3 3v3h3l3-3"/><path d="M5 21h7"/></svg><span>Hi-lite</span></button>
+    <button class="pen-btn" id="btnErase" type="button" title="Eraser"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m4 15 5-5 8 8-3 3H7z"/><path d="M14 6l3-3 4 4-3 3"/><path d="M6 21h14"/></svg><span>Erase</span></button>
+    <button class="pen-btn" id="btnUndo" type="button" title="Undo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-1"/></svg><span>Undo</span></button>
+    <button class="pen-btn" id="btnClear" type="button" title="Clear this slide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M6 6l1 14h10l1-14"/><path d="M10 11v6M14 11v6"/></svg><span>Clear</span></button>
+  </div>
+  <div class="pen-sep"></div>
+  <div class="pen-group">
+    <button class="pen-btn active" id="btnHand" type="button" title="Move / navigate slides (pen off)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11.5V7a1.5 1.5 0 0 1 3 0v3.5"/><path d="M9 10.5V4.5a1.5 1.5 0 0 1 3 0V10"/><path d="M12 10V5.8a1.5 1.5 0 0 1 3 0V11"/><path d="M15 11.5V8.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-1a5 5 0 0 1-3.9-1.9L4.4 15.6a1.6 1.6 0 0 1 2.4-2.1L8.2 15"/></svg><span>Move</span></button>
+  </div>
+</div>
+<script>
+(function () {
+  if (window.__sbsPen) return; window.__sbsPen = true;
+  var canvas = document.getElementById('penCanvas');
+  var ctx = canvas.getContext('2d');
+  var toggle = document.getElementById('penToggle');
+  var stateTxt = document.getElementById('penStateTxt');
+  var swatches = Array.prototype.slice.call(document.querySelectorAll('.pen-swatch'));
+  var btnHilite = document.getElementById('btnHilite');
+  var btnErase = document.getElementById('btnErase');
+  var btnUndo = document.getElementById('btnUndo');
+  var btnClear = document.getElementById('btnClear');
+  var btnHand = document.getElementById('btnHand');
+
+  var dpr = Math.max(1, window.devicePixelRatio || 1);
+  var strokes = [], current = null, drawing = false, activeId = null, rt = null;
+  var state = { mode: 'browse', tool: 'pen', color: '#E23B3B' };
+  var SIZES = { pen: 3, hilite: 18, erase: 26 };
+
+  function pt(e) { return { x: e.clientX, y: e.clientY }; }
+  function style(s) {
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    if (s.tool === 'erase') { ctx.globalCompositeOperation = 'destination-out'; ctx.globalAlpha = 1; ctx.lineWidth = s.size; ctx.strokeStyle = 'rgba(0,0,0,1)'; }
+    else if (s.tool === 'hilite') { ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 0.32; ctx.lineWidth = s.size; ctx.strokeStyle = s.color; }
+    else { ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1; ctx.lineWidth = s.size; ctx.strokeStyle = s.color; }
+  }
+  function seg(s, a, b) { style(s); ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); }
+  function dot(s, p) { style(s); ctx.beginPath(); ctx.arc(p.x, p.y, Math.max(0.7, s.size / 2), 0, Math.PI * 2); ctx.fillStyle = (s.tool === 'erase') ? 'rgba(0,0,0,1)' : s.color; ctx.fill(); }
+  function drawStroke(s) { if (!s.points.length) return; if (s.points.length === 1) { dot(s, s.points[0]); return; } for (var i = 1; i < s.points.length; i++) seg(s, s.points[i-1], s.points[i]); }
+  function redraw() { ctx.setTransform(1,0,0,1,0,0); ctx.clearRect(0,0,canvas.width,canvas.height); ctx.setTransform(dpr,0,0,dpr,0,0); for (var i=0;i<strokes.length;i++) drawStroke(strokes[i]); ctx.globalAlpha=1; ctx.globalCompositeOperation='source-over'; }
+  function size() { dpr = Math.max(1, window.devicePixelRatio || 1); var w=window.innerWidth, h=window.innerHeight; canvas.style.width=w+'px'; canvas.style.height=h+'px'; canvas.width=Math.floor(w*dpr); canvas.height=Math.floor(h*dpr); ctx.setTransform(dpr,0,0,dpr,0,0); redraw(); }
+
+  canvas.addEventListener('pointerdown', function (e) {
+    if (state.mode !== 'draw') return;
+    e.preventDefault();
+    drawing = true; activeId = e.pointerId;
+    try { canvas.setPointerCapture(e.pointerId); } catch (x) {}
+    var sz = SIZES[state.tool] || SIZES.pen;
+    current = { tool: state.tool, color: state.color, size: sz, points: [pt(e)] };
+    dot(current, current.points[0]);
+  });
+  canvas.addEventListener('pointermove', function (e) {
+    if (!drawing || e.pointerId !== activeId) return;
+    e.preventDefault();
+    var evs = (e.getCoalescedEvents && e.getCoalescedEvents().length) ? e.getCoalescedEvents() : [e];
+    for (var k=0;k<evs.length;k++){ var p=pt(evs[k]); var last=current.points[current.points.length-1]; if(Math.abs(p.x-last.x)+Math.abs(p.y-last.y)<0.4) continue; current.points.push(p); seg(current,last,p); }
+  });
+  function end(e) { if (!drawing || (e && e.pointerId !== activeId)) return; drawing=false; activeId=null; if(current && current.points.length) strokes.push(current); current=null; }
+  canvas.addEventListener('pointerup', end);
+  canvas.addEventListener('pointercancel', end);
+
+  function setMode(m) { state.mode=m; document.body.classList.toggle('pen-draw', m==='draw'); toggle.classList.toggle('active', m==='draw'); toggle.setAttribute('aria-pressed', m==='draw'?'true':'false'); stateTxt.textContent = m==='draw'?'on':'off'; btnHand.classList.toggle('active', m==='browse'); }
+  function clearToolActive(){ btnHilite.classList.remove('active'); btnErase.classList.remove('active'); }
+  function setTool(t){ state.tool=t; clearToolActive(); if(t==='hilite') btnHilite.classList.add('active'); if(t==='erase') btnErase.classList.add('active'); if(state.mode!=='draw') setMode('draw'); }
+
+  toggle.addEventListener('click', function(){ setMode(state.mode==='draw'?'browse':'draw'); });
+  btnHand.addEventListener('click', function(){ setMode('browse'); });
+  swatches.forEach(function(sw){ sw.addEventListener('click', function(){ state.color=sw.getAttribute('data-color'); swatches.forEach(function(x){x.classList.remove('active');}); sw.classList.add('active'); setTool('pen'); }); });
+  btnHilite.addEventListener('click', function(){ setTool('hilite'); });
+  btnErase.addEventListener('click', function(){ setTool('erase'); });
+  btnUndo.addEventListener('click', function(){ if(strokes.length){ strokes.pop(); redraw(); } });
+  btnClear.addEventListener('click', function(){ if(strokes.length){ strokes=[]; redraw(); } });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') setMode('browse'); if((e.ctrlKey||e.metaKey)&&(e.key==='z'||e.key==='Z')){ if(state.mode==='draw'&&strokes.length){ e.preventDefault(); strokes.pop(); redraw(); } } });
+
+  // Clear ink automatically when the slide changes (deck fires 'slidechange').
+  document.addEventListener('slidechange', function(){ strokes=[]; current=null; drawing=false; redraw(); });
+
+  window.addEventListener('resize', function(){ clearTimeout(rt); rt=setTimeout(size,120); });
+  window.addEventListener('orientationchange', function(){ clearTimeout(rt); rt=setTimeout(size,200); });
+
+  swatches[0].classList.add('active'); state.color = swatches[0].getAttribute('data-color');
+  setMode('browse'); size();
+})();
+</script>
+
 </body>
 </html>
