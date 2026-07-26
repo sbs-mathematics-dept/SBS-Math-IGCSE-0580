@@ -68,6 +68,15 @@ footer div{margin-top:6px;opacity:.75;}
   .lab-card{transition:none;} .lab-card:hover{transform:none;} .lab-card:hover .lab-open b{transform:none;}
 }
 </style>
+  <!-- PWA: installable app support -->
+  <link rel="manifest" href="/SBS-Math-IGCSE-0580/manifest.webmanifest" />
+  <meta name="theme-color" content="#071c49" />
+  <link rel="icon" type="image/png" sizes="48x48" href="/SBS-Math-IGCSE-0580/assets/icons/favicon-48.png" />
+  <link rel="apple-touch-icon" href="/SBS-Math-IGCSE-0580/assets/icons/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="SBS Math" />
 </head>
 <body>
 
@@ -246,5 +255,13 @@ footer div{margin-top:6px;opacity:.75;}
   <div>SBS International School Chiangmai · An Arthit Ourairat Institution</div>
 </footer>
 
+  <script>
+    // PWA: register service worker for offline support & installability
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/SBS-Math-IGCSE-0580/sw.js');
+      });
+    }
+  </script>
 </body>
 </html>

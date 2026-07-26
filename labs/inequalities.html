@@ -67,6 +67,15 @@ table.tt th{background:var(--g50);font-weight:700;font-size:.72rem;text-transfor
 footer{background:var(--navy);color:rgba(255,255,255,.6);text-align:center;padding:1.4rem;font-size:13px;margin-top:1.2rem;} footer strong{color:rgba(255,255,255,.85);}
 @media(max-width:900px){.graph-row{grid-template-columns:1fr;}canvas{height:400px;}.nav-links{display:none;}.nav-logo .logo-full{display:none;}.nav-logo .logo-mark{display:block;}}
 </style>
+  <!-- PWA: installable app support -->
+  <link rel="manifest" href="/SBS-Math-IGCSE-0580/manifest.webmanifest" />
+  <meta name="theme-color" content="#071c49" />
+  <link rel="icon" type="image/png" sizes="48x48" href="/SBS-Math-IGCSE-0580/assets/icons/favicon-48.png" />
+  <link rel="apple-touch-icon" href="/SBS-Math-IGCSE-0580/assets/icons/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="SBS Math" />
 </head>
 <body>
 <nav>
@@ -334,5 +343,13 @@ window.addEventListener('resize',resize);
 setRows(['y>x','y<=-x+7','x>=1']);
 resize();drawRegion();
 </script>
+  <script>
+    // PWA: register service worker for offline support & installability
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/SBS-Math-IGCSE-0580/sw.js');
+      });
+    }
+  </script>
 </body>
 </html>

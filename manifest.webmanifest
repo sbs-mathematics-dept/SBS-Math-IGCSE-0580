@@ -1,0 +1,52 @@
+{
+  "name": "SBS Interactive Mathematics — IGCSE 0580",
+  "short_name": "SBS Math",
+  "description": "Interactive Cambridge IGCSE Mathematics 0580 lessons, labs, and practice for SBS students.",
+  "id": "/SBS-Math-IGCSE-0580/",
+  "start_url": "/SBS-Math-IGCSE-0580/index.html",
+  "scope": "/SBS-Math-IGCSE-0580/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f7fbff",
+  "theme_color": "#071c49",
+  "lang": "en",
+  "categories": ["education"],
+  "icons": [
+    {
+      "src": "assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "assets/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Chapters",
+      "url": "/SBS-Math-IGCSE-0580/chapters.html",
+      "icons": [{ "src": "assets/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Interactive Labs",
+      "url": "/SBS-Math-IGCSE-0580/labs.html",
+      "icons": [{ "src": "assets/icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
